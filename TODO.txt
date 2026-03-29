@@ -1,0 +1,2 @@
+Create custom DbContextOptions??
+Make ExceptionFilter...register in options in Program.cs...log errors
