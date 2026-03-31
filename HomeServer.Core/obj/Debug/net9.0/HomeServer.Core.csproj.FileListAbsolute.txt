@@ -1,0 +1,12 @@
+/home/benino/Projects/RaspberryPI_HomeServer/HomeServer.Core/bin/Debug/net9.0/HomeServer.Core.deps.json
+/home/benino/Projects/RaspberryPI_HomeServer/HomeServer.Core/bin/Debug/net9.0/HomeServer.Core.dll
+/home/benino/Projects/RaspberryPI_HomeServer/HomeServer.Core/bin/Debug/net9.0/HomeServer.Core.pdb
+/home/benino/Projects/RaspberryPI_HomeServer/HomeServer.Core/obj/Debug/net9.0/HomeServer.Core.GeneratedMSBuildEditorConfig.editorconfig
+/home/benino/Projects/RaspberryPI_HomeServer/HomeServer.Core/obj/Debug/net9.0/HomeServer.Core.AssemblyInfoInputs.cache
+/home/benino/Projects/RaspberryPI_HomeServer/HomeServer.Core/obj/Debug/net9.0/HomeServer.Core.AssemblyInfo.cs
+/home/benino/Projects/RaspberryPI_HomeServer/HomeServer.Core/obj/Debug/net9.0/HomeServer.Core.csproj.CoreCompileInputs.cache
+/home/benino/Projects/RaspberryPI_HomeServer/HomeServer.Core/obj/Debug/net9.0/HomeServer.Core.sourcelink.json
+/home/benino/Projects/RaspberryPI_HomeServer/HomeServer.Core/obj/Debug/net9.0/HomeServer.Core.dll
+/home/benino/Projects/RaspberryPI_HomeServer/HomeServer.Core/obj/Debug/net9.0/refint/HomeServer.Core.dll
+/home/benino/Projects/RaspberryPI_HomeServer/HomeServer.Core/obj/Debug/net9.0/HomeServer.Core.pdb
+/home/benino/Projects/RaspberryPI_HomeServer/HomeServer.Core/obj/Debug/net9.0/ref/HomeServer.Core.dll

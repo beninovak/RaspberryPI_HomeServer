@@ -1,2 +1,7 @@
 Create custom DbContextOptions??
 Make ExceptionFilter...register in options in Program.cs...log errors
+Read about EntityFramework migrations...backup first working DB
+Add forgotten password screen
+Add history to TODOs
+
+Check for static analysis tools?
