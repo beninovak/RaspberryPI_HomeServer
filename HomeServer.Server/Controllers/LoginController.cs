@@ -3,6 +3,7 @@ using System.Text;
 using HomeServer.Core;
 using HomeServer.Server.Data;
 using HomeServer.Server.Models;
+using HomeServer.Server.Utils;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -18,10 +19,42 @@ namespace HomeServer.Server.Controllers
         {
             DB = db;
         }
+        
+        [HttpPost]
+        public async Task<ActionResult> AttempUserRegister([FromBody] UserDTO userDTO) {
+            if (String.IsNullOrEmpty(userDTO.Email)) {
+                return BadRequest(new {
+                    message = "No email provided in request!",
+                });
+            } /*else if (IsEmailValid(UserDTO.Email)) {
+                // TODO - Also add FluentValidator here
+            }*/
+            
+            if (String.IsNullOrEmpty(userDTO.FirstName) || String.IsNullOrEmpty(userDTO.LastName)) {
+                return BadRequest(new {
+                    message = "You must enter both a first and last name!",
+                });
+            }
+            
+            if (String.IsNullOrEmpty(userDTO.Password)) {
+                return BadRequest(new {
+                    message = "No password provided in request!",
+                });
+            } /*else if (IsPasswordValid(UserDTO.Email)) {
+                // TODO - Also add FluentValidator here
+            }*/
 
+            DB.Users.Add(UserUtil.DTOToUser(userDTO));
+            await DB.SaveChangesAsync();
+            
+            return Ok(new { // TODO - Baje bi mogu uporabt CreatedAtRoute()??? Check...
+                message = $"Successfully added a user with email {userDTO.Email}",
+            });
+        }
+        
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<User>> AttemptUserLogin([FromBody] UserDTO userDTO)
+        public async Task<ActionResult> AttemptUserLogin([FromBody] UserDTO userDTO)
         {
             if (String.IsNullOrEmpty(userDTO.Email)) {
                 return BadRequest(new {
@@ -33,7 +66,9 @@ namespace HomeServer.Server.Controllers
                     message = "No password provided in request!",
                 });
             }
-            // TODO - Add FluentValidator?? for email and password?
+            /*else if (IsPasswordValid(UserDTO.Email)) {
+                // TODO - Also add FluentValidator here
+            }*/
 
             User? dbUser = await DB.Users.FirstOrDefaultAsync(u => u.Email.Equals(userDTO.Email));
             if (dbUser is null) {
@@ -56,6 +91,11 @@ namespace HomeServer.Server.Controllers
             return Ok(new {
                 message = $"Email and password match. Logging in user - {dbUser.Email}",
             });
+        }
+
+        [HttpPatch]
+        public async Task<ActionResult> ChangeUserInfo() {
+            return Ok();
         }
     }
 }

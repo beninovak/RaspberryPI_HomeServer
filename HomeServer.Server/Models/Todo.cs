@@ -4,7 +4,7 @@ using Microsoft.Data.Sqlite;
 namespace HomeServer.Server.Models;
 
 public class Todo {
-    public uint? Id { get; init; }
+    public uint Id { get; init; }
     public uint TodoSectionId { get; init; }
     public uint Order { get; init; }
     [MaxLength(300)]
@@ -12,5 +12,5 @@ public class Todo {
     public bool IsDone { get; init; } = false;
     public DateTime CreatedAt { get; init; } = DateTime.Now;
 
-    //public List<SqliteBlob> Files; // Maybe??
+    //public List<SqliteBlob> Files; // Maybe sam link do files??
 }

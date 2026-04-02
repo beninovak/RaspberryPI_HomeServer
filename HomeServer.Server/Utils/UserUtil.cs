@@ -11,4 +11,13 @@ public static class UserUtil {
             LastName = user.LastName,
         };
     }
+    
+    public static User DTOToUser(UserDTO userDTO) {
+        return new User {
+            Email = userDTO.Email,
+            FirstName = userDTO.FirstName,
+            LastName = userDTO.LastName,
+            Password = userDTO.Password,
+        };
+    }
 }

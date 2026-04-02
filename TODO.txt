@@ -1,9 +1,16 @@
-Use command arg for IP when launching the server. Don't want real IP in github!!!
+GENERAL:
+    - Check for static analysis tools?
 
-Create custom DbContextOptions??
-Make ExceptionFilter...register in options in Program.cs...log errors
-Read about EntityFramework migrations...backup first working DB
-Add forgotten password screen
-Add history to TODOs
+SERVER:
+    - Use command arg for IP when launching the server. Don't want real IP in github!!!
+    - Create custom DbContextOptions??
+    - Make ExceptionFilter...register in options in Program.cs...log errors
+    - Read about EntityFramework migrations...backup first working DB
+    
+    - A sploh rabm TodoDTO?? Maybe ne
 
-Check for static analysis tools?
+CLIENT
+    - Add forgotten password screen
+    - Add history to TODOs
+    - Don't just put password salt at the end...do something spicy
+    - Fingerprint reader?

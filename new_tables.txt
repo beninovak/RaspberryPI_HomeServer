@@ -1,0 +1,19 @@
+Expense category table:
+
+id,
+title,
+order,
+color
+
+
+Expense table:
+id,
+category_id,
+description,
+price,
+image
+created_at,
+created_by,
+
+
+

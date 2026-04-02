@@ -2,6 +2,8 @@ using HomeServer.Server.Data;
 using HomeServer.Server.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using HomeServer.Core;
+using HomeServer.Server.Utils;
 
 namespace HomeServer.Server.Controllers
 {
@@ -25,7 +27,7 @@ namespace HomeServer.Server.Controllers
             
             if (todo is null) {
                 NotFound(new {
-                    message = "No todo with that id exists."
+                    message = "No todo with that id exists.",
                 });
             }
             
@@ -33,18 +35,23 @@ namespace HomeServer.Server.Controllers
         }
         
         [HttpPost]
-        public async Task<ActionResult> CreateTodo([FromBody] Todo todo) {
-            DB.Todos.Add(todo);
+        public async Task<ActionResult> CreateTodo([FromBody] TodoDTO todoDTO) {
+            DB.Todos.Add(TodoUtil.DTOToTodo(todoDTO));
             await DB.SaveChangesAsync();
             
             return Ok(new { // TODO - Baje bi mogu uporabt CreatedAtRoute()??? Check...
-                message = $"Successfully added a todo with id {todo.Id}"
+                message = $"Successfully added a todo with id {todoDTO.Id}",
             });
         }
 
         // [HttpPatch("{id}")] 
-        // public async Task<ActionResult> UpdateTodo(uint id) {
-        //     
+        // public async Task<ActionResult> UpdateTodo(TodoDTO todoDTO) {
+        //     Todo? todo = DB.Todos.Find(id);
+        //     if (todo is null) {
+        //         return NotFound(new {
+        //             message = "No todo with that id exists.",
+        //         });
+        //     }
         // }
     }
 }

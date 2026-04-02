@@ -1,22 +1,5 @@
 @RaspberryPI_HomeServer_HostAddress = http://localhost:5167
 
-GET {{RaspberryPI_HomeServer_HostAddress}}/api/todo_sections/
-Content-Type: application/json
-Accept: application/json
-
-###
-
-POST {{RaspberryPI_HomeServer_HostAddress}}/api/todo_sections/
-Content-Type: application/json
-Accept: application/json
-
-{
-  "Title": "Sadje in zelenjava",
-  "Order": 1
-}
-
-###
-
 POST {{RaspberryPI_HomeServer_HostAddress}}/api/todos/
 Content-Type: application/json
 Accept: application/json
