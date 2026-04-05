@@ -5,53 +5,52 @@ using Microsoft.EntityFrameworkCore;
 using HomeServer.Core;
 using HomeServer.Server.Utils;
 
-namespace HomeServer.Server.Controllers
-{
-    [Route("api/todos")]
-    [ApiController]
-    public class TodosController : ControllerBase {
-        private readonly MainDbContext DB;
+namespace HomeServer.Server.Controllers;
 
-        public TodosController(MainDbContext db) {
-            DB = db;
-        }
+[Route("api/todos")]
+[ApiController]
+public class TodosController : ControllerBase {
+    private readonly MainDbContext DB;
 
-        [HttpGet]
-        public async Task<ActionResult<List<Todo>>> GetTodos() {
-            return await DB.Todos.ToListAsync();
-        }
-        
-        [HttpGet("{id}")]
-        public async Task<ActionResult<Todo>> GetTodo(uint id) {
-             Todo? todo = await DB.Todos.FindAsync(id);
-            
-            if (todo is null) {
-                NotFound(new {
-                    message = "No todo with that id exists.",
-                });
-            }
-            
-            return Ok(todo);
-        }
-        
-        [HttpPost]
-        public async Task<ActionResult> CreateTodo([FromBody] TodoDTO todoDTO) {
-            DB.Todos.Add(TodoUtil.DTOToTodo(todoDTO));
-            await DB.SaveChangesAsync();
-            
-            return Ok(new { // TODO - Baje bi mogu uporabt CreatedAtRoute()??? Check...
-                message = $"Successfully added a todo with id {todoDTO.Id}",
+    public TodosController(MainDbContext db) {
+        DB = db;
+    }
+
+    [HttpGet]
+    public async Task<ActionResult<List<Todo>>> GetTodos() {
+        return await DB.Todos.ToListAsync();
+    }
+
+    [HttpGet("{id}")]
+    public async Task<ActionResult<Todo>> GetTodo(uint id) {
+        Todo? todo = await DB.Todos.FindAsync(id);
+
+        if (todo is null) {
+            return NotFound(new {
+                message = "No todo with that id exists."
             });
         }
 
-        // [HttpPatch("{id}")] 
-        // public async Task<ActionResult> UpdateTodo(TodoDTO todoDTO) {
-        //     Todo? todo = DB.Todos.Find(id);
-        //     if (todo is null) {
-        //         return NotFound(new {
-        //             message = "No todo with that id exists.",
-        //         });
-        //     }
-        // }
+        return Ok(todo);
     }
+
+    [HttpPost]
+    public async Task<ActionResult> CreateTodo([FromBody] TodoDTO todoDTO) {
+        DB.Todos.Add(TodoUtil.DTOToTodo(todoDTO));
+        await DB.SaveChangesAsync();
+
+        return Ok(new { // TODO - Baje bi mogu uporabt CreatedAtRoute()??? Check...
+            message = $"Successfully added a todo with id {todoDTO.Id}"
+        });
+    }
+
+    // [HttpPatch("{id}")] 
+    // public async Task<ActionResult> UpdateTodo(TodoDTO todoDTO) {
+    //     Todo? todo = DB.Todos.Find(id);
+    //     if (todo is null) {
+    //         return NotFound(new {
+    //             message = "No todo with that id exists.",
+    //         });
+    //     }
+    // }
 }

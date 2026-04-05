@@ -13,9 +13,9 @@ builder.Services.AddOpenApi();
 
 builder.Services.AddDbContext<MainDbContext>(options => {
     options.UseSqlite(DBSource)
-           .LogTo(Console.WriteLine)
-           .EnableSensitiveDataLogging()
-           .EnableDetailedErrors();
+        .LogTo(Console.WriteLine)
+        .EnableSensitiveDataLogging()
+        .EnableDetailedErrors();
 });
 
 var app = builder.Build();

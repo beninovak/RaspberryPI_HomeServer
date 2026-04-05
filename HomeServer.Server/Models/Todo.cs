@@ -7,8 +7,7 @@ public class Todo {
     public uint Id { get; init; }
     public uint TodoSectionId { get; init; }
     public uint Order { get; init; }
-    [MaxLength(300)]
-    public string Content { get; init; } = string.Empty;
+    [MaxLength(300)] public string Content { get; init; } = string.Empty;
     public bool IsDone { get; init; } = false;
     public DateTime CreatedAt { get; init; } = DateTime.Now;
 

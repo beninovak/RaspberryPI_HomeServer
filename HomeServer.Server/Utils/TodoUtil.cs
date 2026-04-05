@@ -1,5 +1,6 @@
 using HomeServer.Core;
 using HomeServer.Server.Models;
+
 namespace HomeServer.Server.Utils;
 
 public class TodoUtil {
@@ -12,7 +13,7 @@ public class TodoUtil {
             CreatedAt = user.CreatedAt,
         };
     }
-    
+
     public static Todo DTOToTodo(TodoDTO todoDTO) {
         return new Todo {
             Id = todoDTO.Id,

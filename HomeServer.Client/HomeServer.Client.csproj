@@ -26,6 +26,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\HomeServer.Core\HomeServer.Core.csproj" />
+        <ProjectReference Include="..\HomeServer.Core\HomeServer.Core.csproj"/>
     </ItemGroup>
 </Project>

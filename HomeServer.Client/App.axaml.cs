@@ -9,7 +9,7 @@ using HomeServer.Client.Views;
 
 namespace HomeServer.Client;
 
-public partial class App : Application {
+public class App : Application {
     public override void Initialize() {
         AvaloniaXamlLoader.Load(this);
     }
@@ -20,7 +20,7 @@ public partial class App : Application {
             // More info: https://docs.avaloniaui.net/docs/guides/development-guides/data-validation#manage-validationplugins
             DisableAvaloniaDataAnnotationValidation();
             desktop.MainWindow = new MainWindow {
-                DataContext = new MainWindowViewModel(),
+                DataContext = new MainWindowViewModel()
             };
         }
 
@@ -35,8 +35,6 @@ public partial class App : Application {
                 .ToArray();
 
         // remove each entry found
-        foreach (var plugin in dataValidationPluginsToRemove) {
-            BindingPlugins.DataValidators.Remove(plugin);
-        }
+        foreach (var plugin in dataValidationPluginsToRemove) BindingPlugins.DataValidators.Remove(plugin);
     }
 }
