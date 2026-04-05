@@ -10,7 +10,7 @@ public class User {
     public string LastName { get; init; } = string.Empty;
     [MaxLength(100)] 
     public string Email { get; init; } = string.Empty;
-    [MaxLength(256)] 
+    [MaxLength(32)] // SHA256 (256 bits -> 32 bytes)
     public string Password { get; init; } = string.Empty;
     [MaxLength(12)] 
     public string PasswordSalt { get; init; } = string.Empty;
