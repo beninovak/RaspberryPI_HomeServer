@@ -1,16 +1,16 @@
 GENERAL:
+    - Find another git platform?
     - Port forwarding on router
     - Check for static analysis tools?
     - Enable WarningAsError
     - Home cloud with images and audio ( with file search )
-
+    - Implement a local save state in case of no internet, to be synced again on next startup with internet
 
 SERVER:
     - Use command arg for IP when launching the server. Don't want real IP in github!!! Launch settings.json?
     - Create custom DbContextOptions??
     - Make ExceptionFilter...register in options in Program.cs...log errors
     - Read about EntityFramework migrations...backup first working DB
-    - User Email and password validation in UserUtils...UserUtil in Core??
     - A sploh rabm TodoDTO?? Maybe ne
     - Test request bad paths (login when no such user, register with existing email, etc.)
     - Proper auth
@@ -19,6 +19,6 @@ SERVER:
 
 CLIENT
     - Add forgotten password screen
-    - Add history to TODOs
-    - Don't just put password salt at the end...do something spicy
+    - Add history to TODOs?
     - Fingerprint reader?
+    - Expenses by category...some kind of visualizer?

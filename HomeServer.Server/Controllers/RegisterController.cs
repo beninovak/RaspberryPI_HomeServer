@@ -19,13 +19,12 @@ public class RegisterController : ControllerBase {
     // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
     [HttpPost]
     public async Task<ActionResult> AttempUserRegister([FromBody] UserDTO userDTO) {
-        var (isValidEmail, validationMessageEmail) = UserUtil.IsEmailValid(userDTO.Email);
+        (bool isValidEmail, string validationMessageEmail) = UserUtil.IsEmailValid(userDTO.Email);
         if (!isValidEmail) {
             return BadRequest(new {
                 message = validationMessageEmail,
             });
         }
-         
         if (DB.Users.Any(user => user.Email.Equals(userDTO.Email))) {
             return BadRequest(new {
                 message = "A user with this email already exists!"
@@ -38,7 +37,7 @@ public class RegisterController : ControllerBase {
             });
         }
 
-        var (isValidPassword, validationMessagePassword) = UserUtil.IsPasswordValid(userDTO.Email);
+        (bool isValidPassword, string validationMessagePassword) = UserUtil.IsPasswordValid(userDTO.Email);
         if (!isValidPassword) {
             return BadRequest(new {
                 message = validationMessagePassword,

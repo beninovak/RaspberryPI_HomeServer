@@ -3,18 +3,51 @@
         xmlns:vm="using:HomeServer.Client.ViewModels"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        mc:Ignorable="d"
+        WindowState="Maximized"
         x:Class="HomeServer.Client.Views.MainWindow"
         x:DataType="vm:MainWindowViewModel"
-        Icon="/Assets/avalonia-logo.ico"
-        Title="HomeServer.Client">
-
-    <Design.DataContext>
-        <!-- This only sets the DataContext for the previewer in an IDE,
-             to set the actual DataContext for runtime, set the DataContext property in code (look at App.axaml.cs) -->
-        <vm:MainWindowViewModel />
-    </Design.DataContext>
-
-    <TextBlock Text="{Binding Greeting}" HorizontalAlignment="Center" VerticalAlignment="Center" />
-
+        Icon=""
+        Title="Banger program"
+        
+        Width="{OnFormFactor Desktop=2160, Mobile=1080}"
+        Height="{OnFormFactor Desktop=1440, Mobile=2340}"
+        d:DesignWidth="1600" d:DesignHeight="900">
+        <!-- TODO - Add Icon to Window -->
+        <!-- Window Width and Height are hardcoded for my phone and desktop monitors🥰 🥰🥰🥰-->
+        
+        <DockPanel Background="orange">
+            <StackPanel x:Name="PageButtons"
+                  Width="400"
+                  Background="salmon">
+                
+                <StackPanel.Styles>
+                    <Style Selector="Button">
+                        <Setter Property="Height" Value="100"/>
+                        <Setter Property="HorizontalAlignment" Value="Stretch"/>
+                        <Setter Property="HorizontalContentAlignment" Value="Center"/>
+                        <Setter Property="VerticalContentAlignment" Value="Center"/>
+                        <Setter Property="FontSize" Value="24"/>
+                        <Setter Property="FontWeight" Value="Bold"/>
+                    </Style>
+                </StackPanel.Styles>
+                
+                <Button x:Name="TodoTab" Content="TODOs"
+                        Command="{Binding OpenPageCommand}"
+                        CommandParameter="TODOS">
+                </Button>
+                
+                <Button x:Name="ExpensesTab" Content="Expenses"
+                        Command="{Binding OpenPageCommand}"
+                        CommandParameter="EXPENSES"></Button>
+                
+                <Button x:Name="FilesTab" Content="Files"
+                        Command="{Binding OpenPageCommand}"
+                        CommandParameter="FILES"></Button>
+            </StackPanel>
+            <ContentControl x:Name="ContentView" 
+                Background="DarkSlateBlue">
+                
+            </ContentControl>
+        </DockPanel>
 </Window>
