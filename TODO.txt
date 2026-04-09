@@ -7,7 +7,8 @@ GENERAL:
     - Implement a local save state in case of no internet, to be synced again on next startup with internet
 
 SERVER:
-    - Use command arg for IP when launching the server. Don't want real IP in github!!! Launch settings.json?
+    - Password hashing still cooked?
+    - Use command arg for IP when launching the server. Don't want real IP in github!!! Launch settings.json?...maybe just get public IP from code??
     - Create custom DbContextOptions??
     - Make ExceptionFilter...register in options in Program.cs...log errors
     - Read about EntityFramework migrations...backup first working DB

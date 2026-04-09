@@ -33,17 +33,17 @@
                 </StackPanel.Styles>
                 
                 <Button x:Name="TodoTab" Content="TODOs"
-                        Command="{Binding OpenPageCommand}"
-                        CommandParameter="TODOS">
+                        Command="{Binding OpenTodosPageCommand}"
+                        IsEnabled="{Binding OpenTodosButtonEnabled}">
                 </Button>
                 
                 <Button x:Name="ExpensesTab" Content="Expenses"
-                        Command="{Binding OpenPageCommand}"
-                        CommandParameter="EXPENSES"></Button>
+                        Command="{Binding OpenExpensesPageCommand}"
+                        IsEnabled="{Binding OpenExpensesButtonEnabled}"></Button>
                 
                 <Button x:Name="FilesTab" Content="Files"
-                        Command="{Binding OpenPageCommand}"
-                        CommandParameter="FILES"></Button>
+                        Command="{Binding OpenFilesPageCommand}"
+                        IsEnabled="{Binding OpenFilesButtonEnabled}"></Button>
             </StackPanel>
             <ContentControl x:Name="ContentView" 
                 Background="DarkSlateBlue">
