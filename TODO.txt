@@ -5,10 +5,11 @@ GENERAL:
     - Enable WarningAsError
     - Home cloud with images and audio ( with file search )
     - Implement a local save state in case of no internet, to be synced again on next startup with internet
+    - StyleCop NuGet package?
 
 SERVER:
     - Password hashing still cooked?
-    - Use command arg for IP when launching the server. Don't want real IP in github!!! Launch settings.json?...maybe just get public IP from code??
+    - Use command arg for IP when launching the server. Don't want real IP in github!!! Use settings.json?...maybe just get public IP from code??
     - Create custom DbContextOptions??
     - Make ExceptionFilter...register in options in Program.cs...log errors
     - Read about EntityFramework migrations...backup first working DB
@@ -23,3 +24,4 @@ CLIENT
     - Add history to TODOs?
     - Fingerprint reader?
     - Expenses by category...some kind of visualizer?
+    - Check if fast switching between views is fucky...maybe cache data from previous view for a bit?

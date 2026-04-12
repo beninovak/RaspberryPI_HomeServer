@@ -31,4 +31,19 @@
     <ItemGroup>
         <ProjectReference Include="..\HomeServer.Core\HomeServer.Core.csproj"/>
     </ItemGroup>
+
+    <ItemGroup>
+      <Compile Update="Views\TodoView.axaml.cs">
+        <DependentUpon>TodoView.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+      <Compile Update="Views\ExpenseView.axaml.cs">
+        <DependentUpon>ExpenseView.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+      <Compile Update="Views\FileView.axaml.cs">
+        <DependentUpon>FileView.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+    </ItemGroup>
 </Project>

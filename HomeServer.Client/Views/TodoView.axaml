@@ -1,0 +1,49 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="using:HomeServer.Client.ViewModels"
+             x:DataType="vm:TodoViewModel"
+             xmlns:controls="using:HomeServer.Client.Controls"
+             mc:Ignorable="d"
+             x:Class="HomeServer.Client.Views.TodoView"
+             Classes="view"
+             d:DesignWidth="800" d:DesignHeight="450"
+             Loaded="TodoView_OnLoaded">
+    
+    <Border Classes="wrapper">
+        <Grid Classes="main-grid">
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            
+            <TextBlock
+                Grid.Row="0"
+                Classes="view-title"
+                Text="TODOs">
+            </TextBlock>
+            
+            <controls:SearchBox
+                Grid.Row="1" 
+                x:Name="TodoSearchBox"
+                x:DataType="vm:TodoViewModel"
+                Placeholder="Search TODOs and sections"
+                Search="TodoSearchBox_OnSearch">
+            </controls:SearchBox>
+            
+            <!-- <ScrollViewer Grid.Row="2"> -->
+            <!--     <ListBox  -->
+            <!--          -->
+            <!--         ItemsSource="{Binding Todos}"> -->
+            <!--         <ListBox.ItemTemplate> -->
+            <!--             <DataTemplate> -->
+            <!--                  -->
+            <!--             </DataTemplate> -->
+            <!--         </ListBox.ItemTemplate> -->
+            <!--     </ListBox> -->
+            <!-- </ScrollViewer> -->
+        </Grid>
+    </Border>
+</UserControl>
