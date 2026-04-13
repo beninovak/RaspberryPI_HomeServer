@@ -18,10 +18,14 @@ public class TodosController : ControllerBase {
 
     [HttpGet]
     public async Task<ActionResult<List<Todo>>> GetTodos() {
-        return await DB.Todos.ToListAsync();
+        return await DB.Todos
+            .OrderBy(todo => todo.TodoSectionId) // TODO - GroupBy section ID instead of ordering by it
+            .ThenBy(todo => todo.Order) 
+            .ThenBy(todo => todo.CreatedAt)
+            .ToListAsync();
     }
 
-    [HttpGet("{id}")]
+    [HttpGet("{id:int}")]
     public async Task<ActionResult<Todo>> GetTodo(uint id) {
         Todo? todo = await DB.Todos.FindAsync(id);
 
@@ -33,14 +37,37 @@ public class TodosController : ControllerBase {
 
         return Ok(todo);
     }
+    
+    [HttpGet("search/{query}")]
+    public async Task<ActionResult<List<TodoDTO>>> GetTodosByQueryString(string query) {
+        query = query.ToLower();
+
+        List<Todo> todos = await DB.Todos
+            .Where(todo => todo.Content.ToLower().Contains(query))
+            .ToListAsync();
+
+        if (!todos.Any()) {
+            return NotFound(new {
+                message = "No todos with that id exists."
+            });
+        }
+
+        List<TodoDTO> todoDTOs = new();
+
+        foreach (Todo todo in todos) {
+            todoDTOs.Add(TodoUtil.TodoToDTO(todo));
+        }
+
+        return Ok(todoDTOs);
+    }
 
     [HttpPost]
     public async Task<ActionResult> CreateTodo([FromBody] TodoDTO todoDTO) {
         DB.Todos.Add(TodoUtil.DTOToTodo(todoDTO));
         await DB.SaveChangesAsync();
 
-        return Ok(new { // TODO - Baje bi mogu uporabt CreatedAtRoute()??? Check...
-            message = $"Successfully added a todo with id {todoDTO.Id}"
+        return Ok(new {
+            message = $"Successfully added a todo with content {todoDTO.Content}"
         });
     }
 

@@ -1,8 +1,7 @@
 using System;
 using System.Collections.ObjectModel;
-using Avalonia.Controls;
-using Avalonia.Interactivity;
-using HomeServer.Client.Controls;
+using System.Threading.Tasks;
+using HomeServer.Client.Util;
 using HomeServer.Core;
 
 namespace HomeServer.Client.ViewModels;
@@ -20,11 +19,11 @@ public class TodoViewModel : ViewModelBase {
         set;
     } = [];
     
-    public void TrySearch(string searchString) {
+    public async Task<TodoDTO> Search(string searchString) {
         Console.WriteLine(searchString);
-    }
+        string results = await Rufr.MakeRequest($"todos/search/{searchString}");
 
-    private void DoSearch() {
-        //Console.WriteLine(SearchBox);
+
+        return new TodoDTO();
     }
 }

@@ -10,6 +10,7 @@ public class Todo {
     [MaxLength(300)] public string Content { get; init; } = string.Empty;
     public bool IsDone { get; init; } = false;
     public DateTime CreatedAt { get; init; } = DateTime.Now;
+    public required uint CreatedBy { get; init; }
 
     //public List<SqliteBlob> Files; // Maybe sam link do files??
 }

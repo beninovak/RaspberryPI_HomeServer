@@ -21,7 +21,7 @@ public partial class TodoView : UserControl {
     
     private void TodoSearchBox_OnSearch(object? sender, EventArgs e) {
         if (VM is not null && sender is SearchBox searchBox) {
-            VM.TrySearch(searchBox.Input);
+            VM.Search(searchBox.Input);
         }
     }
 }
