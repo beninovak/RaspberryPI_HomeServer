@@ -17,11 +17,12 @@ public class TodosController : ControllerBase {
     }
 
     [HttpGet]
-    public async Task<ActionResult<List<Todo>>> GetTodos() {
-        return await DB.Todos
-            .OrderBy(todo => todo.TodoSectionId) // TODO - GroupBy section ID instead of ordering by it
-            .ThenBy(todo => todo.Order) 
-            .ThenBy(todo => todo.CreatedAt)
+    public async Task<ActionResult<List<TodoSection>>> GetTodos() {
+        return await DB.TodoSections
+            .Include(section => section.Todos)
+            .OrderBy(section => section.Order)
+            .ThenBy(section => section.Title)
+            .ThenBy(section => section.Todos.Any() ? section.Todos.First().Order : 0)
             .ToListAsync();
     }
 
@@ -38,7 +39,7 @@ public class TodosController : ControllerBase {
         return Ok(todo);
     }
     
-    [HttpGet("search/{query}")]
+    /*[HttpGet("search/{query}")]
     public async Task<ActionResult<List<TodoDTO>>> GetTodosByQueryString(string query) {
         query = query.ToLower();
 
@@ -59,11 +60,11 @@ public class TodosController : ControllerBase {
         }
 
         return Ok(todoDTOs);
-    }
+    }*/
 
     [HttpPost]
-    public async Task<ActionResult> CreateTodo([FromBody] TodoDTO todoDTO) {
-        DB.Todos.Add(TodoUtil.DTOToTodo(todoDTO));
+    public async Task<ActionResult> CreateTodo([FromBody] Todo todoDTO) {
+        DB.Todos.Add(todoDTO);
         await DB.SaveChangesAsync();
 
         return Ok(new {
@@ -80,4 +81,39 @@ public class TodosController : ControllerBase {
     //         });
     //     }
     // }
+
+
+    #region Sections
+    
+    [Route("sections")]
+    [HttpGet]
+    public async Task<ActionResult<List<TodoSection>>> GetTodoSections() {
+        return await DB.TodoSections.ToListAsync();
+    }
+
+    /*[HttpGet("sections/{id}")]
+    public async Task<ActionResult<TodoSection>> GetTodoSection(uint id) {
+        TodoSection? section = await DB.TodoSections.FirstOrDefaultAsync(t => t.Id == id);
+
+        if (section is null) {
+            return NotFound(new {
+                message = "No todo section with that id exists."
+            });
+        }
+
+        return Ok(section);
+    }*/
+
+    /*[Route("sections")]
+    [HttpPost]
+    public async Task<ActionResult<List<Todo>>> GetTodoSections([FromBody] TodoSection section) {
+        DB.TodoSections.Add(section);
+        await DB.SaveChangesAsync();
+
+        return Ok(new {
+            message = $"Successfully added a todo section with id {section.Id} and title \"{section.Title}\""
+        });
+    }*/
+
+    #endregion
 }

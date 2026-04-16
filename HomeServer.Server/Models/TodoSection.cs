@@ -9,4 +9,6 @@ public class TodoSection {
     [MaxLength(50)] public string Title { get; init; } = string.Empty;
 
     public DateTime CreatedAt { get; init; } = DateTime.Now;
+
+    public List<Todo> Todos { get; set; } = [];
 }

@@ -18,12 +18,9 @@ public partial class SearchBox : UserControl {
         get => input;
         private set => input = value;
     }
-    
-    // public static RoutedEvent<RoutedEventArgs> SearchEvent =
-    //     RoutedEvent.Register<SearchBox, RoutedEventArgs>(nameof(Search), RoutingStrategies.Direct);
 
     public event EventHandler? Search;
-    public event EventHandler? ValueChanged;
+    //public event EventHandler? ValueChanged;
     
     public SearchBox() {
         InitializeComponent();
@@ -34,7 +31,7 @@ public partial class SearchBox : UserControl {
         // if (keyCode < 32 && keyCode != 8 && keyCode != 13) return; // Prevent control chars
         
          Input = input + e.KeySymbol;
-         ValueChanged?.Invoke(this, EventArgs.Empty);
+         //ValueChanged?.Invoke(this, EventArgs.Empty);
     }
 
     private void SearchButton_OnClick(object? sender, RoutedEventArgs e) {

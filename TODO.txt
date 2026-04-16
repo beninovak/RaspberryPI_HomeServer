@@ -20,6 +20,7 @@ SERVER:
     - MailMessage/SmtpClient?? za maile
 
 CLIENT
+    - Complementary colors instead of salmon
     - Add forgotten password screen
     - Add history to TODOs?
     - Fingerprint reader?

@@ -17,6 +17,8 @@ public partial class TodoView : UserControl {
         if (VM is null) {
             throw new Exception("TodoViewModel is null. Fix your code buddy!");
         }
+
+        VM.AssembleTodos();
     }
     
     private void TodoSearchBox_OnSearch(object? sender, EventArgs e) {

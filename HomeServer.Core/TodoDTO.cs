@@ -1,14 +1,8 @@
-using System.ComponentModel.DataAnnotations;
-
 namespace HomeServer.Core;
 
-public class TodoDTO {
-    public uint TodoSectionId { get; init; }
+public struct TodoDTO {
+    public uint Id { get; set; }
     public uint Order { get; set; }
-
-    [MaxLength(300)] public string Content { get; init; } = string.Empty;
+    public string Content { get; set; }
     public bool IsDone { get; set; }
-    public DateTime CreatedAt { get; init; } = DateTime.Now;
-
-    public uint CreatedBy { get; init; }
 }
