@@ -56,10 +56,17 @@
                                     ItemsSource="{Binding Todos}">
                                     <ItemsControl.ItemTemplate>
                                         <DataTemplate>
-                                            <StackPanel Orientation="Horizontal">
-                                                <TextBlock Text="{Binding Content}"/>
-                                                <CheckBox IsChecked="{Binding IsDone}"/>
-                                            </StackPanel>
+                                            <Grid
+                                                Classes="todo-grid"
+                                                ColumnDefinitions="*, 20">
+                                                <TextBlock 
+                                                    Classes="todo-text"
+                                                    Text="{Binding Content}"/>
+                                                <CheckBox
+                                                    Grid.Column="1"
+                                                    Classes="todo-checkbox"
+                                                    IsChecked="{Binding IsDone}"/>
+                                            </Grid>
                                         </DataTemplate>
                                     </ItemsControl.ItemTemplate>
                                 </ItemsControl>

@@ -1,13 +1,27 @@
 <Styles xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
-    <Design.PreviewWith>
-        <Border Padding="20">
-            <!-- Add Controls for Previewer Here -->
-        </Border>
-    </Design.PreviewWith>
 
     <Style Selector="Expander.todo-section">
         <Setter Property="VerticalAlignment" Value="Top"></Setter>
         <Setter Property="HorizontalAlignment" Value="Stretch"></Setter>
+    </Style>
+    
+    <Style Selector="Grid.todo-grid">
+        <Setter Property="Margin" Value="0, 0,0, 8"></Setter>
+    </Style>
+    
+    <Style Selector="TextBlock.todo-text">
+        <Setter Property="FontSize" Value="20"></Setter>
+        <Setter Property="LineHeight" Value="24"></Setter>
+        <Setter Property="Height" Value="24"></Setter>
+    </Style>
+    
+    <Style Selector="CheckBox.todo-checkbox">
+        <Setter Property="Height" Value="24"></Setter>
+        <Setter Property="MinHeight" Value="24"></Setter>
+        
+        <Style Selector="^ Grid">
+            <Setter Property="Height" Value="24"></Setter>
+        </Style>
     </Style>
 </Styles>
