@@ -1,19 +1,46 @@
-Expense category table:
+Expense category:
 
 id,
-title,
 order,
-color
+title,
+color,
 
 
-Expense table:
+--------------------------------------
+
+
+Expense:
+
 id,
 category_id,
+order,
+title,
 description,
-price,
-image
-created_at,
+total,
+image, // TODO - should be INT(id) or TEXT(path)???
 created_by,
+created_at,
 
 
+--------------------------------------
 
+
+Expense target: will be used from day x of month n-1 to day x of month n
+Need some kind of conf which will define day x
+
+id,
+category_id,
+title,
+total,
+created_at [Need this to not include expenses acquired before the target existed]
+
+--------------------------------------
+
+
+Expense target history:
+
+id,
+expense_target_id,
+month,
+year,
+target_hit
