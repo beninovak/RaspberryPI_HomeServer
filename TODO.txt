@@ -23,6 +23,7 @@ CLIENT
     - Complementary colors instead of salmon
     - Add forgotten password screen
     - Add history to TODOs?
+    - Add delete option
     - Fingerprint reader?
     - Expenses by category...some kind of visualizer?
     - Check if fast switching between views is fucky...maybe cache data from previous view for a bit?

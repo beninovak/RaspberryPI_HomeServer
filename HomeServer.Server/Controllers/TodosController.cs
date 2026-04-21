@@ -68,7 +68,24 @@ public class TodosController : ControllerBase {
         await DB.SaveChangesAsync();
 
         return Ok(new {
-            message = $"Successfully added a todo with content {todoDTO.Content}"
+            message = $"Successfully added a todo with content {todoDTO.Content}."
+        });
+    }
+    
+    [HttpPatch("{id:int}/status")]
+    public async Task<ActionResult> UpdateTodoStatus(uint id) {
+        Todo? dbTodo = await DB.Todos.FindAsync(id);
+
+        if (dbTodo is null) {
+            return NotFound("No todo with that id exists!");
+        }
+
+        dbTodo.IsDone = !dbTodo.IsDone;
+        DB.Todos.Update(dbTodo);
+        await DB.SaveChangesAsync();
+        
+        return Ok(new {
+            message = $"Successfully changed todo status."
         });
     }
 
@@ -85,11 +102,11 @@ public class TodosController : ControllerBase {
 
     #region Sections
     
-    [Route("sections")]
+    /*[Route("sections")]
     [HttpGet]
     public async Task<ActionResult<List<TodoSection>>> GetTodoSections() {
         return await DB.TodoSections.ToListAsync();
-    }
+    }*/
 
     /*[HttpGet("sections/{id}")]
     public async Task<ActionResult<TodoSection>> GetTodoSection(uint id) {

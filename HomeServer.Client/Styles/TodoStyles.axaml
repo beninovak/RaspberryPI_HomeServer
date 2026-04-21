@@ -1,19 +1,24 @@
 <Styles xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
+    <Style Selector="ScrollViewer#Todos">
+        <Setter Property="Margin" Value="0, 40, 0,0"></Setter>
+    </Style>
+    
     <Style Selector="Expander.todo-section">
+        <Setter Property="Margin" Value="20, 0, 20, 20"></Setter>
         <Setter Property="VerticalAlignment" Value="Top"></Setter>
         <Setter Property="HorizontalAlignment" Value="Stretch"></Setter>
     </Style>
     
     <Style Selector="Grid.todo-grid">
-        <Setter Property="Margin" Value="0, 0,0, 8"></Setter>
+        <Setter Property="Margin" Value="0, 8,0, 8"></Setter>
     </Style>
     
     <Style Selector="TextBlock.todo-text">
-        <Setter Property="FontSize" Value="20"></Setter>
-        <Setter Property="LineHeight" Value="24"></Setter>
-        <Setter Property="Height" Value="24"></Setter>
+        <Setter Property="FontSize" Value="24"></Setter>
+        <Setter Property="LineHeight" Value="32"></Setter>
+        <Setter Property="Height" Value="32"></Setter>
     </Style>
     
     <Style Selector="CheckBox.todo-checkbox">

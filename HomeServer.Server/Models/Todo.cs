@@ -6,7 +6,7 @@ public class Todo {
     public uint Id { get; init; }
     public uint Order { get; init; }
     [MaxLength(300)] public string Content { get; init; } = string.Empty;
-    public bool IsDone { get; init; } = false;
+    public bool IsDone { get; set; }
     public DateTime CreatedAt { get; init; } = DateTime.Now;
     public required uint CreatedBy { get; init; }
 

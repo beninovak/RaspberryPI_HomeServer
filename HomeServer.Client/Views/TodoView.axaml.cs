@@ -1,8 +1,10 @@
 using System;
 using Avalonia.Controls;
+using Avalonia.Input;
 using Avalonia.Interactivity;
 using HomeServer.Client.Controls;
 using HomeServer.Client.ViewModels;
+using HomeServer.Core;
 
 namespace HomeServer.Client.Views;
 
@@ -24,6 +26,18 @@ public partial class TodoView : UserControl {
     private void TodoSearchBox_OnSearch(object? sender, EventArgs e) {
         if (VM is not null && sender is SearchBox searchBox) {
             VM.Search(searchBox.Input);
+            return;
         }
+        
+        throw new Exception("Yo buddy, the fuck? Either a SearchBox didn't call this, or the ViewModel doesn't exist. You done fucked up...");
+    }
+
+    private void TodoCheckUncheck(object sender, PointerReleasedEventArgs e) {
+        if (VM is not null && sender is Grid { DataContext: TodoDTO todo }) {
+            VM.TodoCheckUncheck(todo.Id);
+            return;
+        }
+
+        throw new Exception("Yo buddy, the fuck? Either a Grid didn't call this, or it doesn't have a TodoDTO context. You done fucked up...");
     }
 }

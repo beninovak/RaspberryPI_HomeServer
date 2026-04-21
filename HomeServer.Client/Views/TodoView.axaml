@@ -7,7 +7,6 @@
              xmlns:controls="using:HomeServer.Client.Controls"
              mc:Ignorable="d"
              x:Class="HomeServer.Client.Views.TodoView"
-             Classes="view"
              d:DesignWidth="800" d:DesignHeight="450"
              Loaded="TodoView_OnLoaded">
     
@@ -37,7 +36,9 @@
                 Search="TodoSearchBox_OnSearch">
             </controls:SearchBox>
             
-            <ScrollViewer Grid.Row="2">
+            <ScrollViewer 
+                x:Name="Todos"
+                Grid.Row="2">
                 <ItemsControl 
                     ItemsSource="{Binding TodosBySections}">
                     
@@ -51,14 +52,17 @@
                         <DataTemplate>
                             <Expander 
                                 Classes="todo-section"
-                                Header="{Binding Title}">
+                                Header="{Binding Title}"
+                                IsExpanded="True">
                                 <ItemsControl 
                                     ItemsSource="{Binding Todos}">
                                     <ItemsControl.ItemTemplate>
                                         <DataTemplate>
                                             <Grid
+                                                x:Name="{Binding }"
                                                 Classes="todo-grid"
-                                                ColumnDefinitions="*, 20">
+                                                ColumnDefinitions="*, 20"
+                                                PointerReleased="TodoCheckUncheck">
                                                 <TextBlock 
                                                     Classes="todo-text"
                                                     Text="{Binding Content}"/>

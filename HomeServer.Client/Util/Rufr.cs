@@ -12,12 +12,39 @@ public static class Rufr {
     private static HttpClient httpClient;
     
     static Rufr() {
-        httpClient = new HttpClient() {
+        httpClient = new HttpClient {
             BaseAddress = new Uri(Constants.TEST_URL),
         };
     }
     
-    public static async Task<T?> Ruf<T>(string path) {
+    public static async Task<T?> Ruf<T>(string path, HTTP_METHOD method) {
+        switch (method) {
+            case HTTP_METHOD.GET:
+                return await RufGet<T?>(path);
+            
+            case HTTP_METHOD.PATCH:
+                return await RufPatch<T?>(path);
+            
+            default:
+                throw new NotImplementedException("Use a supported HTTP_METHOD buddy guy...");
+        }
+    }
+    
+    public static async Task<T?> Ruf<T>(string path, HTTP_METHOD method, JsonContent body) {
+        JsonContent jsonBody = JsonContent.Create(body);
+        switch (method) {
+            case HTTP_METHOD.POST:
+                return await RufPost<T?>(path, jsonBody);
+            
+            case HTTP_METHOD.PATCH:
+                return await RufPatch<T?>(path, jsonBody);
+            
+            default:
+                throw new NotImplementedException("Use a supported HTTP_METHOD buddy guy...");
+        }
+    }
+    
+    private static async Task<T?> RufGet<T>(string path) {
         try {
             using HttpResponseMessage response = await httpClient.GetAsync(path);
             string json = await response.Content.ReadAsStringAsync();
@@ -27,26 +54,24 @@ public static class Rufr {
             throw new Exception(e.Message);
         }
     }
-
-    private delegate Task<HttpResponseMessage> RufMethod(string uri, HttpContent? body);
-    public static async Task<T?> Ruf<T>(string path, HTTP_METHOD method, JsonContent body) {
-        RufMethod rufMethod;
-
+    
+    private static async Task<T?> RufPost<T>(string path, JsonContent body) {
         JsonContent jsonBody = JsonContent.Create(body);
-        switch (method) {
-            case HTTP_METHOD.POST:
-                rufMethod = httpClient.PostAsync;
-                break;
-            
-            case HTTP_METHOD.PATCH:
-                rufMethod = httpClient.PatchAsync;
-                break;
-            
-            default:
-                throw new NotImplementedException("Use a supported HTTP_METHOD buddy guy...");
-        }
         // TODO - poglej kva dobiš nazaj če je grosse Fehler...
-        using HttpResponseMessage response = await rufMethod(path, jsonBody);
+        using HttpResponseMessage response = await httpClient.PostAsync(path, jsonBody);
+        return await response.Content.ReadFromJsonAsync<T>();
+    }
+    
+    private static async Task<T?> RufPatch<T>(string path) {
+        // TODO - poglej kva dobiš nazaj če je grosse Fehler...
+        using HttpResponseMessage response = await httpClient.PatchAsync(path, null);
+        return await response.Content.ReadFromJsonAsync<T>();
+    }
+    
+    private static async Task<T?> RufPatch<T>(string path, JsonContent body) {
+        JsonContent jsonBody = JsonContent.Create(body);
+        // TODO - poglej kva dobiš nazaj če je grosse Fehler...
+        using HttpResponseMessage response = await httpClient.PatchAsync(path, jsonBody);
         return await response.Content.ReadFromJsonAsync<T>();
     }
 }
