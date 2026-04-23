@@ -1,5 +1,4 @@
 using System;
-using System.Collections.ObjectModel;
 using System.Net.Http;
 using System.Net.Http.Json;
 using System.Text.Json;
@@ -14,7 +13,18 @@ public static class Rufr {
     static Rufr() {
         httpClient = new HttpClient {
             BaseAddress = new Uri(Constants.TEST_URL),
+            Timeout = TimeSpan.FromMilliseconds(5000),
         };
+    }
+    
+    public static async Task<bool> Ruf(string path, HTTP_METHOD method) {
+        switch (method) { // TODO - Kinda retarded switch ngl...how fix?
+            case HTTP_METHOD.PATCH:
+                return await RufPatch(path);
+            
+            default:
+                throw new NotImplementedException("Use a supported HTTP_METHOD buddy guy...");
+        }
     }
     
     public static async Task<T?> Ruf<T>(string path, HTTP_METHOD method) {
@@ -62,9 +72,20 @@ public static class Rufr {
         return await response.Content.ReadFromJsonAsync<T>();
     }
     
+    private static async Task<bool> RufPatch(string path) {
+        // TODO - poglej kva dobiš nazaj če je grosse Fehler...
+        using HttpResponseMessage response = await httpClient.PatchAsync(path, new StringContent(""));
+
+        if (response.IsSuccessStatusCode) {
+            return true;
+        }
+
+        return false;
+    }
+    
     private static async Task<T?> RufPatch<T>(string path) {
         // TODO - poglej kva dobiš nazaj če je grosse Fehler...
-        using HttpResponseMessage response = await httpClient.PatchAsync(path, null);
+        using HttpResponseMessage response = await httpClient.PatchAsync(path, new StringContent(""));
         return await response.Content.ReadFromJsonAsync<T>();
     }
     
