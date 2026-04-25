@@ -5,6 +5,7 @@ using Avalonia.Interactivity;
 using HomeServer.Client.Controls;
 using HomeServer.Client.ViewModels;
 using HomeServer.Core;
+using HomeServer.Core.Models;
 
 namespace HomeServer.Client.Views;
 
@@ -33,11 +34,11 @@ public partial class TodoView : UserControl {
     }
 
     private void TodoCheckUncheck(object sender, PointerReleasedEventArgs e) {
-        if (VM is not null && sender is Grid { DataContext: TodoDTO todo }) {
-            VM.TodoCheckUncheck(todo.Id);
+        if (VM is not null && sender is Grid { DataContext: Todo todo }) {
+            VM.TodoCheckUncheck(todo);
             return;
         }
 
-        throw new Exception("Yo buddy, the fuck? Either a Grid didn't call this, or it doesn't have a TodoDTO context. You done fucked up...");
+        throw new Exception("Yo buddy, the fuck? Either a Grid didn't call this, or it doesn't have a Todo context. You done fucked up...");
     }
 }

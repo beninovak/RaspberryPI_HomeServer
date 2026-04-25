@@ -1,4 +1,6 @@
 GENERAL:
+    - PostgreSQL setup
+    - Static IP: prever opcije
     - Find another git platform?
     - Port forwarding on router
     - Check for static analysis tools?
@@ -20,6 +22,7 @@ SERVER:
     - MailMessage/SmtpClient?? za maile
 
 CLIENT
+    - Handle case where server is down/connection't
     - Complementary colors instead of salmon
     - Add forgotten password screen
     - Add history to TODOs?

@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using HomeServer.Server.Data;
 using HomeServer.Core;
-using HomeServer.Server.Models;
+using HomeServer.Core.Models;
 using HomeServer.Server.Utils;
 
 namespace HomeServer.Server.Controllers;
@@ -18,7 +18,7 @@ public class RegisterController : ControllerBase {
     // POST: api/register
     // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
     [HttpPost]
-    public async Task<ActionResult> AttempUserRegister([FromBody] UserDTO userDTO) {
+    public async Task<ActionResult> AttempUserRegister([FromBody] User userDTO) {
         (bool isValidEmail, string validationMessageEmail) = UserUtil.IsEmailValid(userDTO.Email);
         if (!isValidEmail) {
             return BadRequest(new {

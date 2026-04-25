@@ -13,48 +13,11 @@ public static class Rufr {
     static Rufr() {
         httpClient = new HttpClient {
             BaseAddress = new Uri(Constants.TEST_URL),
-            Timeout = TimeSpan.FromMilliseconds(5000),
+            Timeout = TimeSpan.FromMilliseconds(500000), // TODO - replace with 3000/5000??
         };
     }
     
-    public static async Task<bool> Ruf(string path, HTTP_METHOD method) {
-        switch (method) { // TODO - Kinda retarded switch ngl...how fix?
-            case HTTP_METHOD.PATCH:
-                return await RufPatch(path);
-            
-            default:
-                throw new NotImplementedException("Use a supported HTTP_METHOD buddy guy...");
-        }
-    }
-    
-    public static async Task<T?> Ruf<T>(string path, HTTP_METHOD method) {
-        switch (method) {
-            case HTTP_METHOD.GET:
-                return await RufGet<T?>(path);
-            
-            case HTTP_METHOD.PATCH:
-                return await RufPatch<T?>(path);
-            
-            default:
-                throw new NotImplementedException("Use a supported HTTP_METHOD buddy guy...");
-        }
-    }
-    
-    public static async Task<T?> Ruf<T>(string path, HTTP_METHOD method, JsonContent body) {
-        JsonContent jsonBody = JsonContent.Create(body);
-        switch (method) {
-            case HTTP_METHOD.POST:
-                return await RufPost<T?>(path, jsonBody);
-            
-            case HTTP_METHOD.PATCH:
-                return await RufPatch<T?>(path, jsonBody);
-            
-            default:
-                throw new NotImplementedException("Use a supported HTTP_METHOD buddy guy...");
-        }
-    }
-    
-    private static async Task<T?> RufGet<T>(string path) {
+    public static async Task<T?> Ruf<T>(string path) {
         try {
             using HttpResponseMessage response = await httpClient.GetAsync(path);
             string json = await response.Content.ReadAsStringAsync();
@@ -65,34 +28,25 @@ public static class Rufr {
         }
     }
     
-    private static async Task<T?> RufPost<T>(string path, JsonContent body) {
-        JsonContent jsonBody = JsonContent.Create(body);
-        // TODO - poglej kva dobiš nazaj če je grosse Fehler...
-        using HttpResponseMessage response = await httpClient.PostAsync(path, jsonBody);
-        return await response.Content.ReadFromJsonAsync<T>();
-    }
-    
-    private static async Task<bool> RufPatch(string path) {
-        // TODO - poglej kva dobiš nazaj če je grosse Fehler...
-        using HttpResponseMessage response = await httpClient.PatchAsync(path, new StringContent(""));
-
-        if (response.IsSuccessStatusCode) {
-            return true;
+    private delegate Task<HttpResponseMessage> SupportedHttpMethod(string? url, HttpContent? content);
+    private static SupportedHttpMethod? HttpMethodToUse;
+    public static async Task<T?> Ruf<T>(string path, HTTP_METHOD method, JsonContent body) {
+        switch (method) {
+            case HTTP_METHOD.PUT:
+                HttpMethodToUse = httpClient.PutAsync;
+                break;
+            case HTTP_METHOD.POST:
+                HttpMethodToUse = httpClient.PostAsync;
+                break;
+            case HTTP_METHOD.PATCH:
+                HttpMethodToUse = httpClient.PatchAsync;
+                break;
+            default:
+                throw new NotImplementedException("Use a supported HTTP_METHOD buddy guy...");
         }
-
-        return false;
-    }
-    
-    private static async Task<T?> RufPatch<T>(string path) {
+        
+        using HttpResponseMessage response = await HttpMethodToUse(path, body);
         // TODO - poglej kva dobiš nazaj če je grosse Fehler...
-        using HttpResponseMessage response = await httpClient.PatchAsync(path, new StringContent(""));
-        return await response.Content.ReadFromJsonAsync<T>();
-    }
-    
-    private static async Task<T?> RufPatch<T>(string path, JsonContent body) {
-        JsonContent jsonBody = JsonContent.Create(body);
-        // TODO - poglej kva dobiš nazaj če je grosse Fehler...
-        using HttpResponseMessage response = await httpClient.PatchAsync(path, jsonBody);
         return await response.Content.ReadFromJsonAsync<T>();
     }
 }

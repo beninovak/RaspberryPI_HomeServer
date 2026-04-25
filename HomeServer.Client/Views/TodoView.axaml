@@ -59,7 +59,6 @@
                                     <ItemsControl.ItemTemplate>
                                         <DataTemplate>
                                             <Grid
-                                                x:Name="{Binding }"
                                                 Classes="todo-grid"
                                                 ColumnDefinitions="*, 20"
                                                 PointerReleased="TodoCheckUncheck">

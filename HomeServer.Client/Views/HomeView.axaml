@@ -6,6 +6,6 @@
              x:Class="HomeServer.Client.Views.HomeView"
              Classes="view">
 
-    <TextBlock>YO HOME VIEW LMAO...</TextBlock>
+    <TextBlock>YO HOME VIEW LMAO...Bo mel grafe alneki IDK...</TextBlock>
     
 </UserControl>

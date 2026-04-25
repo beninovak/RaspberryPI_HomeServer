@@ -1,18 +1,9 @@
-﻿using System;
-using System.ComponentModel;
-using System.Runtime.CompilerServices;
-using Avalonia.Controls;
-using CommunityToolkit.Mvvm.ComponentModel;
+﻿using System.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using HomeServer.Client.Views;
 
 namespace HomeServer.Client.ViewModels;
 
 public partial class MainWindowViewModel : ViewModelBase, INotifyPropertyChanged {
-    
-    public MainWindowViewModel() {
-        //TabButtons = ;
-    }
     
     public ViewModelBase CurrentView {
         get;

@@ -1,6 +1,5 @@
-using HomeServer.Core;
+using HomeServer.Core.Models;
 using HomeServer.Server.Data;
-using HomeServer.Server.Models;
 using HomeServer.Server.Utils;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -18,29 +17,29 @@ public class LoginController : ControllerBase {
 
     // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
     [HttpPost]
-    public async Task<ActionResult> AttemptUserLogin([FromBody] UserDTO userDTO) {
-        var (isValidEmail, validationMessageEmail) = UserUtil.IsEmailValid(userDTO.Email);
+    public async Task<ActionResult> AttemptUserLogin([FromBody] User user) {
+        var (isValidEmail, validationMessageEmail) = UserUtil.IsEmailValid(user.Email);
         if (!isValidEmail) {
             return BadRequest(new {
                 message = validationMessageEmail,
             });
         }
 
-        var (isValidPassword, validationMessagePassword) = UserUtil.IsPasswordValid(userDTO.Email);
+        var (isValidPassword, validationMessagePassword) = UserUtil.IsPasswordValid(user.Email);
         if (!isValidPassword) {
             return BadRequest(new {
                 message = validationMessagePassword,
             });
         }
 
-        User? dbUser = await DB.Users.FirstOrDefaultAsync(u => u.Email.Equals(userDTO.Email));
+        User? dbUser = await DB.Users.FirstOrDefaultAsync(u => u.Email.Equals(user.Email));
         if (dbUser is null) {
             return NotFound(new {
                 message = "No user with such email exists!"
             });
         }
 
-        string hashedPassword = UserUtil.GenerateHashedPassword(userDTO.Password + dbUser.PasswordSalt);
+        string hashedPassword = UserUtil.GenerateHashedPassword(user.Password + dbUser.PasswordSalt);
         if (!hashedPassword.Equals(dbUser.Password)) {
             return Unauthorized(new {
                 message = "Invalid password!"

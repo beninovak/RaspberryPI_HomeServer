@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace HomeServer.Server.Models;
+namespace HomeServer.Core.Models;
 
 public class TodoSection {
     public uint Id { get; init; }
