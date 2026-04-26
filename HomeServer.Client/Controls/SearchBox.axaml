@@ -18,7 +18,7 @@
                 Classes="search-input"
                 x:DataType="controls:SearchBox"
                 KeyUp="InputBox_OnKeyUp"
-                Watermark="{Binding Placeholder}">
+                PlaceholderText="{Binding Placeholder}">
             </TextBox>
         
             <Button

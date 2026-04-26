@@ -10,7 +10,7 @@ namespace HomeServer.Client.Controls;
 public partial class SearchBox : UserControl {
 
     public string Placeholder {
-        init => InputBox.Watermark = value;
+        init => InputBox.PlaceholderText = value;
     }
 
     private string input = string.Empty;

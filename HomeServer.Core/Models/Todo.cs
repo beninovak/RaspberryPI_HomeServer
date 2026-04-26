@@ -12,7 +12,8 @@ public partial class Todo : ObservableObject {
     public uint? Id { get; init; }
     public uint? CreatedBy { get; init; }
     public DateTime? CreatedAt { get; init; }
-    public DateTime? UpdatedAt { get; init; }
     
+    public uint? UpdatedBy { get; init; }
+    public DateTime? UpdatedAt { get; init; }
     //public List<SqliteBlob> Files; // Maybe sam link do files??
 }

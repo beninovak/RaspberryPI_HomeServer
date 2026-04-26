@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Json;
 using System.Text.Json;
@@ -21,6 +22,11 @@ public static class Rufr {
         try {
             using HttpResponseMessage response = await httpClient.GetAsync(path);
             string json = await response.Content.ReadAsStringAsync();
+
+            if (!json.Any()) {
+                return default(T);
+            }
+            
             return JsonSerializer.Deserialize<T>(json);
         } catch (Exception e) {
             // TODO - Logger

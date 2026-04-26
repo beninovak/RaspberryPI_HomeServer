@@ -1,7 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using HomeServer.Server.Data;
 
-const string DBSource = "DataSource=/home/benino/Projects/RaspberryPI_HomeServer/DB.sqlite";
+const string DBSource = "Host=localhost;Port=5432;Database=homeserver;Username=homeserver_user;Password=ko_te_jebe_333";
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -17,7 +17,7 @@ builder.Services
 builder.Services.AddOpenApi();
 
 builder.Services.AddDbContext<MainDbContext>(options => {
-    options.UseSqlite(DBSource)
+    options.UseNpgsql(DBSource)
         .LogTo(Console.WriteLine)
         .EnableSensitiveDataLogging()
         .EnableDetailedErrors();

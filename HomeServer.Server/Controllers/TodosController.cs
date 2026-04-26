@@ -62,4 +62,27 @@ public class TodosController : ControllerBase {
             message = $"Successfully changed todo."
         });
     }
+    
+    #region Sections
+    [Route("sections")]
+    [HttpPost]
+    public async Task<ActionResult<List<Todo>>> CreateTodoSection([FromBody] TodoSection section) {
+        DB.TodoSections.Add(section);
+        await DB.SaveChangesAsync();
+
+        return Ok(new {
+            message = $"Successfully added a todo section with id {section.Id} and title \"{section.Title}\""
+        });
+    }
+    
+    [HttpPatch]
+    public async Task<ActionResult<List<Todo>>> UpdateTodoSection([FromBody] TodoSection section) {
+        DB.TodoSections.Update(section);
+        await DB.SaveChangesAsync();
+
+        return Ok(new {
+            message = $"Successfully updated todo section with title \"{section.Title}\"."
+        });
+    }
+    #endregion
 }
