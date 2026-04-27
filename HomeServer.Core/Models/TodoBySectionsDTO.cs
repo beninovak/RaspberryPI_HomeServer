@@ -6,5 +6,5 @@ public struct TodoBySectionsDTO {
     public uint Id { get; set; }
     public uint Order { get; set; }
     public string Title { get; set; }
-    public List<Todo> Todos { get; set; } 
+    public List<Todo>? Todos { get; set; } 
 }

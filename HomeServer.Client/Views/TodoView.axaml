@@ -5,7 +5,6 @@
              xmlns:vm="using:HomeServer.Client.ViewModels"
              x:DataType="vm:TodoViewModel"
              xmlns:controls="using:HomeServer.Client.Controls"
-             xmlns:models="clr-namespace:HomeServer.Core.Models;assembly=HomeServer.Core"
              mc:Ignorable="d"
              x:Class="HomeServer.Client.Views.TodoView"
              d:DesignWidth="800" d:DesignHeight="450"
@@ -58,10 +57,11 @@
                                 <ItemsControl 
                                     ItemsSource="{Binding Todos}">
                                     <ItemsControl.ItemTemplate>
-                                        <DataTemplate DataType="{x:Type models:Todo}">
+                                        <DataTemplate>
                                             <Grid
                                                 Classes="todo-grid"
                                                 ColumnDefinitions="*, 20"
+                                                Background="Transparent"
                                                 PointerReleased="TodoCheckUncheck">
                                                 <TextBlock 
                                                     Classes="todo-text"
@@ -69,6 +69,7 @@
                                                 <CheckBox
                                                     Grid.Column="1"
                                                     Classes="todo-checkbox"
+                                                    IsHitTestVisible="False"
                                                     IsChecked="{Binding IsDone}"/>
                                             </Grid>
                                         </DataTemplate>

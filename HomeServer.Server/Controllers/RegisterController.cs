@@ -53,6 +53,7 @@ public class RegisterController : ControllerBase {
             Email = userDTO.Email,
             Password = hashedPassword,
             PasswordSalt = passwordSalt,
+            CreatedAt = DateTime.Now,
         });
         await DB.SaveChangesAsync();
 

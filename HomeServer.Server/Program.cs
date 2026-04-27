@@ -7,6 +7,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
+AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
 builder.Services
     .AddControllers()
     .AddJsonOptions(options => {
@@ -24,6 +25,8 @@ builder.Services.AddDbContext<MainDbContext>(options => {
 });
 
 var app = builder.Build();
+
+app.MapGet("api/health", () => Results.Ok("I've server!"));
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment()) {

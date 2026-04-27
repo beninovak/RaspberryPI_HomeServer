@@ -33,12 +33,8 @@ public class TodoViewModel : ViewModelBase {
     
     public void TodoCheckUncheck(Todo todo) {
         todo.IsDone = !todo.IsDone;
-        
-        // Todo patchTodo = new Todo {
-        //     IsDone = !todo.IsDone,
-        // };
-        //
-        // JsonContent jsonBody = JsonContent.Create(patchTodo);
-        // await Rufr.Ruf<Todo>($"todos/{todo.Id}", HTTP_METHOD.PUT, jsonBody);
+
+        JsonContent jsonBody = JsonContent.Create(todo);
+        Rufr.Ruf<Todo>($"todos/{todo.Id}", HTTP_METHOD.PATCH, jsonBody);
     }
 }

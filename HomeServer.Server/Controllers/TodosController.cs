@@ -1,5 +1,6 @@
 using HomeServer.Server.Data;
 using HomeServer.Core.Models;
+using Microsoft.AspNetCore.HttpLogging;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -45,6 +46,8 @@ public class TodosController : ControllerBase {
     
     [HttpPost]
     public async Task<ActionResult> CreateTodo([FromBody] Todo todo) {
+        todo.CreatedAt = DateTime.Now;
+        
         DB.Todos.Add(todo);
         await DB.SaveChangesAsync();
 
@@ -66,7 +69,9 @@ public class TodosController : ControllerBase {
     #region Sections
     [Route("sections")]
     [HttpPost]
-    public async Task<ActionResult<List<Todo>>> CreateTodoSection([FromBody] TodoSection section) {
+    public async Task<ActionResult> CreateTodoSection([FromBody] TodoSection section) {
+        section.CreatedAt = DateTime.Now;
+
         DB.TodoSections.Add(section);
         await DB.SaveChangesAsync();
 

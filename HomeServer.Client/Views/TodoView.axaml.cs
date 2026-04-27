@@ -34,6 +34,7 @@ public partial class TodoView : UserControl {
     }
 
     private void TodoCheckUncheck(object sender, PointerReleasedEventArgs e) {
+        e.Handled = true;
         if (VM is not null && sender is Grid { DataContext: Todo todo }) {
             VM.TodoCheckUncheck(todo);
             return;

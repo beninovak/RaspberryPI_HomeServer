@@ -1,14 +1,12 @@
-using System.ComponentModel.DataAnnotations;
-
 namespace HomeServer.Core.Models;
 
 public class TodoSection {
     public uint Id { get; init; }
     public uint Order { get; init; }
-    public string Title { get; init; } = string.Empty;
+    public string Title { get; set; } = string.Empty;
     
-    public uint? CreatedBy { get; init; }
-    public DateTime? CreatedAt { get; init; }
+    public uint CreatedBy { get; set; }
+    public DateTime CreatedAt { get; set; }
     
     public uint? UpdatedBy { get; init; }
     public DateTime? UpdatedAt { get; init; }
