@@ -14,19 +14,18 @@ builder.Services
         // Need this, otherwise my PascalCase properties are sent to the client as camelCase.
         options.JsonSerializerOptions.PropertyNamingPolicy = null;
     });
+
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
 
 builder.Services.AddDbContext<MainDbContext>(options => {
     options.UseNpgsql(DBSource)
         .LogTo(Console.WriteLine)
-        .EnableSensitiveDataLogging()
+        .EnableSensitiveDataLogging() // TODO - Maybe ne za Release?
         .EnableDetailedErrors();
 });
 
 var app = builder.Build();
-
-app.MapGet("api/health", () => Results.Ok("I've server!"));
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment()) {

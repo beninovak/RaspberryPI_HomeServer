@@ -28,7 +28,7 @@ public partial class MainWindowViewModel : ViewModelBase, INotifyPropertyChanged
     private bool CanExecute(string page) => page switch {
         "HOME"     => CurrentView is not HomeViewModel,
         "TODO"     => CurrentView is not TodoViewModel,
-        "EXPENSE" => CurrentView is not ExpenseViewModel,
+        "EXPENSE"  => CurrentView is not ExpenseViewModel,
         "FILE"     => CurrentView is not FileViewModel,
         _          => true,
     };

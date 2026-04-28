@@ -10,6 +10,8 @@
         Icon=""
         Title="Banger program"
         
+        Closing="Window_OnClosing"
+        
         Width="{OnFormFactor Desktop=2160, Mobile=1080}"
         Height="{OnFormFactor Desktop=1440, Mobile=2340}"
         d:DesignWidth="1600" d:DesignHeight="900">

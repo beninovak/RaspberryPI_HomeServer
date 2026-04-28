@@ -1,5 +1,5 @@
 GENERAL:
-    - PostgreSQL setup
+    - PostgreSQL setup...check how to do backups
     - Static IP: prever opcije
     - Find another git platform?
     - Port forwarding on router
@@ -8,14 +8,12 @@ GENERAL:
     - Home cloud with images and audio ( with file search )
     - Implement a local save state in case of no internet, to be synced again on next startup with internet
     - StyleCop NuGet package?
+    - Tests
+    - change catch(Exception) into specific expected ones
 
 SERVER:
-    - Password hashing still cooked?
-    - Use command arg for IP when launching the server. Don't want real IP in github!!! Use settings.json?...maybe just get public IP from code??
-    - Create custom DbContextOptions??
+    - Create custom DbContextOptions?? -> Later: Why tho???
     - Make ExceptionFilter...register in options in Program.cs...log errors
-    - Read about EntityFramework migrations...backup first working DB
-    - A sploh rabm TodoDTO?? Maybe ne
     - Test request bad paths (login when no such user, register with existing email, etc.)
     - Proper auth
     - Add forgotten password
@@ -29,4 +27,6 @@ CLIENT
     - Add delete option
     - Fingerprint reader?
     - Expenses by category...some kind of visualizer?
-    - Check if fast switching between views is fucky...maybe cache data from previous view for a bit?
+    - Check if fast switching between views is fucky...
+      Maybe cache data from previous view for a bit?
+      Or just save each view to a local variable (MainWindowViewModel) when created?
