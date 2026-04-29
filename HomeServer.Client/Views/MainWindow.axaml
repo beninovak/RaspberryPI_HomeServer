@@ -10,6 +10,7 @@
         Icon=""
         Title="Banger program"
         
+        Loaded="Window_OnLoaded"
         Closing="Window_OnClosing"
         
         Width="{OnFormFactor Desktop=2160, Mobile=1080}"

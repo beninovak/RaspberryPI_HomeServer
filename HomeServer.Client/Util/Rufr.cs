@@ -4,26 +4,25 @@ using System.Net.Http;
 using System.Net.Http.Json;
 using System.Text.Json;
 using System.Threading.Tasks;
-using HomeServer.Core;
+using HomeServer.Client.Interfaces;
+using HomeServer.Client.ViewModels;
+using CoreConstants = HomeServer.Core.Constants;
+using ClientConstants = HomeServer.Client.Util.Constants;
 
 namespace HomeServer.Client.Util;
 
 public static class Rufr {
     private static HttpClient? httpClient; // TODO - Dispose at some point? Probably job za GC.
-    private static bool useLocalMode = true;
-    
-    private static readonly string appStorage = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "home_server");
-    private static readonly string localSaveFile = Path.Combine(appStorage, "save.json");
-    private static readonly string localChangesFile = Path.Combine(appStorage, "changes.json");
-    
+    private static bool iveServer;
+
     static Rufr() {
         BuildClient(); // TODO - A sploh rabm to poj? Sam premakn to u CheckIfIveServer()?
-        Directory.CreateDirectory(appStorage);
+        Directory.CreateDirectory(ClientConstants.appStorage);
     }
 
     private static void BuildClient() {
         httpClient = new HttpClient {
-            BaseAddress = new Uri(Constants.TEST_URL),
+            BaseAddress = new Uri(CoreConstants.TEST_URL),
             Timeout = TimeSpan.FromMilliseconds(5000), // TODO - replace with 3000/5000?? Need big value for debugging...
         };
     }
@@ -31,17 +30,17 @@ public static class Rufr {
     public static async Task CheckIfIveServer() {
         if (httpClient is null) {
             // TODO - Logger
-            useLocalMode = true;
+            iveServer = false;
             return;
         }
         
         // TODO - Assert httpClient has BaseAddress
         try {
             var response = await httpClient.GetAsync("health");
-            useLocalMode = !response.IsSuccessStatusCode;
+            iveServer = response.IsSuccessStatusCode;
         } catch (HttpRequestException e) {
             // TODO - Logger
-            useLocalMode = true;
+            iveServer = false;
         }
     }
 
@@ -57,14 +56,16 @@ public static class Rufr {
         }
     }
     
-    public static async Task<T?> Ruf<T>(string path) {
-        if (useLocalMode) {
-            if (!File.Exists(localSaveFile)) {
-                return default; // Don't think I want to throw here. Just don't load anything...
+    public static async Task<T?> Ruf<T>(string path, ViewModelBase vm) {
+        if (!iveServer) {
+            if (!Directory.Exists(ClientConstants.localSaveFolder) || vm is not IDataViewModel viewModel) {
+                return default;
             }
 
+            string changesPath = Path.Combine(ClientConstants.localSaveFolder, viewModel.SaveFileName);
+            
             try {
-                string json = await File.ReadAllTextAsync(localSaveFile);
+                string json = await File.ReadAllTextAsync(changesPath);
                 var objects = JsonSerializer.Deserialize<T>(json);
                 return objects;
             } catch (JsonException e) {
@@ -90,15 +91,18 @@ public static class Rufr {
     private static SupportedHttpMethod? HttpMethodToUse;
     // TODO - zakva ne bi sam returnou bool? Alpa (bool, string) tuple za (status, message)...
     // ^^^ Tega itak ne ponucam nikol...prever
-    public static async Task<T?> Ruf<T>(string path, HTTP_METHOD method, JsonContent body) {
-        if (useLocalMode) {
-            if (!File.Exists(localChangesFile)) {
-                File.Create(localChangesFile);
+    public static async Task<T?> Ruf<T>(string path, HTTP_METHOD method, JsonContent body, ViewModelBase vm) {
+        if (!iveServer) {
+            if (vm is not IDataViewModel viewModel) {
+                return default;
             }
 
+            Directory.CreateDirectory(ClientConstants.localChangesFolder);
+            string changesPath = Path.Combine(ClientConstants.localChangesFolder, viewModel.SaveFileName);
+            
             try {
-                string json = JsonSerializer.Serialize(body); // TODO - prever čej to prava metoda...
-                await File.WriteAllTextAsync(localChangesFile, json);
+                string json = JsonSerializer.Serialize(body);
+                await File.AppendAllTextAsync(changesPath, json);
             } catch (NotSupportedException e) {
                 // Can't Serialize body param
                 // TODO - Logger

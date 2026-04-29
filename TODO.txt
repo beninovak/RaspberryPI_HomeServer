@@ -10,7 +10,10 @@ GENERAL:
     - StyleCop NuGet package?
     - Tests
     - change catch(Exception) into specific expected ones
-
+    - Move HomeServer.Core.Constants to server and client separately because no constants are shared I believe...
+    - User Environment.StackTrace for non-error loggin maybe?
+    
+    
 SERVER:
     - Create custom DbContextOptions?? -> Later: Why tho???
     - Make ExceptionFilter...register in options in Program.cs...log errors
@@ -18,6 +21,7 @@ SERVER:
     - Proper auth
     - Add forgotten password
     - MailMessage/SmtpClient?? za maile
+
 
 CLIENT
     - Handle case where server is down/connection't
