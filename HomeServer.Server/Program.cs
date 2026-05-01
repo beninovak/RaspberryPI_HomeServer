@@ -21,7 +21,7 @@ builder.Services.AddOpenApi();
 builder.Services.AddDbContext<MainDbContext>(options => {
     options.UseNpgsql(DBSource)
         .LogTo(Console.WriteLine)
-        .EnableSensitiveDataLogging() // TODO - Maybe ne za Release?
+        .EnableSensitiveDataLogging() // TODO - Preber si o tem...kje se loggajo to scene?
         .EnableDetailedErrors();
 });
 

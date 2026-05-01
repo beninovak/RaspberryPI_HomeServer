@@ -12,13 +12,27 @@
     </Style>
     
     <Style Selector="Grid.todo-grid">
-        <Setter Property="Margin" Value="0, 8,0, 8"></Setter>
+        <Setter Property="Margin" Value="0, 2,0, 2"></Setter>
     </Style>
     
-    <Style Selector="TextBlock.todo-text">
+    <Style Selector="Image.todo-edit">
+        <Setter Property="Margin" Value="0, 0, 8, 0"></Setter>
+    </Style>
+    
+    <Style Selector="TextBox.todo-text">
         <Setter Property="FontSize" Value="24"></Setter>
         <Setter Property="LineHeight" Value="32"></Setter>
-        <Setter Property="Height" Value="32"></Setter>
+        <Setter Property="Height" Value="40"></Setter>
+        <Setter Property="Padding" Value="0, 4, 0, 4"></Setter>
+        
+        <Setter Property="BorderThickness" Value="0"></Setter>
+        <Setter Property="Background" Value="Transparent"></Setter>
+        <Setter Property="CaretBrush" Value="Transparent"></Setter>
+    </Style>
+    
+    <Style Selector="TextBox.todo-text /template/ Border#PART_BorderElement">
+        <Setter Property="BorderThickness" Value="0"></Setter>
+        <Setter Property="Background" Value="Transparent"></Setter>
     </Style>
     
     <Style Selector="CheckBox.todo-checkbox">

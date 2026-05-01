@@ -16,8 +16,7 @@ public partial class MainWindowViewModel : ViewModelBase, INotifyPropertyChanged
             field = value;
             NotifyPropertyChanged();
         }
-    } = new TodoViewModel(); // TODO - Make HomeViewModel() default
-
+    } = new TodoViewModel();
 
     public MainWindowViewModel() {
         visitedViews.Add(CurrentView);
@@ -25,7 +24,6 @@ public partial class MainWindowViewModel : ViewModelBase, INotifyPropertyChanged
 
     [RelayCommand(CanExecute = nameof(CanExecute))]
     private void OpenPage(string page) {
-        // TODO - Return view from visitedViews if available, otherwise create new.
         CurrentView = page switch {
             "HOME"    => visitedViews.FirstOrDefault(vm => vm is HomeViewModel, new HomeViewModel()),
             "TODO"    => visitedViews.FirstOrDefault(vm => vm is TodoViewModel, new TodoViewModel()),

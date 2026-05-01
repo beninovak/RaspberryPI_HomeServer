@@ -14,7 +14,7 @@ public partial class SearchBox : UserControl {
     }
 
     private string input = string.Empty;
-    public string Input { // TODO - Ne rab bit public?
+    public string Input {
         get => input;
         private set => input = value;
     }

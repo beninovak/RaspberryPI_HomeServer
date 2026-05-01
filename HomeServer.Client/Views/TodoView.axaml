@@ -60,14 +60,21 @@
                                         <DataTemplate>
                                             <Grid
                                                 Classes="todo-grid"
-                                                ColumnDefinitions="*, 20"
+                                                ColumnDefinitions="28, *, 20"
                                                 Background="Transparent"
                                                 PointerReleased="TodoCheckUncheck">
-                                                <TextBlock 
+                                                <Image
+                                                    Grid.Column="0"
+                                                    Classes="todo-edit"
+                                                    Cursor="Hand"
+                                                    Source="../Assets/edit.png"></Image>
+                                                <TextBox
+                                                    Grid.Column="1"
                                                     Classes="todo-text"
+                                                    IsReadOnly="True"
                                                     Text="{Binding Content}"/>
                                                 <CheckBox
-                                                    Grid.Column="1"
+                                                    Grid.Column="2"
                                                     Classes="todo-checkbox"
                                                     IsHitTestVisible="False"
                                                     IsChecked="{Binding IsDone}"/>

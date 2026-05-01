@@ -8,24 +8,18 @@ namespace HomeServer.Server.Controllers;
 
 [Route("api/register")]
 [ApiController]
-public class RegisterController : ControllerBase {
-    private readonly MainDbContext DB;
+public class RegisterController(MainDbContext db) : ControllerBase {
 
-    public RegisterController(MainDbContext db) {
-        DB = db;
-    }
-
-    // POST: api/register
     // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
     [HttpPost]
-    public async Task<ActionResult> AttempUserRegister([FromBody] User userDTO) {
+    public async Task<ActionResult> AttemptUserRegister([FromBody] User userDTO) {
         (bool isValidEmail, string validationMessageEmail) = UserUtil.IsEmailValid(userDTO.Email);
         if (!isValidEmail) {
             return BadRequest(new {
                 message = validationMessageEmail,
             });
         }
-        if (DB.Users.Any(user => user.Email.Equals(userDTO.Email))) {
+        if (db.Users.Any(user => user.Email.Equals(userDTO.Email))) {
             return BadRequest(new {
                 message = "A user with this email already exists!"
             });
@@ -47,7 +41,7 @@ public class RegisterController : ControllerBase {
         string passwordSalt = UserUtil.GeneratePasswordSalt(Constants.PASSWORD_SALT_LENGTH);
         string hashedPassword = UserUtil.GenerateHashedPassword(userDTO.Password);
 
-        DB.Users.Add(new User {
+        db.Users.Add(new User {
             FirstName = userDTO.FirstName,
             LastName = userDTO.LastName,
             Email = userDTO.Email,
@@ -55,9 +49,9 @@ public class RegisterController : ControllerBase {
             PasswordSalt = passwordSalt,
             CreatedAt = DateTime.Now,
         });
-        await DB.SaveChangesAsync();
+        await db.SaveChangesAsync();
 
-        return Ok(new { // TODO - Baje bi mogu uporabt CreatedAtRoute()??? Check...
+        return Ok(new { 
             message = $"Successfully added a user with email {userDTO.Email}"
         });
     }

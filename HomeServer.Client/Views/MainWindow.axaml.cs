@@ -12,7 +12,6 @@ namespace HomeServer.Client.Views;
 public partial class MainWindow : Window {
     public MainWindow() {
         InitializeComponent();
-        _ = Rufr.CheckIfIveServer();
     }
 
     private void Window_OnClosing(object? sender, WindowClosingEventArgs e) {
@@ -38,7 +37,7 @@ public partial class MainWindow : Window {
 
     private void Window_OnLoaded(object? sender, RoutedEventArgs e) {
         // TODO - Save data in all x_changes.json files in /changes/ folder.
-        // TODO - Make sure to resolve conflicts in case of multiple changes to the same item.
+        // TODO - Resolve conflicts in case of multiple changes to the same item. How tho?
         // throw new NotImplementedException();
     }
 }

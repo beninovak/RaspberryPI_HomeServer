@@ -4,7 +4,7 @@ using System.Security.Cryptography;
 
 namespace HomeServer.Server.Utils;
 
-public static class UserUtil {
+public class UserUtil {
     public static string GeneratePasswordSalt(int length) {
         Random rng = new Random();
         StringBuilder salt = new StringBuilder();
@@ -36,13 +36,10 @@ public static class UserUtil {
         UTF8Encoding utf8 = new UTF8Encoding();
         string passwordSalt = GeneratePasswordSalt(Constants.PASSWORD_SALT_LENGTH);
         string hashedPassword = utf8.GetString(sha256.ComputeHash(utf8.GetBytes(password + passwordSalt)));
-        // TODO - Validate hashedPassword? How tho?
-        // TODO - Maybe make sure userDTO.Password and dbUser.PasswordSalt are not null?
         return hashedPassword;
     }
 
     public static (bool, string) IsEmailValid(string email) {
-        // TODO - real logic
         bool isValid = true;
         string message = string.Empty;
         if (string.IsNullOrEmpty(email)) {

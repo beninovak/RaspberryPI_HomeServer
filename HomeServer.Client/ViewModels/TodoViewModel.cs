@@ -3,6 +3,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Net.Http.Json;
 using System.Text.Json;
+using System.Threading.Tasks;
 using HomeServer.Client.Interfaces;
 using HomeServer.Client.Util;
 using HomeServer.Core.Models;
@@ -18,28 +19,39 @@ public class TodoViewModel : ViewModelBase, IDataViewModel {
         }
     } = [];
 
+    private readonly Rufr rufr = new();
+
     public async void AssembleTodos() {
-        TodosBySections = await Rufr.Ruf<ObservableCollection<TodoBySectionsDTO>>("todos/", this);
-
-        if (TodosBySections is null || !TodosBySections.Any()) {
-            // Todon't...kva zj? + button to add maybe??
-            // TODO - Logger
+        try {
+            TodosBySections = await rufr.Ruf<ObservableCollection<TodoBySectionsDTO>>("todos/", this);
+        } catch (Exception e) {
+            // TODO - Pokaž window popup na sceno "zgodiu se je gugugaga". Maybe ma popup retry button?
         }
-
-        // TODO - Should do something in case of no todos/sections?? Maybe require section for todo insert???
     }
     
     public void Search(string searchString) {
-        //string results = await Rufr.MakeRequest($"todos/search/{searchString}");
+        
     }
     
-    public void TodoCheckUncheck(Todo todo) {
+    public async Task TodoCheckUncheck(Todo todo) {
         todo.IsDone = !todo.IsDone;
-
-        JsonContent jsonBody = JsonContent.Create(todo);
-        _ = Rufr.Ruf<Todo>($"todos/{todo.Id}", HTTP_METHOD.PATCH, jsonBody, this);
+        await TrySaveChanges(todo);
     }
+    
+    private async Task TrySaveChanges(Todo todo) {
+        JsonContent jsonBody = JsonContent.Create(todo);
+        (bool isSuccess,  string message) = await rufr.Ruf($"todos/{todo.Id}", HTTP_METHOD.PATCH, jsonBody, this);
 
+        if (!isSuccess) {
+            Console.WriteLine(message);
+            // TODO - Popup with error message, retry button, and log message?
+            return;
+        }
+        
+        // Maybe kle success message? Eh..?
+    }
+    
+    
     public string SaveFileName { get; init; } = "todo_save.json";
     public string ChangesFileName { get; init; } = "todo_changes.json";
 
@@ -47,13 +59,6 @@ public class TodoViewModel : ViewModelBase, IDataViewModel {
         if (TodosBySections is null || !TodosBySections.Any()) {
             return null;
         }
-
-        try {
-            return JsonSerializer.Serialize(TodosBySections);
-        } catch (NotSupportedException e) {
-            // TODO - Logger
-            // Couldn't convert 
-            return null;
-        }
+        return JsonSerializer.Serialize(TodosBySections);
     }
 }
