@@ -17,7 +17,7 @@ order,
 title,
 description,
 total,
-image, // TODO - should be INT(id) or TEXT(path)???
+image, // TBD ko bom to naredu
 created_by,
 created_at,
 

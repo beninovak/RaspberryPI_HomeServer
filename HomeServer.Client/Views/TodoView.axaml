@@ -11,7 +11,7 @@
              Loaded="TodoView_OnLoaded">
     
     <UserControl.Styles>
-        <StyleInclude Source="../Styles/TodoStyles.axaml"></StyleInclude>
+        <StyleInclude Source="../Styles/TodoStyle.axaml"></StyleInclude>
     </UserControl.Styles>
     
     <Border Classes="wrapper">
@@ -58,27 +58,7 @@
                                     ItemsSource="{Binding Todos}">
                                     <ItemsControl.ItemTemplate>
                                         <DataTemplate>
-                                            <Grid
-                                                Classes="todo-grid"
-                                                ColumnDefinitions="28, *, 20"
-                                                Background="Transparent"
-                                                PointerReleased="TodoCheckUncheck">
-                                                <Image
-                                                    Grid.Column="0"
-                                                    Classes="todo-edit"
-                                                    Cursor="Hand"
-                                                    Source="../Assets/edit.png"></Image>
-                                                <TextBox
-                                                    Grid.Column="1"
-                                                    Classes="todo-text"
-                                                    IsReadOnly="True"
-                                                    Text="{Binding Content}"/>
-                                                <CheckBox
-                                                    Grid.Column="2"
-                                                    Classes="todo-checkbox"
-                                                    IsHitTestVisible="False"
-                                                    IsChecked="{Binding IsDone}"/>
-                                            </Grid>
+                                            <controls:TodoItem></controls:TodoItem>
                                         </DataTemplate>
                                     </ItemsControl.ItemTemplate>
                                 </ItemsControl>

@@ -15,19 +15,17 @@ GENERAL:
     
     
 SERVER:
-    - Create custom DbContextOptions?? -> Later: Why tho???
     - Make ExceptionFilter...register in options in Program.cs...log errors
     - Test request bad paths (login when no such user, register with existing email, etc.)
     - Proper auth
     - Add forgotten password
-    - MailMessage/SmtpClient?? za maile
+    - MailMessage/SmtpClient?? za maile...Proton CLI tool da sam seb pošlem mail??
 
 
 CLIENT
     - Handle case where server is down/connection't
     - Complementary colors instead of salmon
     - Add forgotten password screen
-    - Add history to TODOs?
     - Add delete option
     - Fingerprint reader?
     - Expenses by category...some kind of visualizer?

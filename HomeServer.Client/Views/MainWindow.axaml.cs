@@ -30,7 +30,7 @@ public partial class MainWindow : Window {
             }
 
             Directory.CreateDirectory(ClientConstants.localSaveFolder);
-            string path = Path.Combine(ClientConstants.localSaveFolder, viewModel.SaveFileName);
+            string path = Path.Combine(ClientConstants.localSaveFolder, Rufr.GetSaveFileNameFromModelName(viewModel.ModelName));
             File.WriteAllText(path, viewModelData);
         }
     }

@@ -1,4 +1,6 @@
 using System;
+using System.Threading.Tasks;
+using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
@@ -10,36 +12,26 @@ using HomeServer.Core.Models;
 namespace HomeServer.Client.Views;
 
 public partial class TodoView : UserControl {
+    private TodoViewModel? VM;
+
     public TodoView() {
         InitializeComponent();
     }
     
-    private TodoViewModel? VM;
     private void TodoView_OnLoaded(object? sender, RoutedEventArgs e) {
         VM = DataContext as TodoViewModel;
         if (VM is null) {
             throw new Exception("TodoViewModel is null. Fix your code buddy!");
         }
-
-        VM.AssembleTodos();
     }
     
+    // TODO - Poglej če se to da nekak prestaut u SearchBox alpa TodoViewModel...
     private void TodoSearchBox_OnSearch(object? sender, EventArgs e) {
-        if (VM is not null && sender is SearchBox searchBox) {
-            VM.Search(searchBox.Input);
+        if (sender is not SearchBox searchBox) {
+            // TODO - Log: "Yo buddy, the fuck? A SearchBox didn't call this. You done fucked up..."
+            // A se sploh loh zgodi tho? Hja...
             return;
         }
-        
-        throw new Exception("Yo buddy, the fuck? Either a SearchBox didn't call this, or the ViewModel doesn't exist. You done fucked up...");
-    }
-
-    private void TodoCheckUncheck(object sender, PointerReleasedEventArgs e) {
-        e.Handled = true;
-        if (VM is not null && sender is Grid { DataContext: Todo todo }) {
-            VM.TodoCheckUncheck(todo);
-            return;
-        }
-
-        throw new Exception("Yo buddy, the fuck? Either a Grid didn't call this, or it doesn't have a Todo context. You done fucked up...");
+        VM!.Search(searchBox.Input);
     }
 }

@@ -1,0 +1,13 @@
+<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <Style Selector="ScrollViewer#Todos">
+        <Setter Property="Margin" Value="0, 40, 0,0"></Setter>
+    </Style>
+    
+    <Style Selector="Expander.todo-section">
+        <Setter Property="Margin" Value="20, 0, 20, 20"></Setter>
+        <Setter Property="VerticalAlignment" Value="Top"></Setter>
+        <Setter Property="HorizontalAlignment" Value="Stretch"></Setter>
+    </Style>
+</Styles>

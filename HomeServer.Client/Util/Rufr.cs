@@ -4,8 +4,6 @@ using System.Net.Http;
 using System.Net.Http.Json;
 using System.Text.Json;
 using System.Threading.Tasks;
-using HomeServer.Client.Interfaces;
-using HomeServer.Client.ViewModels;
 using ClientConstants = HomeServer.Client.Util.Constants;
 
 namespace HomeServer.Client.Util;
@@ -20,18 +18,34 @@ public class Rufr {
         Directory.CreateDirectory(ClientConstants.appStorage);
     }
     
-    private async Task<bool> iveServer() {
-        var response = await httpClient.GetAsync("health");
-        return response.IsSuccessStatusCode;
+    private async Task<bool> IveServer() {
+        try {
+            var response = await httpClient.GetAsync("health");
+            return response.IsSuccessStatusCode;
+        } catch (HttpRequestException e) {
+            // TODO - Log and display error message: "Server unavailable. Try again or use local mode."?
+            return false;
+        }
     }
 
-    public async Task<T?> Ruf<T>(string path, ViewModelBase vm) {
-        if (!await iveServer()) {
-            if (!Directory.Exists(ClientConstants.localSaveFolder) || vm is not IDataViewModel viewModel) {
+    private static bool IsPathValid(string path) {
+        return path.IndexOfAny(Path.GetInvalidPathChars()) == -1;
+    }
+
+    public static string GetSaveFileNameFromModelName(string modelName) {
+        return $"{modelName.Trim().ToLower()}_save.json";
+    }
+    
+    public async Task<T?> Ruf<T>(string path, string modelName) {
+        if (!await IveServer()) {
+            if (!Directory.Exists(ClientConstants.localSaveFolder)) {
                 return default;
             }
 
-            string changesPath = Path.Combine(ClientConstants.localSaveFolder, viewModel.SaveFileName);
+            string changesPath = Path.Combine(ClientConstants.localSaveFolder, GetSaveFileNameFromModelName(modelName));
+            if (!IsPathValid(changesPath) || !File.Exists(changesPath)) {
+                throw new Exception("Garbage file name or file doesn't exist buddy. Fix your shit!");
+            }
             
             string json = await File.ReadAllTextAsync(changesPath);
             var objects = JsonSerializer.Deserialize<T>(json);
@@ -42,35 +56,27 @@ public class Rufr {
         return await response.Content.ReadFromJsonAsync<T>();
     }
     
-    public async Task<(bool, string)> Ruf(string path, HTTP_METHOD method, JsonContent body, ViewModelBase vm) {
-        if (!await iveServer()) {
-            if (vm is not IDataViewModel viewModel) {
-                return default; // Gugugaga...to bi pomenil da sm Rufou iz nek kjer ne rabm sploh nč dobit od serverja?
-                // Maybe bi rabu loggat te grosse pizdarije...
-            }
-
+    public async Task<(bool, string)> Ruf(string path, HttpMethod method, JsonContent body, string modelName) {
+        if (!await IveServer()) {
+            
             Directory.CreateDirectory(ClientConstants.localChangesFolder);
-            string changesPath = Path.Combine(ClientConstants.localChangesFolder, viewModel.SaveFileName);
+            string changesPath = Path.Combine(ClientConstants.localChangesFolder, GetSaveFileNameFromModelName(modelName));
+
+            if (!IsPathValid(changesPath)) {
+                throw new Exception("Garbage file name buddy. Fix your shit!");
+            }
             
             string json = JsonSerializer.Serialize(body);
             await File.AppendAllTextAsync(changesPath, json);
             return default;
         }
 
-        HttpResponseMessage response;
-        switch (method) {
-            case HTTP_METHOD.PUT:
-                response = await httpClient.PutAsync(path, body);
-                break;
-            case HTTP_METHOD.POST:
-                response = await httpClient.PostAsync(path, body);
-                break;
-            case HTTP_METHOD.PATCH:
-                response = await httpClient.PatchAsync(path, body);
-                break;
-            default:
-                throw new NotImplementedException("Absolutne grosse pizdarije...se neb sploh smel zgodit!");
-        }
+        HttpResponseMessage response = method switch {
+            HttpMethod.Put => await httpClient.PutAsync(path, body),
+            HttpMethod.Post => await httpClient.PostAsync(path, body),
+            HttpMethod.Patch => await httpClient.PatchAsync(path, body),
+            _ => await httpClient.PostAsync(path, body),
+        };
 
         return (response.IsSuccessStatusCode, await response.Content.ReadAsStringAsync());
     }
