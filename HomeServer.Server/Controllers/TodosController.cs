@@ -1,92 +1,62 @@
-using HomeServer.Server.Data;
 using HomeServer.Core.Models;
-using Microsoft.AspNetCore.HttpLogging;
+using HomeServer.Server.Repositories;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 namespace HomeServer.Server.Controllers;
 
 [Route("api/todos")]
 [ApiController]
-public class TodosController : ControllerBase {
-    private readonly MainDbContext DB;
-
-    public TodosController(MainDbContext db) {
-        DB = db;
-    }
-
+public class TodosController(ITodoRepository todoRepository) : ControllerBase {
     [HttpGet]
-    public async Task<ActionResult<List<TodoSection>>> GetTodos() {
-        var data = await DB.TodoSections
-            .Include(section => section.Todos)
-            .OrderBy(section => section.Order)
-            .ThenBy(section => section.Title)
-            .ThenBy(section => section.Todos.Any() ? section.Todos.First().Order : 0)
-            .ToListAsync();
-
-        if (data.Any()) {
-            return data;
-        }
-        
-        return Ok();
+    public async Task<ActionResult<List<TodoSection>>> GetAllTodos() {
+        List<TodoSection> data = await todoRepository.GetAllTodos();
+        return Ok(data);
     }
 
     [HttpGet("{id:int}")]
-    public async Task<ActionResult<Todo>> GetTodo(uint id) {
-        Todo? todo = await DB.Todos.FindAsync(id);
-
+    public async Task<ActionResult<Todo>> GetTodoById(uint id) {
+        Todo? todo = await todoRepository.GetTodoById(id);
+    
         if (todo is null) {
             return NotFound(new {
-                message = "No todo with that id exists."
+                message = "No todo with that id exists.",
             });
         }
-
+    
         return Ok(todo);
     }
     
     [HttpPost]
     public async Task<ActionResult> CreateTodo([FromBody] Todo todo) {
-        todo.CreatedAt = DateTime.Now;
-        
-        DB.Todos.Add(todo);
-        await DB.SaveChangesAsync();
-
+        await todoRepository.CreateTodo(todo);
         return Ok(new {
-            message = $"Successfully added a todo with content {todo.Content}."
+            message = $"Successfully added a todo with content {todo.Content}.",
         });
     }
     
     [HttpPatch("{id:int}")]
     public async Task<ActionResult> UpdateTodo([FromBody] Todo todo) {
-        DB.Todos.Update(todo);
-        await DB.SaveChangesAsync();
-        
+        await todoRepository.UpdateTodo(todo);
         return Ok(new {
-            message = $"Successfully changed todo."
+            message = $"Successfully changed todo.",
         });
     }
     
     #region Sections
     [Route("sections")]
     [HttpPost]
-    public async Task<ActionResult> CreateTodoSection([FromBody] TodoSection section) {
-        section.CreatedAt = DateTime.Now;
-
-        DB.TodoSections.Add(section);
-        await DB.SaveChangesAsync();
-
+    public async Task<ActionResult> CreateTodoSection([FromBody] TodoSection todoSection) {
+        await todoRepository.CreateTodoSection(todoSection);
         return Ok(new {
-            message = $"Successfully added a todo section with id {section.Id} and title \"{section.Title}\""
+            message = $"Successfully added a todo section with id {todoSection.Id} and title \"{todoSection.Title}\"",
         });
     }
     
     [HttpPatch]
-    public async Task<ActionResult<List<Todo>>> UpdateTodoSection([FromBody] TodoSection section) {
-        DB.TodoSections.Update(section);
-        await DB.SaveChangesAsync();
-
+    public async Task<ActionResult> UpdateTodoSection([FromBody] TodoSection section) {
+        await todoRepository.UpdateTodoSection(section);
         return Ok(new {
-            message = $"Successfully updated todo section with title \"{section.Title}\"."
+            message = $"Successfully updated todo section with title \"{section.Title}\".",
         });
     }
     #endregion

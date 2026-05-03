@@ -10,7 +10,7 @@ namespace HomeServer.Client.Util;
 
 public class Rufr {
     private readonly HttpClient httpClient = new() {
-        BaseAddress = new Uri(ClientConstants.TEST_URL),
+        BaseAddress = new Uri(ClientConstants.TestUrl),
         Timeout = TimeSpan.FromMilliseconds(5000),
     };
     

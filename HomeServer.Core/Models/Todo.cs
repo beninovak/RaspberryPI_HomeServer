@@ -1,18 +1,26 @@
+using System.Text.Json.Serialization;
 using CommunityToolkit.Mvvm.ComponentModel;
+using Microsoft.EntityFrameworkCore;
 
 namespace HomeServer.Core.Models;
 
+[Index(nameof(TodoSectionId), nameof(Order), IsUnique = true)]
 public partial class Todo : ObservableObject {
     public uint Id { get; init; }
-    [ObservableProperty] private uint? todoSectionId;
-    [ObservableProperty] private uint order;
-    [ObservableProperty] private string content = string.Empty;
-    [ObservableProperty] private bool isDone;
+    public Guid Guid { get; init; }
     
-    public uint CreatedBy { get; init; }
-    public DateTime CreatedAt { get; set; }
+    [JsonIgnore]
+    public required uint TodoSectionId { get; set; }
+    public required uint Order { get; set; }
+    public required string Content { get; set; }
+    public bool IsDone { get; set; }
     
-    public uint? UpdatedBy { get; set; }
-    public DateTime? UpdatedAt { get; set; }
+    [JsonIgnore]
+    public User? CreatedBy { get; init; }
+    public required DateTime CreatedAt { get; set; }
+    
+    [JsonIgnore]
+    public User? UpdatedBy { get; init; }
+    public DateTime? UpdatedAt { get; init; }
     //public List<SqliteBlob> Files; // Maybe sam link do files??
 }

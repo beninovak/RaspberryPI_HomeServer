@@ -1,13 +1,18 @@
+using HomeServer.Core.Models;
 using Microsoft.EntityFrameworkCore;
 using HomeServer.Server.Data;
+using HomeServer.Server.Repositories;
+using HomeServer.Server.Services;
 
+// TODO - Dej to u environement variable
 const string DBSource = "Host=localhost;Port=5432;Database=homeserver;Username=homeserver_user;Password=ko_te_jebe_333";
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
-AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
+//AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
+
 builder.Services
     .AddControllers()
     .AddJsonOptions(options => {
@@ -24,6 +29,11 @@ builder.Services.AddDbContext<MainDbContext>(options => {
         .EnableSensitiveDataLogging() // TODO - Preber si o tem...kje se loggajo to scene?
         .EnableDetailedErrors();
 });
+
+builder.Services.AddScoped<ITodoRepository, TodoRepository>();
+builder.Services.AddScoped<IUserRepository, UserRepository>();
+
+builder.Services.AddScoped<IUserService, UserService>();
 
 var app = builder.Build();
 

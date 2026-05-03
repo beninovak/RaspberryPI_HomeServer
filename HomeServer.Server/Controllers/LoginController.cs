@@ -1,53 +1,31 @@
 using HomeServer.Core.Models;
-using HomeServer.Server.Data;
-using HomeServer.Server.Utils;
+using HomeServer.Server.Services;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
+using HomeServer.Server.Exceptions;
 
 namespace HomeServer.Server.Controllers;
 
 [Route("api/login")]
 [ApiController]
-public class LoginController : ControllerBase {
-    private readonly MainDbContext DB;
-
-    public LoginController(MainDbContext db) {
-        DB = db;
-    }
-
+public class LoginController(IUserService userService) : ControllerBase {
     // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
     [HttpPost]
-    public async Task<ActionResult> AttemptUserLogin([FromBody] User user) {
-        var (isValidEmail, validationMessageEmail) = UserUtil.IsEmailValid(user.Email);
-        if (!isValidEmail) {
-            return BadRequest(new {
-                message = validationMessageEmail,
+    public async Task<ActionResult> Login([FromBody] LoginDTO user) {
+        try {
+            await userService.LoginUser(user);
+            return Ok(new {
+                message = $"Email and password match. Logging in user - {user.Email}"
             });
-        }
-
-        var (isValidPassword, validationMessagePassword) = UserUtil.IsPasswordValid(user.Email);
-        if (!isValidPassword) {
-            return BadRequest(new {
-                message = validationMessagePassword,
-            });
-        }
-
-        User? dbUser = await DB.Users.FirstOrDefaultAsync(u => u.Email.Equals(user.Email));
-        if (dbUser is null) {
+        } catch (AggregateException e) {
+            return BadRequest(e.InnerExceptions);
+        } catch (NonExistentUserException e) {
             return NotFound(new {
-                message = "No user with such email exists!"
+                message = e.Message,
             });
-        }
-
-        string hashedPassword = UserUtil.GenerateHashedPassword(user.Password + dbUser.PasswordSalt);
-        if (!hashedPassword.Equals(dbUser.Password)) {
+        } catch (UserInvalidLoginException e) {
             return Unauthorized(new {
-                message = "Invalid password!"
+                message = e.Message,
             });
         }
-
-        return Ok(new {
-            message = $"Email and password match. Logging in user - {dbUser.Email}"
-        });
     }
 }

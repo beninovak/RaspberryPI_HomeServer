@@ -6,12 +6,10 @@ GENERAL:
     - Check for static analysis tools?
     - Enable WarningAsError
     - Home cloud with images and audio ( with file search )
-    - Implement a local save state in case of no internet, to be synced again on next startup with internet
     - StyleCop NuGet package?
     - Tests
-    - change catch(Exception) into specific expected ones
-    - Move HomeServer.Core.Constants to server and client separately because no constants are shared I believe...
     - User Environment.StackTrace for non-error loggin maybe?
+    - Convert from UTC time in DB to Ljubljana time
     
     
 SERVER:
@@ -19,8 +17,11 @@ SERVER:
     - Test request bad paths (login when no such user, register with existing email, etc.)
     - Proper auth
     - Add forgotten password
-    - MailMessage/SmtpClient?? za maile...Proton CLI tool da sam seb pošlem mail??
-
+    - Probej sam seb maile poslt...Proton nima CLI
+    - Read about guid and add to tables (check how with EF)
+    - Add Guid to TodoSection?
+    - Add nique constraint to TodoSection (Order)
+    - Poglej zakva se ne generira Auto increment ID in Guid naekat v User tabeli...al se en al drug
 
 CLIENT
     - Handle case where server is down/connection't
