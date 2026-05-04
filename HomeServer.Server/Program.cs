@@ -4,7 +4,7 @@ using HomeServer.Server.Data;
 using HomeServer.Server.Repositories;
 using HomeServer.Server.Services;
 
-// TODO - Dej to u environement variable
+// TODO - Dej to u environment variable
 const string DBSource = "Host=localhost;Port=5432;Database=homeserver;Username=homeserver_user;Password=ko_te_jebe_333";
 
 var builder = WebApplication.CreateBuilder(args);

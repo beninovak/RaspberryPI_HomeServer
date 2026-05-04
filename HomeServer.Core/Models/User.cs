@@ -7,11 +7,12 @@ namespace HomeServer.Core.Models;
 public class User {
     public uint Id { get; init; }
     public Guid Guid { get; init; }
-    public string FirstName { get; set; } = string.Empty;
-    public string LastName { get; set; } = string.Empty;
-    [EmailAddress] public string Email { get; set; } = string.Empty;
-    public string Password { get; set; } = string.Empty;
-    public string PasswordSalt { get; set; } = string.Empty;
+    public required string FirstName { get; init; }
+    public required string LastName { get; init; }
+    [EmailAddress] public required string Email { get; set; }
+    
+    public required string Password { get; init; }
+    public required string PasswordSalt { get; init; }
     public DateTime CreatedAt { get; init; }
     public DateTime? UpdatedAt { get; init; }
 }

@@ -8,36 +8,35 @@ public class UserService(IUserRepository userRepository) : IUserService {
     public async Task RegisterUser(RegisterDTO registerDto) {
         ValidateRegister(registerDto);
         
+        if (await userRepository.UserWithEmailExists(registerDto.Email)) {
+            throw new NonExistentUserException("A user with this email already exists.");
+        }
+        
         string passwordSalt = BCrypt.Net.BCrypt.GenerateSalt();
         string passwordHash = BCrypt.Net.BCrypt.HashPassword(registerDto.Password, passwordSalt, true);
 
-        await userRepository.CreateUser(new User {
-            FirstName = registerDto.FirstName,
-            LastName = registerDto.LastName,
-            Email = registerDto.Email,
-            Password = passwordHash,
-            PasswordSalt = passwordSalt,
-            CreatedAt = DateTime.SpecifyKind(DateTime.Now, DateTimeKind.Utc),
-        });
+        await userRepository.CreateUser(registerDto, passwordSalt, passwordHash);
     }
     
     public async Task LoginUser(LoginDTO loginUser) {
         ValidateLogin(loginUser.Email, loginUser.Password);
-        
-        User? dbUser = await userRepository.GetUserByEmail(loginUser.Email);
-        if (dbUser is null) {
+
+        if (await userRepository.UserWithEmailExists(loginUser.Email)) {
             throw new NonExistentUserException("No user with such an email exists.");
         }
+
+        string dbSalt = await userRepository.GetPasswordSaltFromUserEmail(loginUser.Email);
+        string passwordHash = BCrypt.Net.BCrypt.HashPassword(loginUser.Password, dbSalt, true);
         
-        string passwordHash = BCrypt.Net.BCrypt.HashPassword(loginUser.Password, dbUser.PasswordSalt, true);
-        if (!BCrypt.Net.BCrypt.EnhancedVerify(dbUser.Password, passwordHash)) {
+        if (!BCrypt.Net.BCrypt.EnhancedVerify(loginUser.Password, passwordHash)) {
             throw new UserInvalidLoginException("Email and password do not match.");
         }
     }
 
     private static void ValidateRegister(RegisterDTO registerDto) {
-        var errors = ValidateEmailAndPassword(registerDto.Email, registerDto.Password);
+        ValidateEmailAndPassword(registerDto.Email, registerDto.Password);
 
+        List<Exception> errors = [];
         if (string.IsNullOrEmpty(registerDto.FirstName)) {
             errors.Add(new FirstNameValidationException("First name cannot be empty."));
         }
@@ -45,8 +44,43 @@ public class UserService(IUserRepository userRepository) : IUserService {
             errors.Add(new LastNameValidationException("Last name cannot be empty."));
         }
         
-        if (!registerDto.Password.Equals(registerDto.PasswordConfirm)) {
-            errors.Add(new PasswordValidationException("Passwords do not match."));
+        char[] allowedSpecialChars = [',', '.', '!', '?', '_', '-', '(', ')', '[', ']', '@'];
+        bool hasLowercase = true, hasUppercase = true, hasNumbers = true, hasSpecialChars = true;
+        foreach (int asciiCode in registerDto.Password) {
+            switch (asciiCode) {
+                case >= 48 and <= 57:
+                    hasNumbers = true;
+                    break;
+                case >= 65 and <= 90:
+                    hasUppercase = true;
+                    break;
+                case >= 97 and <= 122:
+                    hasLowercase = true;
+                    break;
+                default:
+                    if (allowedSpecialChars.Contains((char)asciiCode)) {
+                        hasSpecialChars = true;
+                    }
+                    break;
+            }
+        }
+        
+        if (!hasLowercase) {
+            errors.Add(new PasswordValidationException("Password must contain lowercase letters."));
+        }
+        if (!hasUppercase) {
+            errors.Add(new PasswordValidationException("Password must contain uppercase letters."));
+        }
+        if (!hasNumbers) {
+            errors.Add(new PasswordValidationException("Password must contain numbers."));
+        }
+        if (!hasSpecialChars) {
+            errors.Add(new PasswordValidationException
+                ($"Password must contain at least one allowed special character\n.{string.Join(", ", allowedSpecialChars)}")
+            );
+        }
+        if (registerDto.Password.Length is < 12 or > 24) {
+            errors.Add(new PasswordValidationException("Password must be between 12 and 24 characters long."));
         }
         
         if (errors.Any()) {
@@ -55,13 +89,10 @@ public class UserService(IUserRepository userRepository) : IUserService {
     }
     
     private static void ValidateLogin(string email, string password) {
-        var errors = ValidateEmailAndPassword(email, password);
-        if (errors.Any()) {
-            throw new AggregateException(errors);
-        }
+        ValidateEmailAndPassword(email, password);
     }
 
-    private static List<Exception> ValidateEmailAndPassword(string email, string password) {
+    private static void ValidateEmailAndPassword(string email, string password) {
         List<Exception> errors = [];
         
         if (string.IsNullOrEmpty(email)) {
@@ -73,13 +104,7 @@ public class UserService(IUserRepository userRepository) : IUserService {
         if (string.IsNullOrEmpty(password)) {
             errors.Add(new PasswordValidationException("Password cannot be empty."));
         }
-        // TODO - Dodej nek password regex za min/max length, numbers, capital letters, special chars etc.
-        // errors.Add(new PasswordValidationException("Password must be between 12 and 24 characters long."));
-        // errors.Add(new PasswordValidationException("Password must contain lowercase letters."));
-        // errors.Add(new PasswordValidationException("Password must contain uppercase letters."));
-        // errors.Add(new PasswordValidationException("Password must contain numbers."));
-        // errors.Add(new PasswordValidationException("Password must contain special characters."));
-        
-        return errors;
+
+        throw new AggregateException(errors);
     }
 }
