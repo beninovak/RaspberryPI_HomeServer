@@ -8,8 +8,8 @@ namespace HomeServer.Server.Controllers;
 [ApiController]
 public class TodosController(ITodoRepository todoRepository) : ControllerBase {
     [HttpGet]
-    public async Task<ActionResult<List<TodoSection>>> GetAllTodos() {
-        List<TodoSection> data = await todoRepository.GetAllTodos();
+    public async Task<ActionResult<List<TodoCategory>>> GetAllTodos() {
+        List<TodoCategory> data = await todoRepository.GetAllTodos();
         return Ok(data);
     }
 
@@ -45,18 +45,18 @@ public class TodosController(ITodoRepository todoRepository) : ControllerBase {
     #region Sections
     [Route("sections")]
     [HttpPost]
-    public async Task<ActionResult> CreateTodoSection([FromBody] TodoSection todoSection) {
-        await todoRepository.CreateTodoSection(todoSection);
+    public async Task<ActionResult> CreateTodoSection([FromBody] TodoCategory category) {
+        await todoRepository.CreateTodoSection(category);
         return Ok(new {
-            message = $"Successfully added a todo section with id {todoSection.Id} and title \"{todoSection.Title}\"",
+            message = $"Successfully added a todo category with id {category.Id} and title \"{category.Title}\"",
         });
     }
     
     [HttpPatch]
-    public async Task<ActionResult> UpdateTodoSection([FromBody] TodoSection section) {
-        await todoRepository.UpdateTodoSection(section);
+    public async Task<ActionResult> UpdateTodoSection([FromBody] TodoCategory category) {
+        await todoRepository.UpdateTodoSection(category);
         return Ok(new {
-            message = $"Successfully updated todo section with title \"{section.Title}\".",
+            message = $"Successfully updated todo category with title \"{category.Title}\".",
         });
     }
     #endregion

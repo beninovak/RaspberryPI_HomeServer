@@ -5,8 +5,8 @@ using Microsoft.EntityFrameworkCore;
 namespace HomeServer.Server.Repositories;
 
 public class TodoRepository(MainDbContext db) : ITodoRepository {
-    public async Task<List<TodoSection>> GetAllTodos() {
-        return await db.TodoSections
+    public async Task<List<TodoCategory>> GetAllTodos() {
+        return await db.TodoCategories
             .Include(section => section.Todos)
             .OrderBy(section => section.Order)
             .ThenBy(section => section.Title)
@@ -29,15 +29,14 @@ public class TodoRepository(MainDbContext db) : ITodoRepository {
         await db.SaveChangesAsync();
     }
 
-    public async Task CreateTodoSection(TodoSection todoSection) {
-        todoSection.CreatedAt = DateTime.Now;
-    
-        db.TodoSections.Add(todoSection);
+    public async Task CreateTodoSection(TodoCategory todoCategory) {
+        todoCategory.CreatedAt = DateTime.Now;
+        db.TodoCategories.Add(todoCategory);
         await db.SaveChangesAsync();
     }
 
-    public async Task UpdateTodoSection(TodoSection todoSection) {
-        db.TodoSections.Update(todoSection);
+    public async Task UpdateTodoSection(TodoCategory todoCategory) {
+        db.TodoCategories.Update(todoCategory);
         await db.SaveChangesAsync();
     }
 }

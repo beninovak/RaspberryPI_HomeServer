@@ -10,7 +10,7 @@ namespace HomeServer.Client.ViewModels;
 
 public class TodoViewModel : ViewModelBase, IDataViewModel {
    
-    public ObservableCollection<TodoBySectionsDTO>? TodosBySections { 
+    public ObservableCollection<TodoByCategoryDTO>? TodosBySections { 
         get;
         set {
             field = value;
@@ -26,7 +26,7 @@ public class TodoViewModel : ViewModelBase, IDataViewModel {
     
     private async void AssembleTodos() {
         try {
-            TodosBySections = await rufr.Ruf<ObservableCollection<TodoBySectionsDTO>>("todos/", nameof(Todo));
+            TodosBySections = await rufr.Ruf<ObservableCollection<TodoByCategoryDTO>>("todos/", nameof(Todo));
         } catch (Exception e) {
             // TODO - Pokaž window popup na sceno "zgodiu se je gugugaga". Maybe ma popup retry button?
         }

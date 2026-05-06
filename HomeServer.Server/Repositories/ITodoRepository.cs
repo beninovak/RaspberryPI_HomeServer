@@ -3,14 +3,14 @@ using HomeServer.Core.Models;
 namespace HomeServer.Server.Repositories;
 
 public interface ITodoRepository {
-    Task<List<TodoSection>> GetAllTodos();
+    Task<List<TodoCategory>> GetAllTodos();
     Task<Todo?> GetTodoById(uint id);
 
     Task CreateTodo(Todo todo);
 
     Task UpdateTodo(Todo todo);
 
-    Task CreateTodoSection(TodoSection todoSection);
+    Task CreateTodoSection(TodoCategory todoCategory);
 
-    Task UpdateTodoSection(TodoSection todoSection);
+    Task UpdateTodoSection(TodoCategory todoCategory);
 }

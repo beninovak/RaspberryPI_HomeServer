@@ -105,6 +105,8 @@ public class UserService(IUserRepository userRepository) : IUserService {
             errors.Add(new PasswordValidationException("Password cannot be empty."));
         }
 
-        throw new AggregateException(errors);
+        if (errors.Any()) {
+            throw new AggregateException(errors);
+        }
     }
 }

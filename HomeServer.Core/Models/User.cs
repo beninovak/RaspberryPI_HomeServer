@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
 
 namespace HomeServer.Core.Models;
@@ -6,7 +7,7 @@ namespace HomeServer.Core.Models;
 [Index(nameof(Email), IsUnique = true)]
 public class User {
     public uint Id { get; init; }
-    public Guid Guid { get; init; }
+    public Guid Guid { get; init; } = Guid.NewGuid();
     public required string FirstName { get; init; }
     public required string LastName { get; init; }
     [EmailAddress] public required string Email { get; set; }

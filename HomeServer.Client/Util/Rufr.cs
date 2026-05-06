@@ -14,10 +14,6 @@ public class Rufr {
         Timeout = TimeSpan.FromMilliseconds(5000),
     };
     
-    public Rufr() {
-        Directory.CreateDirectory(ClientConstants.appStorage);
-    }
-    
     private async Task<bool> IveServer() {
         try {
             var response = await httpClient.GetAsync("health");
