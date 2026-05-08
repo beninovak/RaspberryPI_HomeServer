@@ -5,7 +5,7 @@
         <Setter Property="Margin" Value="0, 40, 0,0"></Setter>
     </Style>
     
-    <Style Selector="Expander.todo-section">
+    <Style Selector="Expander.todo-category">
         <Setter Property="Margin" Value="20, 0, 20, 20"></Setter>
         <Setter Property="VerticalAlignment" Value="Top"></Setter>
         <Setter Property="HorizontalAlignment" Value="Stretch"></Setter>

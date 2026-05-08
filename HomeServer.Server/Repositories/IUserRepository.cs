@@ -1,4 +1,4 @@
-using HomeServer.Core.Models;
+using HomeServer.Core.DTOs;
 
 namespace HomeServer.Server.Repositories;
 

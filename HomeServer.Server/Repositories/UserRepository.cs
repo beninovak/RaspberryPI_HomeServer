@@ -1,3 +1,4 @@
+using HomeServer.Core.DTOs;
 using HomeServer.Core.Models;
 using HomeServer.Server.Data;
 using HomeServer.Server.Exceptions;

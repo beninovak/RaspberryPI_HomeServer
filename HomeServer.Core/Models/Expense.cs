@@ -9,7 +9,7 @@ public class Expense {
     public required uint Order { get; set; }
     public required string Title { get; set; }
     public string? Description { get; set; }
-    public string? ImagePath { get; set; } 
+    public string? ImagePath { get; set; }
     public required decimal Total { get; set; }
     public required ExpenseCategory ExpenseCategory { get; set; }
     

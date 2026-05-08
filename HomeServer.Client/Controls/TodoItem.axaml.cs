@@ -39,12 +39,12 @@ public partial class TodoItem : UserControl {
         IsEditing = false;
     }
 
-    public void TodoCheckUncheck(object? sender, PointerReleasedEventArgs e) {
+    public async Task TodoCheckUncheck(object? sender, PointerReleasedEventArgs e) {
         if (DataContext is not Todo todo) {
             return;
         }
         todo.IsDone = !todo.IsDone;
-        TrySaveChanges(todo); // Hoče da awaitam ampak res ne rabm question mark?
+        await TrySaveChanges(todo);
     }
     
     private async Task TrySaveChanges(Todo todo) {

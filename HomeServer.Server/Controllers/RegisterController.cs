@@ -1,3 +1,4 @@
+using HomeServer.Core.DTOs;
 using Microsoft.AspNetCore.Mvc;
 using HomeServer.Core.Models;
 using HomeServer.Server.Exceptions;

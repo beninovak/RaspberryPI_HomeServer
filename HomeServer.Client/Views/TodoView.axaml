@@ -32,7 +32,7 @@
                 Grid.Row="1" 
                 x:Name="TodoSearchBox"
                 x:DataType="vm:TodoViewModel"
-                Placeholder="Search TODOs and sections"
+                Placeholder="Search TODOs and categories"
                 Search="TodoSearchBox_OnSearch">
             </controls:SearchBox>
             
@@ -40,7 +40,7 @@
                 x:Name="Todos"
                 Grid.Row="2">
                 <ItemsControl 
-                    ItemsSource="{Binding TodosBySections}">
+                    ItemsSource="{Binding TodosByCategory}">
                     
                     <ItemsControl.ItemsPanel>
                         <ItemsPanelTemplate>
@@ -51,7 +51,7 @@
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
                             <Expander 
-                                Classes="todo-section"
+                                Classes="todo-category"
                                 Header="{Binding Title}"
                                 IsExpanded="True">
                                 <ItemsControl 

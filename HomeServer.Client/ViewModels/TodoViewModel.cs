@@ -4,13 +4,14 @@ using System.Linq;
 using System.Text.Json;
 using HomeServer.Client.Interfaces;
 using HomeServer.Client.Util;
+using HomeServer.Core.DTOs;
 using HomeServer.Core.Models;
 
 namespace HomeServer.Client.ViewModels;
 
 public class TodoViewModel : ViewModelBase, IDataViewModel {
    
-    public ObservableCollection<TodoByCategoryDTO>? TodosBySections { 
+    public ObservableCollection<TodoByCategoryDTO>? TodosByCategory { 
         get;
         set {
             field = value;
@@ -26,7 +27,7 @@ public class TodoViewModel : ViewModelBase, IDataViewModel {
     
     private async void AssembleTodos() {
         try {
-            TodosBySections = await rufr.Ruf<ObservableCollection<TodoByCategoryDTO>>("todos/", nameof(Todo));
+            TodosByCategory = await rufr.Ruf<ObservableCollection<TodoByCategoryDTO>>("todos/", nameof(Todo));
         } catch (Exception e) {
             // TODO - Pokaž window popup na sceno "zgodiu se je gugugaga". Maybe ma popup retry button?
         }
@@ -39,9 +40,9 @@ public class TodoViewModel : ViewModelBase, IDataViewModel {
     public string ModelName => nameof(Todo);
 
     public string? GetDataJson() {
-        if (TodosBySections is null || !TodosBySections.Any()) {
+        if (TodosByCategory is null || !TodosByCategory.Any()) {
             return null;
         }
-        return JsonSerializer.Serialize(TodosBySections);
+        return JsonSerializer.Serialize(TodosByCategory);
     }
 }

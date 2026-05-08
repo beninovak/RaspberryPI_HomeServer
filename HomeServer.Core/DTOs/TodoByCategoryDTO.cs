@@ -1,10 +1,6 @@
-using System.Text.Json.Serialization;
+namespace HomeServer.Core.DTOs;
 
-namespace HomeServer.Core.Models;
-
-public struct TodoByCategoryDTO {
-    public uint Id { get; set; }
-    public uint Order { get; set; }
-    public string Title { get; set; }
-    public List<Todo>? Todos { get; set; } 
+public class TodoByCategoryDTO {
+    public required string Title { get; set; }
+    public List<TodoDTO>? Todos { get; set; } 
 }

@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace HomeServer.Core.Models;
+namespace HomeServer.Core.DTOs;
 
 public class LoginDTO {
     [MaxLength(60)] [EmailAddress] public required string Email { get; set; }

@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace HomeServer.Core.Models;
+namespace HomeServer.Core.DTOs;
 
 public class RegisterDTO {
     [MaxLength(40)] public required string FirstName { get; set; }

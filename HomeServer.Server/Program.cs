@@ -1,3 +1,4 @@
+using HomeServer.Core.DTOModelConverters;
 using HomeServer.Core.Models;
 using Microsoft.EntityFrameworkCore;
 using HomeServer.Server.Data;
@@ -30,8 +31,13 @@ builder.Services.AddDbContext<MainDbContext>(options => {
         .EnableDetailedErrors();
 });
 
-builder.Services.AddScoped<ITodoRepository, TodoRepository>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<ITodoRepository, TodoRepository>();
+builder.Services.AddScoped<IExpenseRepository, ExpenseRepository>();
+
+builder.Services.AddScoped<IUserConverter, UserConverter>();
+builder.Services.AddScoped<ITodoConverter, TodoConverter>();
+builder.Services.AddScoped<IExpenseConverter, ExpenseConverter>();
 
 builder.Services.AddScoped<IUserService, UserService>();
 

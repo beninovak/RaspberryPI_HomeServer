@@ -1,16 +1,17 @@
+using HomeServer.Core.DTOs;
 using HomeServer.Core.Models;
 
 namespace HomeServer.Server.Repositories;
 
 public interface ITodoRepository {
-    Task<List<TodoCategory>> GetAllTodos();
-    Task<Todo?> GetTodoById(uint id);
+    Task<List<TodoByCategoryDTO>> GetAllTodos();
+    Task<TodoDTO?> GetTodoById(uint id);
 
-    Task CreateTodo(Todo todo);
+    Task CreateTodo(TodoDTO todo);
 
-    Task UpdateTodo(Todo todo);
+    Task UpdateTodo(TodoDTO todo);
 
-    Task CreateTodoSection(TodoCategory todoCategory);
+    Task CreateTodoCategory(TodoCategoryDTO todoCategory);
 
-    Task UpdateTodoSection(TodoCategory todoCategory);
+    Task UpdateTodoCategory(TodoCategoryDTO todoCategory);
 }

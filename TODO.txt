@@ -11,7 +11,6 @@ GENERAL:
     - User Environment.StackTrace for non-error loggin maybe?
     - Convert from UTC time in DB to Ljubljana time
     
-    
 SERVER:
     - Make ExceptionFilter...register in options in Program.cs...log errors
     - Test request bad paths (login when no such user, register with existing email, etc.)
@@ -19,8 +18,7 @@ SERVER:
     - Add forgotten password
     - Probej sam seb maile poslt...Proton nima CLI
     - Read about guid and add to tables (check how with EF)
-    - Add Guid to TodoSection?
-    - Add nique constraint to TodoSection (Order)
+    - Add unique constraint to TodoCategory (Order)
     - Poglej zakva se ne generira Auto increment ID in Guid naekat v User tabeli...al se en al drug
 
 CLIENT
