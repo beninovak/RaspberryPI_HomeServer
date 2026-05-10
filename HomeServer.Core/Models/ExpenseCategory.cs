@@ -10,9 +10,11 @@ public class ExpenseCategory {
     public required string Title { get; set; }
     public required string Color { get; set; }
     
-    public User? CreatedBy { get; init; }
+    public uint? CreatedBy { get; init; }
     public required DateTime CreatedAt { get; set; }
     
-    public User? UpdatedBy { get; init; }
+    public uint? UpdatedBy { get; init; }
     public DateTime? UpdatedAt { get; init; }
+    
+    public List<Expense> Expenses { get; init; } = [];
 }

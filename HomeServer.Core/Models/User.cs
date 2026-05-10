@@ -4,13 +4,12 @@ using Microsoft.EntityFrameworkCore;
 
 namespace HomeServer.Core.Models;
 
-[Index(nameof(Email), IsUnique = true)]
 public class User {
     public uint Id { get; init; }
     public Guid Guid { get; init; } = Guid.NewGuid();
     public required string FirstName { get; init; }
     public required string LastName { get; init; }
-    [EmailAddress] public required string Email { get; set; }
+    [EmailAddress] public required string Email { get; init; }
     
     public required string Password { get; init; }
     public required string PasswordSalt { get; init; }
