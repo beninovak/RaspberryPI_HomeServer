@@ -1,13 +1,15 @@
 using HomeServer.Core.DTOModelConverters;
-using HomeServer.Core.DTOs;
-using HomeServer.Core.Models;
+using HomeServer.Core.DTOs.Todos;
+using HomeServer.Core.Models.Todos;
 using HomeServer.Server.Data;
 using Microsoft.EntityFrameworkCore;
 
 namespace HomeServer.Server.Repositories;
 
 public class TodoRepository(MainDbContext db, ITodoConverter todoConverter) : ITodoRepository {
-    public async Task<List<TodoByCategoryDTO>> GetAllTodos() {
+    
+    #region Todos
+    public async Task<List<TodoCategoryReadDTO>> GetAllTodosAsync() {
         List<TodoCategory> todoCategories = await db.TodoCategories
             .Include(category => category.Todos)
             .OrderBy(category => category.Order)
@@ -15,43 +17,68 @@ public class TodoRepository(MainDbContext db, ITodoConverter todoConverter) : IT
             .ThenBy(category => category.Todos.Any() ? category.Todos.First().Order : 0)
             .ToListAsync();
 
-        List<TodoByCategoryDTO> todoCategoriesDTO = [];
-        todoCategoriesDTO.AddRange(
-        todoCategories.Select(category => new TodoByCategoryDTO {
-            Title = category.Title, 
-            Todos = todoConverter.TodoModelToDTOMany(category.Todos),
+        List<TodoCategoryReadDTO> todoCategoryReadDTOs = [];
+        todoCategoryReadDTOs.AddRange(
+        todoCategories.Select(category => new TodoCategoryReadDTO {
+            Guid = category.Guid,
+            Title = category.Title,
+            Order = category.Order,
+            Todos = todoConverter.TodoModelToReadDTOMany(category.Todos),
         }));
 
-        return todoCategoriesDTO;
+        return todoCategoryReadDTOs;
     }
 
-    public async Task<TodoDTO?> GetTodoById(uint id) {
-        Todo? todo = await db.Todos.FindAsync(id);
-        return todo is null ? null : todoConverter.TodoModelToDto(todo);
+    public async Task<TodoReadDTO?> GetTodoByGuidAsync(Guid guid) {
+        Todo? todo = await db.Todos.FirstOrDefaultAsync(todo => todo.Guid.Equals(guid));
+        return todo is null ? null : todoConverter.TodoModelToReadDTO(todo);
     }
 
-    public async Task CreateTodo(TodoDTO todoDto) {
-        Todo todo = todoConverter.TodoDTOToModel(todoDto);
+    public async Task CreateTodoAsync(TodoCreateDTO todoCreateDto) {
+        Todo todo = todoConverter.TodoCreateDTOToModel(todoCreateDto);
         db.Todos.Add(todo);
         await db.SaveChangesAsync();
     }
 
-    public async Task UpdateTodo(TodoDTO todoDto) {
-        Todo todo = todoConverter.TodoDTOToModel(todoDto);
-        todo.UpdatedAt = DateTime.UtcNow;
+    public async Task UpdateTodoAsync(Guid guid, TodoUpdateDTO TodoUpdateDto) {
+        Todo todo = todoConverter.TodoUpdateDTOToModel(guid, TodoUpdateDto);
         db.Todos.Update(todo);
         await db.SaveChangesAsync();
     }
 
-    public async Task CreateTodoCategory(TodoCategoryDTO todoCategoryDto) {
-        TodoCategory todoCategory = todoConverter.TodoCategoryDTOToModel(todoCategoryDto);
+    public async Task<bool> DeleteTodoAsync(Guid guid) {
+        Todo? todo = await db.Todos.FirstOrDefaultAsync(todo => todo.Guid.Equals(guid));
+        if (todo is null) {
+            return false;
+        }
+        db.Todos.Remove(todo);
+        await db.SaveChangesAsync();
+        return true;
+    }
+
+    #endregion
+
+    #region Categories
+    public async Task CreateTodoCategoryAsync(TodoCategoryCreateDTO todoCategoryCreateDto) {
+        TodoCategory todoCategory = todoConverter.TodoCategoryCreateDTOToModel(todoCategoryCreateDto);
         db.TodoCategories.Add(todoCategory);
         await db.SaveChangesAsync();
     }
 
-    public async Task UpdateTodoCategory(TodoCategoryDTO todoCategoryDto) {
-        TodoCategory todoCategory = todoConverter.TodoCategoryDTOToModel(todoCategoryDto);
+    public async Task UpdateTodoCategoryAsync(Guid guid, TodoCategoryUpdateDTO todoCategoryUpdateDto) {
+        TodoCategory todoCategory = todoConverter.TodoCategoryUpdateDTOToModel(guid, todoCategoryUpdateDto);
         db.TodoCategories.Update(todoCategory);
         await db.SaveChangesAsync();
     }
+
+    public async Task<bool> DeleteTodoCategoryAsync(Guid guid) {
+        TodoCategory? category = await db.TodoCategories.FirstOrDefaultAsync(category => category.Guid.Equals(guid));
+        if (category is null) {
+            return false;
+        }
+        db.TodoCategories.Remove(category);
+        await db.SaveChangesAsync();
+        return true;
+    }
+    #endregion
 }

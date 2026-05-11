@@ -11,12 +11,13 @@
              Loaded="TodoView_OnLoaded">
     
     <UserControl.Styles>
-        <StyleInclude Source="../Styles/TodoStyle.axaml"></StyleInclude>
+        <StyleInclude Source="../Styles/Views/TodoViewStyle.axaml"></StyleInclude>
     </UserControl.Styles>
     
     <Border Classes="wrapper">
         <Grid Classes="main-grid">
             <Grid.RowDefinitions>
+                <RowDefinition/>
                 <RowDefinition/>
                 <RowDefinition/>
                 <RowDefinition/>
@@ -36,9 +37,27 @@
                 Search="TodoSearchBox_OnSearch">
             </controls:SearchBox>
             
+            <StackPanel
+                Classes="button-panel"
+                Grid.Row="2"
+                Orientation="Horizontal"
+                HorizontalAlignment="Center">
+                <Button
+                    x:Name="AddCategoryBtn"
+                    Classes="panel-btn"
+                    Content="Add category"
+                    PointerReleased="AddCategoryBtn_OnPointerReleased"/>
+                
+                <Button
+                    x:Name="AddTodoBtn"
+                    Classes="panel-btn"
+                    Content="Add TODO"
+                    PointerReleased="AddTodoBtn_OnPointerReleased"/>
+            </StackPanel>
+            
             <ScrollViewer 
                 x:Name="Todos"
-                Grid.Row="2">
+                Grid.Row="3">
                 <ItemsControl 
                     ItemsSource="{Binding TodosByCategory}">
                     

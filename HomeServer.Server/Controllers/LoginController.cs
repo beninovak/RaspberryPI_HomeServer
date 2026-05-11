@@ -1,4 +1,5 @@
 using HomeServer.Core.DTOs;
+using HomeServer.Core.DTOs.User;
 using HomeServer.Core.Models;
 using HomeServer.Server.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -11,9 +12,9 @@ namespace HomeServer.Server.Controllers;
 public class LoginController(IUserService userService) : ControllerBase {
     // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
     [HttpPost]
-    public async Task<ActionResult> Login([FromBody] LoginDTO user) {
+    public async Task<ActionResult> LoginAsync([FromBody] LoginDTO user) {
         try {
-            await userService.LoginUser(user);
+            await userService.LoginUserAsync(user);
             return Ok(new {
                 message = $"Email and password match. Logging in user - {user.Email}"
             });

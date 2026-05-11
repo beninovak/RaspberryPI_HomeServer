@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace HomeServer.Server.Migrations
 {
     [DbContext(typeof(MainDbContext))]
-    [Migration("20260510081051_ExplicitConstraints")]
-    partial class ExplicitConstraints
+    [Migration("20260511200331_ModelReworkNumber50")]
+    partial class ModelReworkNumber50
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -25,27 +25,22 @@ namespace HomeServer.Server.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("HomeServer.Core.Models.Expense", b =>
+            modelBuilder.Entity("HomeServer.Core.Models.Expenses.Expense", b =>
                 {
-                    b.Property<long>("Id")
+                    b.Property<Guid>("Guid")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
+                        .HasColumnType("uuid");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<long?>("CreatedBy")
-                        .HasColumnType("bigint");
+                    b.Property<Guid>("CreatedBy")
+                        .HasColumnType("uuid");
 
                     b.Property<string>("Description")
                         .HasColumnType("text");
 
-                    b.Property<long>("ExpenseCategoryId")
-                        .HasColumnType("bigint");
-
-                    b.Property<Guid>("Guid")
+                    b.Property<Guid>("ExpenseCategoryId")
                         .HasColumnType("uuid");
 
                     b.Property<string>("ImagePath")
@@ -64,30 +59,25 @@ namespace HomeServer.Server.Migrations
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<long?>("UpdatedBy")
-                        .HasColumnType("bigint");
+                    b.Property<Guid?>("UpdatedBy")
+                        .HasColumnType("uuid");
 
-                    b.HasKey("Id");
+                    b.HasKey("Guid");
 
                     b.HasAlternateKey("ExpenseCategoryId", "Order");
 
                     b.HasIndex("CreatedBy");
-
-                    b.HasIndex("Guid")
-                        .IsUnique();
 
                     b.HasIndex("UpdatedBy");
 
                     b.ToTable("Expenses");
                 });
 
-            modelBuilder.Entity("HomeServer.Core.Models.ExpenseCategory", b =>
+            modelBuilder.Entity("HomeServer.Core.Models.Expenses.ExpenseCategory", b =>
                 {
-                    b.Property<long>("Id")
+                    b.Property<Guid>("Guid")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
+                        .HasColumnType("uuid");
 
                     b.Property<string>("Color")
                         .IsRequired()
@@ -96,10 +86,7 @@ namespace HomeServer.Server.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<long>("CreatedBy")
-                        .HasColumnType("bigint");
-
-                    b.Property<Guid>("Guid")
+                    b.Property<Guid>("CreatedBy")
                         .HasColumnType("uuid");
 
                     b.Property<long>("Order")
@@ -112,39 +99,31 @@ namespace HomeServer.Server.Migrations
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<long?>("UpdatedBy")
-                        .HasColumnType("bigint");
+                    b.Property<Guid?>("UpdatedBy")
+                        .HasColumnType("uuid");
 
-                    b.HasKey("Id");
+                    b.HasKey("Guid");
 
                     b.HasAlternateKey("CreatedBy", "Order");
-
-                    b.HasIndex("Guid")
-                        .IsUnique();
 
                     b.HasIndex("UpdatedBy");
 
                     b.ToTable("ExpenseCategories");
                 });
 
-            modelBuilder.Entity("HomeServer.Core.Models.ExpenseTarget", b =>
+            modelBuilder.Entity("HomeServer.Core.Models.Expenses.ExpenseTarget", b =>
                 {
-                    b.Property<long>("Id")
+                    b.Property<Guid>("Guid")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
+                        .HasColumnType("uuid");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<long?>("CreatedBy")
-                        .HasColumnType("bigint");
+                    b.Property<Guid>("CreatedBy")
+                        .HasColumnType("uuid");
 
-                    b.Property<long>("ExpenseCategoryId")
-                        .HasColumnType("bigint");
-
-                    b.Property<Guid>("Guid")
+                    b.Property<Guid>("ExpenseCategoryId")
                         .HasColumnType("uuid");
 
                     b.Property<string>("Title")
@@ -157,38 +136,30 @@ namespace HomeServer.Server.Migrations
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<long?>("UpdatedBy")
-                        .HasColumnType("bigint");
+                    b.Property<Guid?>("UpdatedBy")
+                        .HasColumnType("uuid");
 
-                    b.HasKey("Id");
+                    b.HasKey("Guid");
 
                     b.HasIndex("CreatedBy");
 
                     b.HasIndex("ExpenseCategoryId");
-
-                    b.HasIndex("Guid")
-                        .IsUnique();
 
                     b.HasIndex("UpdatedBy");
 
                     b.ToTable("ExpenseTargets");
                 });
 
-            modelBuilder.Entity("HomeServer.Core.Models.ExpenseTargetHistory", b =>
+            modelBuilder.Entity("HomeServer.Core.Models.Expenses.ExpenseTargetHistory", b =>
                 {
-                    b.Property<long>("Id")
+                    b.Property<Guid>("Guid")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
+                        .HasColumnType("uuid");
 
                     b.Property<string>("Description")
                         .HasColumnType("text");
 
-                    b.Property<long>("ExpenseTargetId")
-                        .HasColumnType("bigint");
-
-                    b.Property<Guid>("Guid")
+                    b.Property<Guid>("ExpenseTargetId")
                         .HasColumnType("uuid");
 
                     b.Property<long>("Month")
@@ -200,23 +171,18 @@ namespace HomeServer.Server.Migrations
                     b.Property<long>("Year")
                         .HasColumnType("bigint");
 
-                    b.HasKey("Id");
+                    b.HasKey("Guid");
 
                     b.HasAlternateKey("ExpenseTargetId", "Month", "Year");
-
-                    b.HasIndex("Guid")
-                        .IsUnique();
 
                     b.ToTable("ExpenseTargetsHistory");
                 });
 
-            modelBuilder.Entity("HomeServer.Core.Models.Todo", b =>
+            modelBuilder.Entity("HomeServer.Core.Models.Todos.Todo", b =>
                 {
-                    b.Property<long>("Id")
+                    b.Property<Guid>("Guid")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
+                        .HasColumnType("uuid");
 
                     b.Property<string>("Content")
                         .IsRequired()
@@ -225,10 +191,7 @@ namespace HomeServer.Server.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<long?>("CreatedBy")
-                        .HasColumnType("bigint");
-
-                    b.Property<Guid>("Guid")
+                    b.Property<Guid>("CreatedBy")
                         .HasColumnType("uuid");
 
                     b.Property<bool>("IsDone")
@@ -237,44 +200,36 @@ namespace HomeServer.Server.Migrations
                     b.Property<long>("Order")
                         .HasColumnType("bigint");
 
-                    b.Property<long>("TodoCategoryId")
-                        .HasColumnType("bigint");
+                    b.Property<Guid>("TodoCategoryId")
+                        .HasColumnType("uuid");
 
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<long?>("UpdatedBy")
-                        .HasColumnType("bigint");
+                    b.Property<Guid?>("UpdatedBy")
+                        .HasColumnType("uuid");
 
-                    b.HasKey("Id");
+                    b.HasKey("Guid");
 
                     b.HasAlternateKey("TodoCategoryId", "Order");
 
                     b.HasIndex("CreatedBy");
-
-                    b.HasIndex("Guid")
-                        .IsUnique();
 
                     b.HasIndex("UpdatedBy");
 
                     b.ToTable("Todos");
                 });
 
-            modelBuilder.Entity("HomeServer.Core.Models.TodoCategory", b =>
+            modelBuilder.Entity("HomeServer.Core.Models.Todos.TodoCategory", b =>
                 {
-                    b.Property<long>("Id")
+                    b.Property<Guid>("Guid")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
+                        .HasColumnType("uuid");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<long>("CreatedBy")
-                        .HasColumnType("bigint");
-
-                    b.Property<Guid>("Guid")
+                    b.Property<Guid>("CreatedBy")
                         .HasColumnType("uuid");
 
                     b.Property<long>("Order")
@@ -287,28 +242,23 @@ namespace HomeServer.Server.Migrations
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<long?>("UpdatedBy")
-                        .HasColumnType("bigint");
+                    b.Property<Guid?>("UpdatedBy")
+                        .HasColumnType("uuid");
 
-                    b.HasKey("Id");
+                    b.HasKey("Guid");
 
                     b.HasAlternateKey("CreatedBy", "Order");
-
-                    b.HasIndex("Guid")
-                        .IsUnique();
 
                     b.HasIndex("UpdatedBy");
 
                     b.ToTable("TodoCategories");
                 });
 
-            modelBuilder.Entity("HomeServer.Core.Models.User", b =>
+            modelBuilder.Entity("HomeServer.Core.Models.User.User", b =>
                 {
-                    b.Property<long>("Id")
+                    b.Property<Guid>("Guid")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
+                        .HasColumnType("uuid");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
@@ -320,9 +270,6 @@ namespace HomeServer.Server.Migrations
                     b.Property<string>("FirstName")
                         .IsRequired()
                         .HasColumnType("text");
-
-                    b.Property<Guid>("Guid")
-                        .HasColumnType("uuid");
 
                     b.Property<string>("LastName")
                         .IsRequired()
@@ -339,115 +286,115 @@ namespace HomeServer.Server.Migrations
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("timestamp with time zone");
 
-                    b.HasKey("Id");
+                    b.HasKey("Guid");
 
                     b.HasIndex("Email")
-                        .IsUnique();
-
-                    b.HasIndex("Guid")
                         .IsUnique();
 
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("HomeServer.Core.Models.Expense", b =>
+            modelBuilder.Entity("HomeServer.Core.Models.Expenses.Expense", b =>
                 {
-                    b.HasOne("HomeServer.Core.Models.User", null)
+                    b.HasOne("HomeServer.Core.Models.User.User", null)
                         .WithMany()
                         .HasForeignKey("CreatedBy")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-                    b.HasOne("HomeServer.Core.Models.ExpenseCategory", null)
+                    b.HasOne("HomeServer.Core.Models.Expenses.ExpenseCategory", null)
                         .WithMany("Expenses")
                         .HasForeignKey("ExpenseCategoryId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("HomeServer.Core.Models.User", null)
+                    b.HasOne("HomeServer.Core.Models.User.User", null)
                         .WithMany()
                         .HasForeignKey("UpdatedBy")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("HomeServer.Core.Models.ExpenseCategory", b =>
+            modelBuilder.Entity("HomeServer.Core.Models.Expenses.ExpenseCategory", b =>
                 {
-                    b.HasOne("HomeServer.Core.Models.User", null)
+                    b.HasOne("HomeServer.Core.Models.User.User", null)
                         .WithMany()
                         .HasForeignKey("CreatedBy")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("HomeServer.Core.Models.User", null)
+                    b.HasOne("HomeServer.Core.Models.User.User", null)
                         .WithMany()
                         .HasForeignKey("UpdatedBy")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("HomeServer.Core.Models.ExpenseTarget", b =>
+            modelBuilder.Entity("HomeServer.Core.Models.Expenses.ExpenseTarget", b =>
                 {
-                    b.HasOne("HomeServer.Core.Models.User", null)
+                    b.HasOne("HomeServer.Core.Models.User.User", null)
                         .WithMany()
                         .HasForeignKey("CreatedBy")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-                    b.HasOne("HomeServer.Core.Models.ExpenseCategory", null)
+                    b.HasOne("HomeServer.Core.Models.Expenses.ExpenseCategory", null)
                         .WithMany()
                         .HasForeignKey("ExpenseCategoryId")
                         .IsRequired();
 
-                    b.HasOne("HomeServer.Core.Models.User", null)
+                    b.HasOne("HomeServer.Core.Models.User.User", null)
                         .WithMany()
                         .HasForeignKey("UpdatedBy")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("HomeServer.Core.Models.ExpenseTargetHistory", b =>
+            modelBuilder.Entity("HomeServer.Core.Models.Expenses.ExpenseTargetHistory", b =>
                 {
-                    b.HasOne("HomeServer.Core.Models.ExpenseTarget", null)
+                    b.HasOne("HomeServer.Core.Models.Expenses.ExpenseTarget", null)
                         .WithMany()
                         .HasForeignKey("ExpenseTargetId")
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("HomeServer.Core.Models.Todo", b =>
+            modelBuilder.Entity("HomeServer.Core.Models.Todos.Todo", b =>
                 {
-                    b.HasOne("HomeServer.Core.Models.User", null)
+                    b.HasOne("HomeServer.Core.Models.User.User", null)
                         .WithMany()
                         .HasForeignKey("CreatedBy")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-                    b.HasOne("HomeServer.Core.Models.TodoCategory", null)
+                    b.HasOne("HomeServer.Core.Models.Todos.TodoCategory", null)
                         .WithMany("Todos")
                         .HasForeignKey("TodoCategoryId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("HomeServer.Core.Models.User", null)
+                    b.HasOne("HomeServer.Core.Models.User.User", null)
                         .WithMany()
                         .HasForeignKey("UpdatedBy")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("HomeServer.Core.Models.TodoCategory", b =>
+            modelBuilder.Entity("HomeServer.Core.Models.Todos.TodoCategory", b =>
                 {
-                    b.HasOne("HomeServer.Core.Models.User", null)
+                    b.HasOne("HomeServer.Core.Models.User.User", null)
                         .WithMany()
                         .HasForeignKey("CreatedBy")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("HomeServer.Core.Models.User", null)
+                    b.HasOne("HomeServer.Core.Models.User.User", null)
                         .WithMany()
                         .HasForeignKey("UpdatedBy")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("HomeServer.Core.Models.ExpenseCategory", b =>
+            modelBuilder.Entity("HomeServer.Core.Models.Expenses.ExpenseCategory", b =>
                 {
                     b.Navigation("Expenses");
                 });
 
-            modelBuilder.Entity("HomeServer.Core.Models.TodoCategory", b =>
+            modelBuilder.Entity("HomeServer.Core.Models.Todos.TodoCategory", b =>
                 {
                     b.Navigation("Todos");
                 });

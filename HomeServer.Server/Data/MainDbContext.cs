@@ -1,5 +1,8 @@
 using Microsoft.EntityFrameworkCore;
 using HomeServer.Core.Models;
+using HomeServer.Core.Models.Expenses;
+using HomeServer.Core.Models.Todos;
+using HomeServer.Core.Models.User;
 using Microsoft.EntityFrameworkCore.Metadata.Conventions;
 
 namespace HomeServer.Server.Data;

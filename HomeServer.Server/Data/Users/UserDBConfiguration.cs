@@ -1,15 +1,14 @@
-using HomeServer.Core.Models;
+using HomeServer.Core.Models.User;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace HomeServer.Server.Data;
+namespace HomeServer.Server.Data.Users;
 
 public class UserDBConfiguration : IEntityTypeConfiguration<User> {
     public void Configure(EntityTypeBuilder<User> builder) {
         builder
-            .HasIndex(user => user.Guid)
-            .IsUnique();
-
+            .HasKey(user => user.Guid);
+        
         builder
             .HasIndex(user => user.Email)
             .IsUnique();

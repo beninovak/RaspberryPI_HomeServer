@@ -6,7 +6,9 @@ using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 using HomeServer.Client.Util;
+using HomeServer.Core.DTOs.Todos;
 using HomeServer.Core.Models;
+using HomeServer.Core.Models.Todos;
 
 namespace HomeServer.Client.Controls;
 
@@ -39,17 +41,18 @@ public partial class TodoItem : UserControl {
         IsEditing = false;
     }
 
-    public async Task TodoCheckUncheck(object? sender, PointerReleasedEventArgs e) {
-        if (DataContext is not Todo todo) {
+    private void TodoCheckUncheck(object? sender, PointerReleasedEventArgs e) {
+        if (DataContext is not TodoReadDTO todoReadDto) {
             return;
         }
-        todo.IsDone = !todo.IsDone;
-        await TrySaveChanges(todo);
+        // TODO - readDTO to updateDTO
+        //todo.IsDone = !todo.IsDone;
+        //_ = TrySaveChangesAsync(todoReadDto.Guid, todoUpdateDto);
     }
     
-    private async Task TrySaveChanges(Todo todo) {
-        JsonContent jsonBody = JsonContent.Create(todo);
-        (bool isSuccess,  string message) = await rufr.Ruf($"todos/{todo.Id}", HttpMethod.Patch, jsonBody, nameof(Todo));
+    private async Task TrySaveChangesAsync(Guid guid, TodoUpdateDTO todoUpdateDto) {
+        JsonContent jsonBody = JsonContent.Create(todoUpdateDto);
+        (bool isSuccess,  string message) = await rufr.RufAsync($"todos/{todoUpdateDto}", HttpMethod.Patch, jsonBody, nameof(Todo));
 
         if (!isSuccess) {
             Console.WriteLine(message);

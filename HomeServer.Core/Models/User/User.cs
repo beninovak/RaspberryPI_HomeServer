@@ -1,18 +1,14 @@
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using Microsoft.EntityFrameworkCore;
 
-namespace HomeServer.Core.Models;
+namespace HomeServer.Core.Models.User;
 
 public class User {
-    public uint Id { get; init; }
-    public Guid Guid { get; init; } = Guid.NewGuid();
+    public Guid Guid { get; init; }
     public required string FirstName { get; init; }
     public required string LastName { get; init; }
     [EmailAddress] public required string Email { get; init; }
-    
     public required string Password { get; init; }
     public required string PasswordSalt { get; init; }
-    public DateTime CreatedAt { get; init; }
+    public required DateTime CreatedAt { get; init; }
     public DateTime? UpdatedAt { get; init; }
 }

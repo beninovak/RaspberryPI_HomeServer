@@ -1,8 +1,9 @@
 using HomeServer.Core.DTOs;
+using HomeServer.Core.DTOs.User;
 
 namespace HomeServer.Server.Services;
 
 public interface IUserService {
-    public Task RegisterUser(RegisterDTO user);
-    public Task LoginUser(LoginDTO loginUser);
+    public Task RegisterUserAsync(RegisterDTO user);
+    public Task LoginUserAsync(LoginDTO loginUser);
 }

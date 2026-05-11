@@ -14,7 +14,7 @@ public class Rufr {
         Timeout = TimeSpan.FromMilliseconds(5000),
     };
     
-    private async Task<bool> IveServer() {
+    private async Task<bool> IveServerAsync() {
         try {
             var response = await httpClient.GetAsync("health");
             return response.IsSuccessStatusCode;
@@ -32,8 +32,8 @@ public class Rufr {
         return $"{modelName.Trim().ToLower()}_save.json";
     }
     
-    public async Task<T?> Ruf<T>(string path, string modelName) {
-        if (!await IveServer()) {
+    public async Task<T?> RufAsync<T>(string path, string modelName) {
+        if (!await IveServerAsync()) {
             if (!Directory.Exists(ClientConstants.localSaveFolder)) {
                 return default;
             }
@@ -52,8 +52,8 @@ public class Rufr {
         return await response.Content.ReadFromJsonAsync<T>();
     }
     
-    public async Task<(bool, string)> Ruf(string path, HttpMethod method, JsonContent body, string modelName) {
-        if (!await IveServer()) {
+    public async Task<(bool, string)> RufAsync(string path, HttpMethod method, JsonContent body, string modelName) {
+        if (!await IveServerAsync()) {
             
             Directory.CreateDirectory(ClientConstants.localChangesFolder);
             string changesPath = Path.Combine(ClientConstants.localChangesFolder, GetSaveFileNameFromModelName(modelName));
@@ -71,6 +71,7 @@ public class Rufr {
             HttpMethod.Put => await httpClient.PutAsync(path, body),
             HttpMethod.Post => await httpClient.PostAsync(path, body),
             HttpMethod.Patch => await httpClient.PatchAsync(path, body),
+            HttpMethod.Delete => await httpClient.DeleteAsync(path),
             _ => await httpClient.PostAsync(path, body),
         };
 

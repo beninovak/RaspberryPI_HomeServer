@@ -1,17 +1,24 @@
-using HomeServer.Core.DTOs;
-using HomeServer.Core.Models;
+using HomeServer.Core.DTOs.Todos;
 
 namespace HomeServer.Server.Repositories;
 
 public interface ITodoRepository {
-    Task<List<TodoByCategoryDTO>> GetAllTodos();
-    Task<TodoDTO?> GetTodoById(uint id);
+    Task<List<TodoCategoryReadDTO>> GetAllTodosAsync();
+    Task<TodoReadDTO?> GetTodoByGuidAsync(Guid guid);
 
-    Task CreateTodo(TodoDTO todo);
+    Task CreateTodoAsync(TodoCreateDTO todoCreateDto);
 
-    Task UpdateTodo(TodoDTO todo);
+    Task UpdateTodoAsync(Guid guid, TodoUpdateDTO TodoUpdateDto);
+    
+    /// <param name="guid">The Guid of the item to delete</param>
+    /// <returns>true if the deletion was successful, false if the item was not found.</returns>
+    Task<bool> DeleteTodoAsync(Guid guid);
 
-    Task CreateTodoCategory(TodoCategoryDTO todoCategory);
+    Task CreateTodoCategoryAsync(TodoCategoryCreateDTO todoCategoryCreateDto);
 
-    Task UpdateTodoCategory(TodoCategoryDTO todoCategory);
+    Task UpdateTodoCategoryAsync(Guid guid, TodoCategoryUpdateDTO todoCategoryUpdateDto);
+
+    /// <param name="guid">The Guid of the category to delete</param>
+    /// <returns>true if the deletion was successful, false if the item was not found.</returns>
+    Task<bool> DeleteTodoCategoryAsync(Guid guid);
 }

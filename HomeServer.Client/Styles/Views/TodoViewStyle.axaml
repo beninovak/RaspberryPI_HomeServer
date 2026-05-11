@@ -1,0 +1,34 @@
+<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    
+    <Style Selector="ScrollViewer#Todos">
+        <Setter Property="Margin" Value="0, 40, 0,0"></Setter>
+    </Style>
+    
+    <Style Selector="Expander.todo-category">
+        <Setter Property="Margin" Value="20, 0, 20, 20"></Setter>
+        <Setter Property="VerticalAlignment" Value="Top"></Setter>
+        <Setter Property="HorizontalAlignment" Value="Stretch"></Setter>
+    </Style>
+    
+    <Style Selector="StackPanel.button-panel">
+        <Setter Property="Margin" Value="0, 20, 0, 0"></Setter>
+        <Setter Property="HorizontalAlignment" Value="Center"></Setter>
+    </Style>
+    
+    <Style Selector="Button.panel-btn">
+        <Setter Property="Margin" Value="0, 0, 12, 0"></Setter>
+        <Setter Property="Height" Value="48"></Setter>
+        <Setter Property="Padding" Value="8"></Setter>
+        <Setter Property="FontSize" Value="24"></Setter>
+        <Setter Property="Background" Value="Transparent"></Setter>
+        
+        <Style Selector="^ /template/ ContentPresenter#PART_ContentPresenter">
+            <Setter Property="Background" Value="#FF25AF5F"></Setter>
+        </Style>
+        
+        <Style Selector="^ /template/ ContentPresenter#PART_ContentPresenter:pointerover">
+            <Setter Property="Background" Value="#FF1D9C53"></Setter>
+        </Style>
+    </Style>
+</Styles>

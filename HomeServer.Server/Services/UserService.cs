@@ -1,4 +1,5 @@
 using HomeServer.Core.DTOs;
+using HomeServer.Core.DTOs.User;
 using HomeServer.Core.Models;
 using HomeServer.Server.Exceptions;
 using HomeServer.Server.Repositories;
@@ -6,27 +7,27 @@ using HomeServer.Server.Repositories;
 namespace HomeServer.Server.Services;
 
 public class UserService(IUserRepository userRepository) : IUserService {
-    public async Task RegisterUser(RegisterDTO registerDto) {
+    public async Task RegisterUserAsync(RegisterDTO registerDto) {
         ValidateRegister(registerDto);
         
-        if (await userRepository.UserWithEmailExists(registerDto.Email)) {
+        if (await userRepository.UserWithEmailExistsAsync(registerDto.Email)) {
             throw new NonExistentUserException("A user with this email already exists.");
         }
         
         string passwordSalt = BCrypt.Net.BCrypt.GenerateSalt();
         string passwordHash = BCrypt.Net.BCrypt.HashPassword(registerDto.Password, passwordSalt, true);
 
-        await userRepository.CreateUser(registerDto, passwordSalt, passwordHash);
+        await userRepository.CreateUserAsync(registerDto, passwordSalt, passwordHash);
     }
     
-    public async Task LoginUser(LoginDTO loginUser) {
+    public async Task LoginUserAsync(LoginDTO loginUser) {
         ValidateLogin(loginUser.Email, loginUser.Password);
 
-        if (await userRepository.UserWithEmailExists(loginUser.Email)) {
+        if (await userRepository.UserWithEmailExistsAsync(loginUser.Email)) {
             throw new NonExistentUserException("No user with such an email exists.");
         }
 
-        string dbSalt = await userRepository.GetPasswordSaltFromUserEmail(loginUser.Email);
+        string dbSalt = await userRepository.GetPasswordSaltFromUserEmailAsync(loginUser.Email);
         string passwordHash = BCrypt.Net.BCrypt.HashPassword(loginUser.Password, dbSalt, true);
         
         if (!BCrypt.Net.BCrypt.EnhancedVerify(loginUser.Password, passwordHash)) {

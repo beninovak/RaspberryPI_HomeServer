@@ -8,7 +8,7 @@
              Classes="search-box">
     
     <UserControl.Styles>
-        <StyleInclude Source="../Styles/SearchBoxStyle.axaml"></StyleInclude>
+        <StyleInclude Source="../Styles/Controls/SearchBoxStyle.axaml"></StyleInclude>
     </UserControl.Styles>
     
     <Grid ColumnDefinitions="20*, 60*, 20*">

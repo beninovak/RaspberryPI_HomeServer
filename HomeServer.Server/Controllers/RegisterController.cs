@@ -1,4 +1,5 @@
 using HomeServer.Core.DTOs;
+using HomeServer.Core.DTOs.User;
 using Microsoft.AspNetCore.Mvc;
 using HomeServer.Core.Models;
 using HomeServer.Server.Exceptions;
@@ -13,9 +14,9 @@ public class RegisterController(IUserService userService) : ControllerBase {
 
     // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
     [HttpPost]
-    public async Task<ActionResult> Register([FromBody] RegisterDTO registerDto) {
+    public async Task<ActionResult> RegisterAsync([FromBody] RegisterDTO registerDto) {
         try {
-            await userService.RegisterUser(registerDto);
+            await userService.RegisterUserAsync(registerDto);
             return Ok(new {
                 message = $"Successfully added a user with email {registerDto.Email}"
             });

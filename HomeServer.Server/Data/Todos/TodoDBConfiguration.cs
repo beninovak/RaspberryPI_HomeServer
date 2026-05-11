@@ -1,35 +1,35 @@
-using HomeServer.Core.Models;
+using HomeServer.Core.Models.Todos;
+using HomeServer.Core.Models.User;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace HomeServer.Server.Data;
+namespace HomeServer.Server.Data.Todos;
 
 public class TodoDBConfiguration : IEntityTypeConfiguration<Todo> {
     public void Configure(EntityTypeBuilder<Todo> builder) {
         builder
+            .HasKey(todo => todo.Guid);
+        
+        builder
             .HasOne<TodoCategory>()
             .WithMany(category => category.Todos) //  Navigation property
             .HasForeignKey(todo => todo.TodoCategoryId)
-            .HasPrincipalKey(category => category.Id)
+            .HasPrincipalKey(category => category.Guid)
             .OnDelete(DeleteBehavior.Cascade);
         
         builder
             .HasOne<User>()
             .WithMany()
             .HasForeignKey(todo => todo.CreatedBy)
-            .HasPrincipalKey(user => user.Id)
+            .HasPrincipalKey(user => user.Guid)
             .OnDelete(DeleteBehavior.Cascade);
 
         builder
             .HasOne<User>()
             .WithMany()
             .HasForeignKey(todo => todo.UpdatedBy)
-            .HasPrincipalKey(user => user.Id)
+            .HasPrincipalKey(user => user.Guid)
             .OnDelete(DeleteBehavior.Cascade);
-
-        builder
-            .HasIndex(todo => todo.Guid)
-            .IsUnique();
         
         builder
             .HasAlternateKey(todo => new { todo.TodoCategoryId, todo.Order }); // Unique constraint

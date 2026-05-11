@@ -21,8 +21,10 @@ public partial class TodoView : UserControl {
     private void TodoView_OnLoaded(object? sender, RoutedEventArgs e) {
         VM = DataContext as TodoViewModel;
         if (VM is null) {
-            throw new Exception("TodoViewModel is null. Fix your code buddy!");
+            return;
+            //throw new Exception("TodoViewModel is null. Fix your code buddy!");
         }
+        _ = VM.AssembleTodosAsync();
     }
     
     // TODO - Poglej če se to da nekak prestaut u SearchBox alpa TodoViewModel...
@@ -33,5 +35,13 @@ public partial class TodoView : UserControl {
             return;
         }
         VM!.Search(searchBox.Input);
+    }
+
+    private void AddCategoryBtn_OnPointerReleased(object? sender, PointerReleasedEventArgs e) {
+        throw new NotImplementedException();
+    }
+
+    private void AddTodoBtn_OnPointerReleased(object? sender, PointerReleasedEventArgs e) {
+        throw new NotImplementedException();
     }
 }

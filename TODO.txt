@@ -1,5 +1,4 @@
 GENERAL:
-    - PostgreSQL setup...check how to do backups
     - Static IP: prever opcije
     - Find another git platform?
     - Port forwarding on router
@@ -18,7 +17,6 @@ SERVER:
     - Add forgotten password
     - Probej sam seb maile poslt...Proton nima CLI
     - Add DateStart/DateEnd to ExpenseTarget? In case a target isn't recurring...
-    
     - Test if cascade delete works: Deleting User -> deletes categories -> deletes todos
 
 CLIENT

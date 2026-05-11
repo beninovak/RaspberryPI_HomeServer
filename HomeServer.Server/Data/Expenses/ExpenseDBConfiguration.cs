@@ -1,35 +1,35 @@
-using HomeServer.Core.Models;
+using HomeServer.Core.Models.Expenses;
+using HomeServer.Core.Models.User;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace HomeServer.Server.Data;
+namespace HomeServer.Server.Data.Expenses;
 
 public class ExpenseDBConfiguration : IEntityTypeConfiguration<Expense> {
     public void Configure(EntityTypeBuilder<Expense> builder) {
         builder
+            .HasKey(expense => expense.Guid);
+        
+        builder
             .HasOne<ExpenseCategory>()
             .WithMany(category => category.Expenses) //  Navigation property
             .HasForeignKey(expense => expense.ExpenseCategoryId)
-            .HasPrincipalKey(category => category.Id)
+            .HasPrincipalKey(category => category.Guid)
             .OnDelete(DeleteBehavior.Cascade);
         
         builder
             .HasOne<User>()
             .WithMany()
             .HasForeignKey(expense => expense.CreatedBy)
-            .HasPrincipalKey(user => user.Id)
+            .HasPrincipalKey(user => user.Guid)
             .OnDelete(DeleteBehavior.Cascade);
 
         builder
             .HasOne<User>()
             .WithMany()
             .HasForeignKey(expense => expense.UpdatedBy)
-            .HasPrincipalKey(user => user.Id)
+            .HasPrincipalKey(user => user.Guid)
             .OnDelete(DeleteBehavior.Cascade);
-
-        builder
-            .HasIndex(todo => todo.Guid)
-            .IsUnique();
 
         builder
             .HasAlternateKey(todo => new { todo.ExpenseCategoryId, todo.Order }); // Unique constraint
