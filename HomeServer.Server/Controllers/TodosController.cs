@@ -37,13 +37,14 @@ public class TodosController(ITodoRepository todoRepository) : ControllerBase {
             message = $"Successfully added a todo with content {todoCreateDto.Content}.",
         });
     }
-    
+
     [HttpPatch("{guid:guid}")]
     public async Task<ActionResult> UpdateTodoAsync([FromRoute] Guid guid, [FromBody] TodoUpdateDTO todoUpdateDto) {
-        await todoRepository.UpdateTodoAsync(guid, todoUpdateDto);
-        return Ok(new {
-            message = $"Successfully changed todo.",
-        });
+        if (await todoRepository.UpdateTodoAsync(guid, todoUpdateDto)) {
+            return NotFound("Could not find a todo with the provided guid. No update occurred.");
+        }
+        
+        return Ok("Successfully changed todo.");
     }
 
     [HttpDelete("{guid:guid}")]
@@ -52,7 +53,7 @@ public class TodosController(ITodoRepository todoRepository) : ControllerBase {
             return NoContent();
         }
 
-        return NotFound("Could not find a todo with the provided guid. No deletions occurred.");
+        return NotFound("Could not find a todo with the provided guid. No deletion occurred.");
     }
     #endregion
     

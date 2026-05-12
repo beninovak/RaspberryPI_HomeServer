@@ -18,6 +18,7 @@ SERVER:
     - Probej sam seb maile poslt...Proton nima CLI
     - Add DateStart/DateEnd to ExpenseTarget? In case a target isn't recurring...
     - Test if cascade delete works: Deleting User -> deletes categories -> deletes todos
+    - CreatedAt/UpdateAt/CreatedBy/UpdatedBy properties in ReadDTOs? Maybe..?
 
 CLIENT
     - Handle case where server is down/connection't

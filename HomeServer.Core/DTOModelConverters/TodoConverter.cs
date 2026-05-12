@@ -10,10 +10,8 @@ public class TodoConverter : ITodoConverter {
     public TodoReadDTO TodoModelToReadDTO(Todo todo) {
         return new TodoReadDTO {
             Guid = todo.Guid,
-            Order = todo.Order,
             Content = todo.Content,
             IsDone = todo.IsDone,
-            CreatedAt = todo.CreatedAt,
         };
     }
 
@@ -45,6 +43,7 @@ public class TodoConverter : ITodoConverter {
             Content = todoUpdateDto.Content,
             IsDone = todoUpdateDto.IsDone,
             UpdatedBy = todoUpdateDto.UpdatedBy,
+            UpdatedAt = DateTime.UtcNow,
         };
     }
 
@@ -66,6 +65,7 @@ public class TodoConverter : ITodoConverter {
             Guid = guid,
             Order = todoCategoryUpdateDto.Order,
             Title = todoCategoryUpdateDto.Title,
+            UpdatedAt = DateTime.UtcNow,
             Todos = [], // TODO - poglej če to rab bit required? Maybe bol daj sam nullable pa ga kle ne passam?
         };
     }

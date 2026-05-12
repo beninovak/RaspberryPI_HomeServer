@@ -22,7 +22,6 @@ public class TodoRepository(MainDbContext db, ITodoConverter todoConverter) : IT
         todoCategories.Select(category => new TodoCategoryReadDTO {
             Guid = category.Guid,
             Title = category.Title,
-            Order = category.Order,
             Todos = todoConverter.TodoModelToReadDTOMany(category.Todos),
         }));
 
@@ -40,10 +39,15 @@ public class TodoRepository(MainDbContext db, ITodoConverter todoConverter) : IT
         await db.SaveChangesAsync();
     }
 
-    public async Task UpdateTodoAsync(Guid guid, TodoUpdateDTO TodoUpdateDto) {
+    public async Task<bool> UpdateTodoAsync(Guid guid, TodoUpdateDTO TodoUpdateDto) {
+        if (await GetTodoByGuidAsync(guid) is null) {
+            return false;
+        }
+        
         Todo todo = todoConverter.TodoUpdateDTOToModel(guid, TodoUpdateDto);
         db.Todos.Update(todo);
         await db.SaveChangesAsync();
+        return true;
     }
 
     public async Task<bool> DeleteTodoAsync(Guid guid) {
