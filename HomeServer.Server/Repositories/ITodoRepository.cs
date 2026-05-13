@@ -8,7 +8,7 @@ public interface ITodoRepository {
 
     Task CreateTodoAsync(TodoCreateDTO todoCreateDto);
 
-    Task<bool> UpdateTodoAsync(Guid guid, TodoUpdateDTO TodoUpdateDto);
+    Task<bool> UpdateTodoAsync(Guid guid, TodoUpdateDTO todoUpdateDto);
     
     /// <param name="guid">The Guid of the item to delete</param>
     /// <returns>true if the deletion was successful, false if the item was not found.</returns>

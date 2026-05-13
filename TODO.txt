@@ -9,8 +9,10 @@ GENERAL:
     - Tests
     - User Environment.StackTrace for non-error loggin maybe?
     - Convert from UTC time in DB to Ljubljana time
+    - Prever Angular/Blazor za front end names WPF gugugaga!!!
     
 SERVER:
+    - Preber si o ASP controller testih
     - Make ExceptionFilter...register in options in Program.cs...log errors
     - Test request bad paths (login when no such user, register with existing email, etc._)
     - Proper auth
