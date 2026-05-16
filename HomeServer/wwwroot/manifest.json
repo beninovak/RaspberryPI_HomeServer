@@ -1,0 +1,17 @@
+{
+  "name": "HomeServer",
+  "start_url": "index.html",
+  "display": "standalone",
+  "icons": [
+    {
+      "src": "Assets/checkmark.png",
+      "type": "image/png",
+      "sizes": "512x512"
+    },
+    {
+      "src": "Assets/checkmark.png",
+      "type": "image/png",
+      "sizes": "192x192"
+    }
+  ]
+}

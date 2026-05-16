@@ -1,0 +1,185 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+    <PropertyGroup>
+        <TargetFramework>net10.0</TargetFramework>
+        <Nullable>enable</Nullable>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <RootNamespace>HomeServer</RootNamespace>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="BCrypt.Net-Next" Version="4.1.0" />
+        <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="10.0.7" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="10.0.7">
+            <PrivateAssets>all</PrivateAssets>
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="10.0.7">
+            <PrivateAssets>all</PrivateAssets>
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
+        <PackageReference Include="Microsoft.VisualStudio.Threading.Analyzers" Version="17.14.15">
+          <PrivateAssets>all</PrivateAssets>
+          <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
+        <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="10.0.2" />
+        <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="10.0.1" />
+        <PackageReference Include="Swashbuckle.AspNetCore" Version="10.1.7" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Content Include="wwwroot\node_modules\.bin\tsc" />
+      <Content Include="wwwroot\node_modules\.bin\tsserver" />
+      <Content Include="wwwroot\node_modules\.package-lock.json" />
+      <Content Include="wwwroot\node_modules\typescript\bin\tsc" />
+      <Content Include="wwwroot\node_modules\typescript\bin\tsserver" />
+      <Content Include="wwwroot\node_modules\typescript\lib\cs\diagnosticMessages.generated.json" />
+      <Content Include="wwwroot\node_modules\typescript\lib\de\diagnosticMessages.generated.json" />
+      <Content Include="wwwroot\node_modules\typescript\lib\es\diagnosticMessages.generated.json" />
+      <Content Include="wwwroot\node_modules\typescript\lib\fr\diagnosticMessages.generated.json" />
+      <Content Include="wwwroot\node_modules\typescript\lib\it\diagnosticMessages.generated.json" />
+      <Content Include="wwwroot\node_modules\typescript\lib\ja\diagnosticMessages.generated.json" />
+      <Content Include="wwwroot\node_modules\typescript\lib\ko\diagnosticMessages.generated.json" />
+      <Content Include="wwwroot\node_modules\typescript\lib\lib.d.ts" />
+      <Content Include="wwwroot\node_modules\typescript\lib\lib.decorators.d.ts" />
+      <Content Include="wwwroot\node_modules\typescript\lib\lib.decorators.legacy.d.ts" />
+      <Content Include="wwwroot\node_modules\typescript\lib\lib.dom.asynciterable.d.ts" />
+      <Content Include="wwwroot\node_modules\typescript\lib\lib.dom.d.ts" />
+      <Content Include="wwwroot\node_modules\typescript\lib\lib.dom.iterable.d.ts" />
+      <Content Include="wwwroot\node_modules\typescript\lib\lib.es2015.collection.d.ts" />
+      <Content Include="wwwroot\node_modules\typescript\lib\lib.es2015.core.d.ts" />
+      <Content Include="wwwroot\node_modules\typescript\lib\lib.es2015.d.ts" />
+      <Content Include="wwwroot\node_modules\typescript\lib\lib.es2015.generator.d.ts" />
+      <Content Include="wwwroot\node_modules\typescript\lib\lib.es2015.iterable.d.ts" />
+      <Content Include="wwwroot\node_modules\typescript\lib\lib.es2015.promise.d.ts" />
+      <Content Include="wwwroot\node_modules\typescript\lib\lib.es2015.proxy.d.ts" />
+      <Content Include="wwwroot\node_modules\typescript\lib\lib.es2015.reflect.d.ts" />
+      <Content Include="wwwroot\node_modules\typescript\lib\lib.es2015.symbol.d.ts" />
+      <Content Include="wwwroot\node_modules\typescript\lib\lib.es2015.symbol.wellknown.d.ts" />
+      <Content Include="wwwroot\node_modules\typescript\lib\lib.es2016.array.include.d.ts" />
+      <Content Include="wwwroot\node_modules\typescript\lib\lib.es2016.d.ts" />
+      <Content Include="wwwroot\node_modules\typescript\lib\lib.es2016.full.d.ts" />
+      <Content Include="wwwroot\node_modules\typescript\lib\lib.es2016.intl.d.ts" />
+      <Content Include="wwwroot\node_modules\typescript\lib\lib.es2017.arraybuffer.d.ts" />
+      <Content Include="wwwroot\node_modules\typescript\lib\lib.es2017.d.ts" />
+      <Content Include="wwwroot\node_modules\typescript\lib\lib.es2017.date.d.ts" />
+      <Content Include="wwwroot\node_modules\typescript\lib\lib.es2017.full.d.ts" />
+      <Content Include="wwwroot\node_modules\typescript\lib\lib.es2017.intl.d.ts" />
+      <Content Include="wwwroot\node_modules\typescript\lib\lib.es2017.object.d.ts" />
+      <Content Include="wwwroot\node_modules\typescript\lib\lib.es2017.sharedmemory.d.ts" />
+      <Content Include="wwwroot\node_modules\typescript\lib\lib.es2017.string.d.ts" />
+      <Content Include="wwwroot\node_modules\typescript\lib\lib.es2017.typedarrays.d.ts" />
+      <Content Include="wwwroot\node_modules\typescript\lib\lib.es2018.asyncgenerator.d.ts" />
+      <Content Include="wwwroot\node_modules\typescript\lib\lib.es2018.asynciterable.d.ts" />
+      <Content Include="wwwroot\node_modules\typescript\lib\lib.es2018.d.ts" />
+      <Content Include="wwwroot\node_modules\typescript\lib\lib.es2018.full.d.ts" />
+      <Content Include="wwwroot\node_modules\typescript\lib\lib.es2018.intl.d.ts" />
+      <Content Include="wwwroot\node_modules\typescript\lib\lib.es2018.promise.d.ts" />
+      <Content Include="wwwroot\node_modules\typescript\lib\lib.es2018.regexp.d.ts" />
+      <Content Include="wwwroot\node_modules\typescript\lib\lib.es2019.array.d.ts" />
+      <Content Include="wwwroot\node_modules\typescript\lib\lib.es2019.d.ts" />
+      <Content Include="wwwroot\node_modules\typescript\lib\lib.es2019.full.d.ts" />
+      <Content Include="wwwroot\node_modules\typescript\lib\lib.es2019.intl.d.ts" />
+      <Content Include="wwwroot\node_modules\typescript\lib\lib.es2019.object.d.ts" />
+      <Content Include="wwwroot\node_modules\typescript\lib\lib.es2019.string.d.ts" />
+      <Content Include="wwwroot\node_modules\typescript\lib\lib.es2019.symbol.d.ts" />
+      <Content Include="wwwroot\node_modules\typescript\lib\lib.es2020.bigint.d.ts" />
+      <Content Include="wwwroot\node_modules\typescript\lib\lib.es2020.d.ts" />
+      <Content Include="wwwroot\node_modules\typescript\lib\lib.es2020.date.d.ts" />
+      <Content Include="wwwroot\node_modules\typescript\lib\lib.es2020.full.d.ts" />
+      <Content Include="wwwroot\node_modules\typescript\lib\lib.es2020.intl.d.ts" />
+      <Content Include="wwwroot\node_modules\typescript\lib\lib.es2020.number.d.ts" />
+      <Content Include="wwwroot\node_modules\typescript\lib\lib.es2020.promise.d.ts" />
+      <Content Include="wwwroot\node_modules\typescript\lib\lib.es2020.sharedmemory.d.ts" />
+      <Content Include="wwwroot\node_modules\typescript\lib\lib.es2020.string.d.ts" />
+      <Content Include="wwwroot\node_modules\typescript\lib\lib.es2020.symbol.wellknown.d.ts" />
+      <Content Include="wwwroot\node_modules\typescript\lib\lib.es2021.d.ts" />
+      <Content Include="wwwroot\node_modules\typescript\lib\lib.es2021.full.d.ts" />
+      <Content Include="wwwroot\node_modules\typescript\lib\lib.es2021.intl.d.ts" />
+      <Content Include="wwwroot\node_modules\typescript\lib\lib.es2021.promise.d.ts" />
+      <Content Include="wwwroot\node_modules\typescript\lib\lib.es2021.string.d.ts" />
+      <Content Include="wwwroot\node_modules\typescript\lib\lib.es2021.weakref.d.ts" />
+      <Content Include="wwwroot\node_modules\typescript\lib\lib.es2022.array.d.ts" />
+      <Content Include="wwwroot\node_modules\typescript\lib\lib.es2022.d.ts" />
+      <Content Include="wwwroot\node_modules\typescript\lib\lib.es2022.error.d.ts" />
+      <Content Include="wwwroot\node_modules\typescript\lib\lib.es2022.full.d.ts" />
+      <Content Include="wwwroot\node_modules\typescript\lib\lib.es2022.intl.d.ts" />
+      <Content Include="wwwroot\node_modules\typescript\lib\lib.es2022.object.d.ts" />
+      <Content Include="wwwroot\node_modules\typescript\lib\lib.es2022.regexp.d.ts" />
+      <Content Include="wwwroot\node_modules\typescript\lib\lib.es2022.string.d.ts" />
+      <Content Include="wwwroot\node_modules\typescript\lib\lib.es2023.array.d.ts" />
+      <Content Include="wwwroot\node_modules\typescript\lib\lib.es2023.collection.d.ts" />
+      <Content Include="wwwroot\node_modules\typescript\lib\lib.es2023.d.ts" />
+      <Content Include="wwwroot\node_modules\typescript\lib\lib.es2023.full.d.ts" />
+      <Content Include="wwwroot\node_modules\typescript\lib\lib.es2023.intl.d.ts" />
+      <Content Include="wwwroot\node_modules\typescript\lib\lib.es2024.arraybuffer.d.ts" />
+      <Content Include="wwwroot\node_modules\typescript\lib\lib.es2024.collection.d.ts" />
+      <Content Include="wwwroot\node_modules\typescript\lib\lib.es2024.d.ts" />
+      <Content Include="wwwroot\node_modules\typescript\lib\lib.es2024.full.d.ts" />
+      <Content Include="wwwroot\node_modules\typescript\lib\lib.es2024.object.d.ts" />
+      <Content Include="wwwroot\node_modules\typescript\lib\lib.es2024.promise.d.ts" />
+      <Content Include="wwwroot\node_modules\typescript\lib\lib.es2024.regexp.d.ts" />
+      <Content Include="wwwroot\node_modules\typescript\lib\lib.es2024.sharedmemory.d.ts" />
+      <Content Include="wwwroot\node_modules\typescript\lib\lib.es2024.string.d.ts" />
+      <Content Include="wwwroot\node_modules\typescript\lib\lib.es2025.collection.d.ts" />
+      <Content Include="wwwroot\node_modules\typescript\lib\lib.es2025.d.ts" />
+      <Content Include="wwwroot\node_modules\typescript\lib\lib.es2025.float16.d.ts" />
+      <Content Include="wwwroot\node_modules\typescript\lib\lib.es2025.full.d.ts" />
+      <Content Include="wwwroot\node_modules\typescript\lib\lib.es2025.intl.d.ts" />
+      <Content Include="wwwroot\node_modules\typescript\lib\lib.es2025.iterator.d.ts" />
+      <Content Include="wwwroot\node_modules\typescript\lib\lib.es2025.promise.d.ts" />
+      <Content Include="wwwroot\node_modules\typescript\lib\lib.es2025.regexp.d.ts" />
+      <Content Include="wwwroot\node_modules\typescript\lib\lib.es5.d.ts" />
+      <Content Include="wwwroot\node_modules\typescript\lib\lib.es6.d.ts" />
+      <Content Include="wwwroot\node_modules\typescript\lib\lib.esnext.array.d.ts" />
+      <Content Include="wwwroot\node_modules\typescript\lib\lib.esnext.collection.d.ts" />
+      <Content Include="wwwroot\node_modules\typescript\lib\lib.esnext.d.ts" />
+      <Content Include="wwwroot\node_modules\typescript\lib\lib.esnext.date.d.ts" />
+      <Content Include="wwwroot\node_modules\typescript\lib\lib.esnext.decorators.d.ts" />
+      <Content Include="wwwroot\node_modules\typescript\lib\lib.esnext.disposable.d.ts" />
+      <Content Include="wwwroot\node_modules\typescript\lib\lib.esnext.error.d.ts" />
+      <Content Include="wwwroot\node_modules\typescript\lib\lib.esnext.full.d.ts" />
+      <Content Include="wwwroot\node_modules\typescript\lib\lib.esnext.intl.d.ts" />
+      <Content Include="wwwroot\node_modules\typescript\lib\lib.esnext.sharedmemory.d.ts" />
+      <Content Include="wwwroot\node_modules\typescript\lib\lib.esnext.temporal.d.ts" />
+      <Content Include="wwwroot\node_modules\typescript\lib\lib.esnext.typedarrays.d.ts" />
+      <Content Include="wwwroot\node_modules\typescript\lib\lib.scripthost.d.ts" />
+      <Content Include="wwwroot\node_modules\typescript\lib\lib.webworker.asynciterable.d.ts" />
+      <Content Include="wwwroot\node_modules\typescript\lib\lib.webworker.d.ts" />
+      <Content Include="wwwroot\node_modules\typescript\lib\lib.webworker.importscripts.d.ts" />
+      <Content Include="wwwroot\node_modules\typescript\lib\lib.webworker.iterable.d.ts" />
+      <Content Include="wwwroot\node_modules\typescript\lib\pl\diagnosticMessages.generated.json" />
+      <Content Include="wwwroot\node_modules\typescript\lib\pt-br\diagnosticMessages.generated.json" />
+      <Content Include="wwwroot\node_modules\typescript\lib\ru\diagnosticMessages.generated.json" />
+      <Content Include="wwwroot\node_modules\typescript\lib\tr\diagnosticMessages.generated.json" />
+      <Content Include="wwwroot\node_modules\typescript\lib\tsc.js" />
+      <Content Include="wwwroot\node_modules\typescript\lib\tsserver.js" />
+      <Content Include="wwwroot\node_modules\typescript\lib\tsserverlibrary.d.ts" />
+      <Content Include="wwwroot\node_modules\typescript\lib\tsserverlibrary.js" />
+      <Content Include="wwwroot\node_modules\typescript\lib\typescript.d.ts" />
+      <Content Include="wwwroot\node_modules\typescript\lib\typescript.js" />
+      <Content Include="wwwroot\node_modules\typescript\lib\typesMap.json" />
+      <Content Include="wwwroot\node_modules\typescript\lib\typingsInstaller.js" />
+      <Content Include="wwwroot\node_modules\typescript\lib\watchGuard.js" />
+      <Content Include="wwwroot\node_modules\typescript\lib\zh-cn\diagnosticMessages.generated.json" />
+      <Content Include="wwwroot\node_modules\typescript\lib\zh-tw\diagnosticMessages.generated.json" />
+      <Content Include="wwwroot\node_modules\typescript\lib\_tsc.js" />
+      <Content Include="wwwroot\node_modules\typescript\lib\_tsserver.js" />
+      <Content Include="wwwroot\node_modules\typescript\lib\_typingsInstaller.js" />
+      <Content Include="wwwroot\node_modules\typescript\LICENSE.txt" />
+      <Content Include="wwwroot\node_modules\typescript\package.json" />
+      <Content Include="wwwroot\node_modules\typescript\README.md" />
+      <Content Include="wwwroot\node_modules\typescript\SECURITY.md" />
+      <Content Include="wwwroot\node_modules\typescript\ThirdPartyNoticeText.txt" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="wwwroot\node_modules\@babel\" />
+      <Folder Include="wwwroot\node_modules\@redocly\" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Compile Include="wwwroot\Rufr.cs" />
+    </ItemGroup>
+
+</Project>

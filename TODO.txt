@@ -21,9 +21,8 @@ SERVER:
     - CreatedAt/UpdateAt/CreatedBy/UpdatedBy properties in ReadDTOs? Maybe..?
 
 CLIENT
-    - Handle case where server is down/connection't
+    - Handle case where server is down/connection't ( Service workers )
     - Complementary colors instead of salmon
     - Add forgotten password screen
     - Fingerprint reader?
-    - Check if fast switching between views is fucky...Maybe cache data from previous view for a bit? 
-        Or just save each view to a local variable (MainWindowViewModel) when created?
+    - Favicon
