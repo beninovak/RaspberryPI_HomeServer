@@ -10,7 +10,7 @@ public interface IExpenseConverter {
     public Expense ExpenseUpdateDTOToModel(Guid guid, ExpenseUpdateDTO expenseUpdateDto);
     public ExpenseCategory ExpenseCategoryCreateDTOToModel(ExpenseCategoryCreateDTO expenseCategoryCreateDto);
     public ExpenseCategory ExpenseCategoryUpdateDTOToModel(Guid guid, ExpenseCategoryUpdateDTO expenseCategoryUpdateDto);
-    public ExpenseReadDTO ExpenseTargetModelToReadDTO(Expense expenseTarget);
+    public ExpenseTargetReadDTO? ExpenseTargetModelToReadDTO(ExpenseTarget? expenseTarget);
     public ExpenseTarget ExpenseTargetCreateDTOToModel(ExpenseTargetCreateDTO expenseTargetCreateDto);
     public ExpenseTarget ExpenseTargetUpdateDTOToModel(Guid guid, ExpenseTargetUpdateDTO expenseTargetUpdateDto);
 }

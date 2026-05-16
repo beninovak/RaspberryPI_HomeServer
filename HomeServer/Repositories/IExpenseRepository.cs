@@ -8,7 +8,7 @@ public interface IExpenseRepository {
 
     Task CreateExpenseAsync(ExpenseCreateDTO expenseCreateDto);
 
-    Task<bool> UpdateExpenseAsync(Guid guid, ExpenseUpdateDTO ExpenseUpdateDto);
+    Task<bool> UpdateExpenseAsync(Guid guid, ExpenseUpdateDTO expenseUpdateDto);
     
     /// <param name="guid">The Guid of the item to delete</param>
     /// <returns>true if the deletion was successful, false if the item was not found.</returns>
@@ -24,5 +24,5 @@ public interface IExpenseRepository {
     
     Task CreateExpenseTargetAsync(ExpenseTargetCreateDTO expenseTargetCreateDto);
 
-    Task<bool> UpdateExpenseTargetAsync(Guid guid, ExpenseTargetUpdateDTO ExpenseTargetUpdateDto);
+    Task UpdateExpenseTargetAsync(Guid guid, ExpenseTargetUpdateDTO expenseTargetUpdateDto);
 }

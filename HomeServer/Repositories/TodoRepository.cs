@@ -39,12 +39,12 @@ public class TodoRepository(MainDbContext db, ITodoConverter todoConverter) : IT
         await db.SaveChangesAsync();
     }
 
-    public async Task<bool> UpdateTodoAsync(Guid guid, TodoUpdateDTO TodoUpdateDto) {
+    public async Task<bool> UpdateTodoAsync(Guid guid, TodoUpdateDTO todoUpdateDto) {
         if (await GetTodoByGuidAsync(guid) is null) {
             return false;
         }
         
-        Todo todo = todoConverter.TodoUpdateDTOToModel(guid, TodoUpdateDto);
+        Todo todo = todoConverter.TodoUpdateDTOToModel(guid, todoUpdateDto);
         db.Todos.Update(todo);
         await db.SaveChangesAsync();
         return true;
@@ -59,7 +59,6 @@ public class TodoRepository(MainDbContext db, ITodoConverter todoConverter) : IT
         await db.SaveChangesAsync();
         return true;
     }
-
     #endregion
 
     #region Categories

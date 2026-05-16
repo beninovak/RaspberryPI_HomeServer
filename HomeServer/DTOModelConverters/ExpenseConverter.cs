@@ -74,9 +74,12 @@ public class ExpenseConverter : IExpenseConverter {
     #endregion
 
     #region Target
+    public ExpenseTargetReadDTO? ExpenseTargetModelToReadDTO(ExpenseTarget? expenseTarget) {
+        if (expenseTarget is null) {
+            return null;
+        }
 
-    public ExpenseReadDTO ExpenseTargetModelToReadDTO(Expense expenseTarget) {
-        return new ExpenseReadDTO {
+        return new ExpenseTargetReadDTO {
             Guid = expenseTarget.Guid,
             Title = expenseTarget.Title,
             Total = expenseTarget.Total,
