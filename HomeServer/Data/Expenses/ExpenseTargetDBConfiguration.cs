@@ -26,8 +26,8 @@ public class ExpenseTargetDBConfiguration : IEntityTypeConfiguration<ExpenseTarg
 
         builder
             .HasOne<ExpenseCategory>()
-            .WithMany()
-            .HasForeignKey(target => target.ExpenseCategoryId)
-            .HasPrincipalKey(category => category.Guid);
+            .WithOne(category => category.Target)
+            .HasForeignKey<ExpenseTarget>(target => target.ExpenseCategoryId)
+            .HasPrincipalKey<ExpenseCategory>(category => category.Guid);
     }
 }

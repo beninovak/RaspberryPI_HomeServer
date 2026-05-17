@@ -29,7 +29,7 @@ public class TodoRepository(MainDbContext db, ITodoConverter todoConverter) : IT
     }
 
     public async Task<TodoReadDTO?> GetTodoByGuidAsync(Guid guid) {
-        Todo? todo = await db.Todos.FirstOrDefaultAsync(todo => todo.Guid.Equals(guid));
+        Todo? todo = await db.Todos.FindAsync(guid);
         return todo is null ? null : todoConverter.TodoModelToReadDTO(todo);
     }
 
@@ -68,10 +68,16 @@ public class TodoRepository(MainDbContext db, ITodoConverter todoConverter) : IT
         await db.SaveChangesAsync();
     }
 
-    public async Task UpdateTodoCategoryAsync(Guid guid, TodoCategoryUpdateDTO todoCategoryUpdateDto) {
+    public async Task<bool> UpdateTodoCategoryAsync(Guid guid, TodoCategoryUpdateDTO todoCategoryUpdateDto) {
+        TodoCategory? category = await db.TodoCategories.FindAsync(guid);
+        if (category is null) {
+            return false;
+        }
+        
         TodoCategory todoCategory = todoConverter.TodoCategoryUpdateDTOToModel(guid, todoCategoryUpdateDto);
         db.TodoCategories.Update(todoCategory);
         await db.SaveChangesAsync();
+        return true;
     }
 
     public async Task<bool> DeleteTodoCategoryAsync(Guid guid) {

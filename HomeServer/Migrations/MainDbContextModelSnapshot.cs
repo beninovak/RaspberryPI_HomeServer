@@ -120,6 +120,9 @@ namespace HomeServer.Migrations
                     b.Property<Guid>("CreatedBy")
                         .HasColumnType("uuid");
 
+                    b.Property<string>("Description")
+                        .HasColumnType("text");
+
                     b.Property<Guid>("ExpenseCategoryId")
                         .HasColumnType("uuid");
 
@@ -140,7 +143,8 @@ namespace HomeServer.Migrations
 
                     b.HasIndex("CreatedBy");
 
-                    b.HasIndex("ExpenseCategoryId");
+                    b.HasIndex("ExpenseCategoryId")
+                        .IsUnique();
 
                     b.HasIndex("UpdatedBy");
 
@@ -334,8 +338,8 @@ namespace HomeServer.Migrations
                         .IsRequired();
 
                     b.HasOne("HomeServer.Models.Expenses.ExpenseCategory", null)
-                        .WithMany()
-                        .HasForeignKey("ExpenseCategoryId")
+                        .WithOne("Target")
+                        .HasForeignKey("HomeServer.Models.Expenses.ExpenseTarget", "ExpenseCategoryId")
                         .IsRequired();
 
                     b.HasOne("HomeServer.Models.User.User", null)
@@ -389,6 +393,8 @@ namespace HomeServer.Migrations
             modelBuilder.Entity("HomeServer.Models.Expenses.ExpenseCategory", b =>
                 {
                     b.Navigation("Expenses");
+
+                    b.Navigation("Target");
                 });
 
             modelBuilder.Entity("HomeServer.Models.Todos.TodoCategory", b =>

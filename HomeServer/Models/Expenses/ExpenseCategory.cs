@@ -10,5 +10,5 @@ public class ExpenseCategory {
     public Guid? UpdatedBy { get; init; }
     public DateTime? UpdatedAt { get; init; }
     public List<Expense> Expenses { get; init; } = [];
-    public ExpenseTarget? Target { get; init; } = null;
+    public ExpenseTarget? Target { get; init; }
 }

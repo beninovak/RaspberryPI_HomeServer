@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace HomeServer.Controllers;
 
 [Route("api/forgotten-password")]
+[ApiController]
 public class ForgottenPasswordController(IUserRepository userRepository) : ControllerBase {
     
     [HttpGet("{guid:guid}")]

@@ -3,11 +3,23 @@ using Microsoft.EntityFrameworkCore;
 using HomeServer.Data;
 using HomeServer.Repositories;
 using HomeServer.Services;
+using Microsoft.EntityFrameworkCore.Storage;
 
-// TODO - Dej to u environment variable
-const string DBSource = "Host=localhost;Port=5432;Database=homeserver;Username=homeserver_user;Password=ko_te_jebe_333";
-//Environment.GetEnvironmentVariable()
 var builder = WebApplication.CreateBuilder(args);
+
+var config = builder.Configuration;
+
+string? dbHostname = config["HOME_SERVER_DB_HOST"];
+string? dbPort =     config["HOME_SERVER_DB_PORT"];
+string? dbName =     config["HOME_SERVER_DB_NAME"];
+string? dbUsername = config["HOME_SERVER_DB_USER"];
+string? dbPassword = config["HOME_SERVER_DB_PASS"];
+
+if (dbHostname is null || dbPort is null || dbName is null || dbUsername is null || dbPassword is null) {
+    throw new Exception("One or more database environment variables not found!");
+}
+
+string DBSource = $"Host={dbHostname};Port={dbPort};Database={dbName};Username={dbUsername};Password={dbPassword}";
 
 // Add services to the container.
 builder.Services
@@ -41,6 +53,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
+
 app.UseSwagger();
 
 // Configure the HTTP request pipeline.

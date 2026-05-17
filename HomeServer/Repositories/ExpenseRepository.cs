@@ -1,4 +1,8 @@
+using HomeServer.Data;
+using HomeServer.DTOModelConverters;
 using HomeServer.DTOs.Expenses;
+using HomeServer.Models.Expenses;
+using Microsoft.EntityFrameworkCore;
 
 namespace HomeServer.Repositories;
 
@@ -26,15 +30,18 @@ public class ExpenseRepository(MainDbContext db, IExpenseConverter expenseConver
 
         return ExpenseCategoryReadDTOs;
     }
+    
     public async Task<ExpenseReadDTO?> GetExpenseByGuidAsync(Guid guid) {
-        Expense? expense = await db.Expenses.FirstOrDefaultAsync(expense => expense.Guid.Equals(guid));
+        Expense? expense = await db.Expenses.FindAsync(guid);
         return expense is null ? null : expenseConverter.ExpenseModelToReadDTO(expense);
     }
+    
     public async Task CreateExpenseAsync(ExpenseCreateDTO expenseCreateDto) {
         Expense expense = expenseConverter.ExpenseCreateDTOToModel(expenseCreateDto);
         db.Expenses.Add(expense);
         await db.SaveChangesAsync();
     }
+    
     public async Task<bool> UpdateExpenseAsync(Guid guid, ExpenseUpdateDTO expenseUpdateDto) {
         if (await GetExpenseByGuidAsync(guid) is null) {
             return false;
@@ -45,6 +52,7 @@ public class ExpenseRepository(MainDbContext db, IExpenseConverter expenseConver
         await db.SaveChangesAsync();
         return true;
     }
+    
     public async Task<bool> DeleteExpenseAsync(Guid guid) {
         Expense? expense = await db.Expenses.FirstOrDefaultAsync(expense => expense.Guid.Equals(guid));
         if (expense is null) {
@@ -56,17 +64,25 @@ public class ExpenseRepository(MainDbContext db, IExpenseConverter expenseConver
     }
     #endregion
 
-    #region Category
+    #region Categories
     public async Task CreateExpenseCategoryAsync(ExpenseCategoryCreateDTO expenseCategoryCreateDto) {
         ExpenseCategory expenseCategory = expenseConverter.ExpenseCategoryCreateDTOToModel(expenseCategoryCreateDto);
         db.ExpenseCategories.Add(expenseCategory);
         await db.SaveChangesAsync();
     }
-    public async Task UpdateExpenseCategoryAsync(Guid guid, ExpenseCategoryUpdateDTO expenseCategoryUpdateDto) {
+    
+    public async Task<bool> UpdateExpenseCategoryAsync(Guid guid, ExpenseCategoryUpdateDTO expenseCategoryUpdateDto) {
+        ExpenseCategory? category = await db.ExpenseCategories.FindAsync(guid);
+        if (category is null) {
+            return false;
+        }
+        
         ExpenseCategory expenseCategory = expenseConverter.ExpenseCategoryUpdateDTOToModel(guid, expenseCategoryUpdateDto);
         db.ExpenseCategories.Update(expenseCategory);
         await db.SaveChangesAsync();
+        return true;
     }
+    
     public async Task<bool> DeleteExpenseCategoryAsync(Guid guid) {
         ExpenseCategory? category = await db.ExpenseCategories.FirstOrDefaultAsync(category => category.Guid.Equals(guid));
         if (category is null) {
@@ -78,14 +94,35 @@ public class ExpenseRepository(MainDbContext db, IExpenseConverter expenseConver
     }
     #endregion
     
+    
+    #region Targets
     public async Task CreateExpenseTargetAsync(ExpenseTargetCreateDTO expenseTargetCreateDto) {
         ExpenseTarget expenseTarget = expenseConverter.ExpenseTargetCreateDTOToModel(expenseTargetCreateDto);
         db.ExpenseTargets.Add(expenseTarget);
         await db.SaveChangesAsync();
     }
-    public async Task UpdateExpenseTargetAsync(Guid guid, ExpenseTargetUpdateDTO expenseTargetUpdateDto) {
+    
+    public async Task<bool> UpdateExpenseTargetAsync(Guid guid, ExpenseTargetUpdateDTO expenseTargetUpdateDto) {
+        ExpenseTarget? target = await db.ExpenseTargets.FindAsync(guid);
+        if (target is null) {
+            return false;
+        }
+        
         ExpenseTarget expenseTarget = expenseConverter.ExpenseTargetUpdateDTOToModel(guid, expenseTargetUpdateDto);
         db.ExpenseTargets.Update(expenseTarget);
         await db.SaveChangesAsync();
+        return true;
     }
+
+    public async Task<bool> DeleteExpenseTargetAsync(Guid guid) {
+        ExpenseTarget? target = await db.ExpenseTargets.FirstOrDefaultAsync(target => target.Guid.Equals(guid));
+        if (target is null) {
+            return false;
+        }
+        db.ExpenseTargets.Remove(target);
+        await db.SaveChangesAsync();
+        return true;
+    }
+
+    #endregion
 }

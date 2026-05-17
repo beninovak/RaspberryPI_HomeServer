@@ -6,7 +6,7 @@ namespace HomeServer.Controllers;
 
 [Route("api/todos")]
 [ApiController]
-public class TodosController(ITodoRepository todoRepository) : ControllerBase {
+public class TodoController(ITodoRepository todoRepository) : ControllerBase {
     
     #region Todos
     [HttpGet]
@@ -55,8 +55,7 @@ public class TodosController(ITodoRepository todoRepository) : ControllerBase {
     #endregion
     
     #region Categories
-    [Route("categories")]
-    [HttpPost]
+    [HttpPost("categories")]
     public async Task<ActionResult> CreateTodoCategoryAsync([FromBody] TodoCategoryCreateDTO todoCategoryCreateDto) {
         await todoRepository.CreateTodoCategoryAsync(todoCategoryCreateDto);
         return Ok(new {
@@ -66,10 +65,13 @@ public class TodosController(ITodoRepository todoRepository) : ControllerBase {
     
     [HttpPatch("categories/{guid:guid}")]
     public async Task<ActionResult> UpdateTodoCategoryAsync([FromRoute] Guid guid, [FromBody] TodoCategoryUpdateDTO todoCategoryUpdateDto) {
-        await todoRepository.UpdateTodoCategoryAsync(guid, todoCategoryUpdateDto);
-        return Ok(new {
-            message = $"Successfully updated todo category with title \"{todoCategoryUpdateDto.Title}\".",
-        });
+        if (await todoRepository.UpdateTodoCategoryAsync(guid, todoCategoryUpdateDto)) {
+            return Ok(new {
+                message = $"Successfully updated todo category with title \"{todoCategoryUpdateDto.Title}\".",
+            });
+        }
+
+        return NotFound("Could not find a todo category with the provided guid. No updates occurred.");
     }
     
     [HttpDelete("categories/{guid:guid}")]
@@ -78,7 +80,7 @@ public class TodosController(ITodoRepository todoRepository) : ControllerBase {
             return NoContent();
         }
 
-        return NotFound("Could not find a todo with the provided guid. No deletions occurred.");
+        return NotFound("Could not find a todo category with the provided guid. No deletions occurred.");
     }
     #endregion
 }
