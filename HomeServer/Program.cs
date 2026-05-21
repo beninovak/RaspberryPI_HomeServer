@@ -1,4 +1,3 @@
-using HomeServer.DTOModelConverters;
 using Microsoft.EntityFrameworkCore;
 using HomeServer.Data;
 using HomeServer.Repositories;
@@ -43,10 +42,6 @@ builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<ITodoRepository, TodoRepository>();
 builder.Services.AddScoped<IExpenseRepository, ExpenseRepository>();
 
-builder.Services.AddScoped<IUserConverter, UserConverter>();
-builder.Services.AddScoped<ITodoConverter, TodoConverter>();
-builder.Services.AddScoped<IExpenseConverter, ExpenseConverter>();
-
 builder.Services.AddScoped<IUserService, UserService>();
 
 builder.Services.AddEndpointsApiExplorer();
@@ -61,6 +56,7 @@ if (app.Environment.IsDevelopment()) {
     app.MapOpenApi();
 }
 
+app.UseExceptionHandler("/exceptions");
 app.UseHttpsRedirection();
 app.UseAuthorization();
 app.UseDefaultFiles();

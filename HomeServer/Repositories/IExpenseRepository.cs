@@ -1,31 +1,32 @@
 using HomeServer.DTOs.Expenses;
+using HomeServer.Models.Expenses;
 
 namespace HomeServer.Repositories;
 
 public interface IExpenseRepository {
-    Task<List<ExpenseCategoryReadDTO>> GetAllExpensesAsync();
+    Task<List<ExpenseCategory>> GetAllAsync();
     
-    Task<ExpenseReadDTO?> GetExpenseByGuidAsync(Guid guid);
+    Task<Expense?> GetByGuidAsync(Guid guid);
 
-    Task CreateExpenseAsync(ExpenseCreateDTO expenseCreateDto);
+    Task CreateAsync(Expense expense);
 
-    Task<bool> UpdateExpenseAsync(Guid guid, ExpenseUpdateDTO expenseUpdateDto);
+    Task UpdateAsync(Expense expense);
     
-    /// <param name="guid">The Guid of the item to delete</param>
-    /// <returns>true if the deletion was successful, false if the item was not found.</returns>
-    Task<bool> DeleteExpenseAsync(Guid guid);
+    Task DeleteAsync(Expense expense);
 
-    Task CreateExpenseCategoryAsync(ExpenseCategoryCreateDTO expenseCategoryCreateDto);
-
-    Task<bool> UpdateExpenseCategoryAsync(Guid guid, ExpenseCategoryUpdateDTO expenseCategoryUpdateDto);
-
-    /// <param name="guid">The Guid of the category to delete</param>
-    /// <returns>true if the deletion was successful, false if the item was not found.</returns>
-    Task<bool> DeleteExpenseCategoryAsync(Guid guid);
+    Task<ExpenseCategory?> GetCategoryByGuidAsync(Guid guid);
     
-    Task CreateExpenseTargetAsync(ExpenseTargetCreateDTO expenseTargetCreateDto);
+    Task CreateCategoryAsync(ExpenseCategory expenseCategory);
 
-    Task<bool> UpdateExpenseTargetAsync(Guid guid, ExpenseTargetUpdateDTO expenseTargetUpdateDto);
+    Task UpdateCategoryAsync(ExpenseCategory expenseCategory);
+
+    Task DeleteCategoryAsync(ExpenseCategory expenseCategory);
     
-    Task<bool> DeleteExpenseTargetAsync(Guid guid);
+    Task<ExpenseTarget?> GetTargetByGuidAsync(Guid guid);
+    
+    Task CreateTargetAsync(ExpenseTarget expenseTarget);
+
+    Task UpdateTargetAsync(ExpenseTarget expenseTarget);
+    
+    Task DeleteTargetAsync(ExpenseTarget expenseTarget);
 }

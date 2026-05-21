@@ -1,12 +1,13 @@
 using HomeServer.DTOs.Expenses;
 using HomeServer.Repositories;
+using HomeServer.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HomeServer.Controllers;
 
 [Route("api/expenses")]
 [ApiController]
-public class ExpenseController(IExpenseRepository expenseRepository) : ControllerBase {
+public class ExpenseController(IExpenseService expenseService) : ControllerBase {
     
     #region Expenses
     [HttpGet]

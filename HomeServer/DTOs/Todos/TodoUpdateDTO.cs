@@ -1,6 +1,7 @@
 namespace HomeServer.DTOs.Todos;
 
 public class TodoUpdateDTO {
+    public required Guid guid { get; init; }
     public required Guid TodoCategoryId { get; init; }
     public required uint Order { get; init; }
     public required string Content { get; init; }

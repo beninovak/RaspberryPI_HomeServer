@@ -9,14 +9,11 @@ GENERAL:
     - Tests
     - User Environment.StackTrace for non-error loggin maybe?
     - Convert from UTC time in DB to Ljubljana time
-    - Prever Angular/Blazor za front end names WPF gugugaga!!!
     
 SERVER:
     - Preber si o ASP controller testih
     - Make ExceptionFilter...register in options in Program.cs...log errors
-    - Test request bad paths (login when no such user, register with existing email, etc._)
-    - Proper auth
-    - Add forgotten password
+    - Test request bad paths (login when no such user, register with existing email, etc.)
     - Probej sam seb maile poslt...Proton nima CLI
     - Add DateStart/DateEnd to ExpenseTarget? In case a target isn't recurring...
     - Test if cascade delete works: Deleting User -> deletes categories -> deletes todos
@@ -28,3 +25,13 @@ CLIENT
     - Add forgotten password screen
     - Fingerprint reader?
     - Favicon
+    
+    
+    
+FIXES:
+
+nared service za stvari...vsa logika tja not
+
+metode preimenuj iz GetAllTodos v GetAll npr. ker se tip že vid iz classa
+return IReadOnly collection iz repositorijev
+basic validation with EF attributes (update/create dtos)

@@ -1,11 +1,77 @@
 using HomeServer.DTOs.Expenses;
 using HomeServer.Models.Expenses;
+using HomeServer.Repositories;
 
-namespace HomeServer.DTOModelConverters;
+namespace HomeServer.Services;
 
-public class ExpenseConverter : IExpenseConverter {
+public class ExpenseService(IExpenseRepository expenseRepository) : IExpenseService {
     
-    #region Expense
+    #region Expenses
+    public async Task<List<ExpenseCategoryReadDTO>> GetAllAsync() {
+        List<ExpenseCategory> expenseCategories = await expenseRepository.GetAllAsync();
+        return expenseCategories.Select(category => new ExpenseCategoryReadDTO {
+            Guid = category.Guid,
+            Title = category.Title,
+            Expenses = ExpenseModelToReadDTOMany(category.Expenses),
+            Color = category.Color,
+            Target = ExpenseTargetModelToReadDTO(category.Target),
+        }).ToList();
+    }
+    
+    public async Task<ExpenseReadDTO?> GetByGuidAsync(Guid guid) {
+        throw new NotImplementedException();
+    }
+    
+    public async Task<Guid> CreateAsync(ExpenseCreateDTO expenseCreateDto) {
+        throw new NotImplementedException();
+    }
+    
+    public async Task UpdateAsync(ExpenseUpdateDTO expenseUpdateDto) {
+        throw new NotImplementedException();
+    }
+    
+    public async Task DeleteAsync(Guid guid) {
+        throw new NotImplementedException();
+    }
+    #endregion
+
+    #region Categories
+    public async Task<ExpenseCategoryReadDTO> GetCategoryByGuidAsync(Guid guid) {
+        throw new NotImplementedException();
+    }
+    
+    public async Task<Guid> CreateCategoryAsync(ExpenseCategoryCreateDTO expenseCategoryCreateDto) {
+        throw new NotImplementedException();
+    }
+    
+    public async Task UpdateCategoryAsync(Guid guid, ExpenseCategoryUpdateDTO expenseCategoryUpdateDto) {
+        throw new NotImplementedException();
+    }
+    
+    public async Task DeleteCategoryAsync(Guid guid) {
+        throw new NotImplementedException();
+    }
+    #endregion
+
+    #region Targets
+    public async Task<ExpenseTargetReadDTO> GetTargetByGuidAsync(Guid guid) {
+        throw new NotImplementedException();
+    }
+    
+    public async Task<Guid> CreateTargetAsync(ExpenseTargetCreateDTO expenseTargetCreateDto) {
+        throw new NotImplementedException();
+    }
+    
+    public async Task UpdateTargetAsync(Guid guid, ExpenseTargetUpdateDTO expenseTargetUpdateDto) {
+        throw new NotImplementedException();
+    }
+    
+    public async Task DeleteTargetAsync(Guid guid) {
+        throw new NotImplementedException();
+    }
+    #endregion
+    
+    #region Converters
     public ExpenseReadDTO ExpenseModelToReadDTO(Expense expense) {
         return new ExpenseReadDTO {
             Guid = expense.Guid,
@@ -48,9 +114,7 @@ public class ExpenseConverter : IExpenseConverter {
             UpdatedAt = DateTime.UtcNow,
         };
     }
-    #endregion
-
-    #region Category
+    
     public ExpenseCategory ExpenseCategoryCreateDTOToModel(ExpenseCategoryCreateDTO expenseCategoryCreateDto) {
         return new ExpenseCategory {
             Guid = Guid.NewGuid(),
@@ -71,9 +135,7 @@ public class ExpenseConverter : IExpenseConverter {
             UpdatedAt = DateTime.UtcNow,
         };
     }
-    #endregion
-
-    #region Target
+    
     public ExpenseTargetReadDTO? ExpenseTargetModelToReadDTO(ExpenseTarget? expenseTarget) {
         if (expenseTarget is null) {
             return null;
