@@ -7,27 +7,27 @@ public interface IExpenseService {
     
     Task<List<ExpenseCategoryReadDTO>> GetAllAsync();
        
-    Task<ExpenseReadDTO?> GetByGuidAsync(Guid guid);
+    Task<ExpenseReadDTO> GetByGuidAsync(Guid guid);
 
-    Task<Guid> CreateAsync(ExpenseCreateDTO expenseCreateDto);
+    Task<Guid> CreateAsync(ExpenseCreateDTO createDto);
     
-    Task UpdateAsync(ExpenseUpdateDTO expenseUpdateDto);
+    Task UpdateAsync(Guid guid, ExpenseUpdateDTO updateDto);
 
     Task DeleteAsync(Guid guid);
     
     Task<ExpenseCategoryReadDTO> GetCategoryByGuidAsync(Guid guid);
 
-    Task<Guid> CreateCategoryAsync(ExpenseCategoryCreateDTO expenseCategoryCreateDto);
+    Task<Guid> CreateCategoryAsync(ExpenseCategoryCreateDTO categoryCreateDto);
 
-    Task UpdateCategoryAsync(Guid guid, ExpenseCategoryUpdateDTO expenseCategoryUpdateDto);
+    Task UpdateCategoryAsync(Guid guid, ExpenseCategoryUpdateDTO categoryUpdateDto);
 
     Task DeleteCategoryAsync(Guid guid);
     
     Task<ExpenseTargetReadDTO> GetTargetByGuidAsync(Guid guid);
 
-    Task<Guid> CreateTargetAsync(ExpenseTargetCreateDTO expenseTargetCreateDto);
+    Task<Guid> CreateTargetAsync(ExpenseTargetCreateDTO targetCreateDto);
 
-    Task UpdateTargetAsync(Guid guid, ExpenseTargetUpdateDTO expenseTargetUpdateDto);
+    Task UpdateTargetAsync(Guid guid, ExpenseTargetUpdateDTO targetUpdateDto);
 
     Task DeleteTargetAsync(Guid guid);
 }

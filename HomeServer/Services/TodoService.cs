@@ -27,14 +27,14 @@ public class TodoService(ITodoRepository todoRepository) : ITodoService {
         return ModelToReadDTO(todo);
     }
     
-    public async Task<Guid> CreateAsync(TodoCreateDTO todoCreateDto) {
-        Todo newTodo = CreateDTOToModel(todoCreateDto);
+    public async Task<Guid> CreateAsync(TodoCreateDTO createDto) {
+        Todo newTodo = CreateDTOToModel(createDto);
         await todoRepository.CreateAsync(newTodo);
         return newTodo.Guid;
     }
     
-    public async Task UpdateAsync(Guid guid, TodoUpdateDTO todoUpdateDto) {
-        await todoRepository.UpdateAsync(UpdateDTOToModel(guid, todoUpdateDto));
+    public async Task UpdateAsync(Guid guid, TodoUpdateDTO updateDto) {
+        await todoRepository.UpdateAsync(UpdateDTOToModel(guid, updateDto));
     }
     
     public async Task DeleteAsync(Guid guid) {
@@ -55,14 +55,14 @@ public class TodoService(ITodoRepository todoRepository) : ITodoService {
         return CategoryModelToReadDTO(category);
     }
 
-    public async Task<Guid> CreateCategoryAsync(TodoCategoryCreateDTO todoCategoryCreateDto) {
-        TodoCategory newCategory = CategoryCreateDTOToModel(todoCategoryCreateDto);
+    public async Task<Guid> CreateCategoryAsync(TodoCategoryCreateDTO categoryCreateDto) {
+        TodoCategory newCategory = CategoryCreateDTOToModel(categoryCreateDto);
         await todoRepository.CreateCategoryAsync(newCategory);
         return newCategory.Guid;
     }
     
-    public async Task UpdateCategoryAsync(Guid guid, TodoCategoryUpdateDTO todoCategoryUpdateDto) {
-        await todoRepository.UpdateCategoryAsync(CategoryUpdateDTOToModel(guid, todoCategoryUpdateDto));
+    public async Task UpdateCategoryAsync(Guid guid, TodoCategoryUpdateDTO categoryUpdateDto) {
+        await todoRepository.UpdateCategoryAsync(CategoryUpdateDTOToModel(guid, categoryUpdateDto));
     }
     
     public async Task DeleteCategoryAsync(Guid guid) {
@@ -91,54 +91,54 @@ public class TodoService(ITodoRepository todoRepository) : ITodoService {
         return convertedList;
     }
 
-    private Todo CreateDTOToModel(TodoCreateDTO todoCreateDto) {
+    private Todo CreateDTOToModel(TodoCreateDTO createDto) {
         return new Todo {
-            Guid = todoCreateDto.Guid,
-            TodoCategoryId = todoCreateDto.TodoCategoryId,
-            Order = todoCreateDto.Order,
-            Content = todoCreateDto.Content,
+            Guid = createDto.Guid,
+            TodoCategoryId = createDto.TodoCategoryId,
+            Order = createDto.Order,
+            Content = createDto.Content,
             IsDone = false,
-            CreatedBy = todoCreateDto.CreatedBy,
+            CreatedBy = createDto.CreatedBy,
             CreatedAt = DateTime.UtcNow,
         };
     }
 
-    private Todo UpdateDTOToModel(Guid guid, TodoUpdateDTO todoUpdateDto) {
+    private Todo UpdateDTOToModel(Guid guid, TodoUpdateDTO updateDto) {
         return new Todo {
             Guid = guid,
-            TodoCategoryId = todoUpdateDto.TodoCategoryId,
-            Order = todoUpdateDto.Order,
-            Content = todoUpdateDto.Content,
-            IsDone = todoUpdateDto.IsDone,
-            UpdatedBy = todoUpdateDto.UpdatedBy,
+            TodoCategoryId = updateDto.TodoCategoryId,
+            Order = updateDto.Order,
+            Content = updateDto.Content,
+            IsDone = updateDto.IsDone,
+            UpdatedBy = updateDto.UpdatedBy,
             UpdatedAt = DateTime.UtcNow,
         };
     }
 
-    private TodoCategoryReadDTO CategoryModelToReadDTO(TodoCategory todoCategory) {
+    private TodoCategoryReadDTO CategoryModelToReadDTO(TodoCategory category) {
         return new TodoCategoryReadDTO {
-            Guid = todoCategory.Guid,
-            Title = todoCategory.Title,
-            Todos = ModelToReadDTOMany(todoCategory.Todos),
+            Guid = category.Guid,
+            Title = category.Title,
+            Todos = ModelToReadDTOMany(category.Todos),
         };
     }
     
-    private TodoCategory CategoryCreateDTOToModel(TodoCategoryCreateDTO todoCategoryCreateDto) {
+    private TodoCategory CategoryCreateDTOToModel(TodoCategoryCreateDTO categoryCreateDto) {
         return new TodoCategory {
-            Guid = todoCategoryCreateDto.Guid,
-            Order = todoCategoryCreateDto.Order,
-            Title = todoCategoryCreateDto.Title,
-            CreatedBy = todoCategoryCreateDto.CreatedBy,
+            Guid = categoryCreateDto.Guid,
+            Order = categoryCreateDto.Order,
+            Title = categoryCreateDto.Title,
+            CreatedBy = categoryCreateDto.CreatedBy,
             CreatedAt = DateTime.UtcNow,
             Todos = [],
         };
     }
-    
-    private TodoCategory CategoryUpdateDTOToModel(Guid guid, TodoCategoryUpdateDTO todoCategoryUpdateDto) {
+
+    private static TodoCategory CategoryUpdateDTOToModel(Guid guid, TodoCategoryUpdateDTO categoryUpdateDto) {
         return new TodoCategory {
             Guid = guid,
-            Order = todoCategoryUpdateDto.Order,
-            Title = todoCategoryUpdateDto.Title,
+            Order = categoryUpdateDto.Order,
+            Title = categoryUpdateDto.Title,
             UpdatedAt = DateTime.UtcNow,
             Todos = [], // TODO - poglej če to rab bit required? Maybe bol daj sam nullable pa ga kle ne passam?
         };

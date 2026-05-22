@@ -9,9 +9,9 @@ public interface ITodoService {
 
     public Task<TodoReadDTO> GetByGuidAsync(Guid guid);
 
-    public Task<Guid> CreateAsync(TodoCreateDTO todoCreateDto);
+    public Task<Guid> CreateAsync(TodoCreateDTO createDto);
 
-    public Task UpdateAsync(Guid guid, TodoUpdateDTO todoUpdateDto);
+    public Task UpdateAsync(Guid guid, TodoUpdateDTO updateDto);
 
     public Task DeleteAsync(Guid guid);
     

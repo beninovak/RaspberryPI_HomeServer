@@ -11,107 +11,84 @@ public class ExpenseController(IExpenseService expenseService) : ControllerBase 
     
     #region Expenses
     [HttpGet]
-    public async Task<ActionResult<List<ExpenseCategoryReadDTO>>> GetAllExpensesAsync() {
-        return Ok(await expenseRepository.GetAllExpensesAsync());
+    public async Task<ActionResult<List<ExpenseCategoryReadDTO>>> GetAllAsync() {
+        return Ok(await expenseService.GetAllAsync());
     }
     
     [HttpGet("{guid:guid}")]
-    public async Task<ActionResult<ExpenseReadDTO>> GetExpenseByIdAsync([FromRoute] Guid guid) {
-        ExpenseReadDTO? expenseDto = await expenseRepository.GetExpenseByGuidAsync(guid);
-    
-        if (expenseDto is null) {
-            return NotFound(new {
-                message = "No expense with that guid exists.",
-            });
-        }
-    
+    public async Task<ActionResult<ExpenseReadDTO>> GetByGuidAsync([FromRoute] Guid guid) {
+        ExpenseReadDTO expenseDto = await expenseService.GetByGuidAsync(guid);
         return Ok(expenseDto);
     }
     
     [HttpPost]
-    public async Task<ActionResult> CreateExpenseAsync([FromBody] ExpenseCreateDTO expenseCreateDto) {
-        await expenseRepository.CreateExpenseAsync(expenseCreateDto);
-        return Ok(new {
-            message = $"Successfully added an expense with title {expenseCreateDto.Title}.",
-        });
+    public async Task<ActionResult> CreateAsync([FromBody] ExpenseCreateDTO createDto) {
+        Guid createdGuid = await expenseService.CreateAsync(createDto);
+        return CreatedAtRoute(nameof(GetByGuidAsync), new { guid = createdGuid });
     }
 
     [HttpPatch("{guid:guid}")]
-    public async Task<ActionResult> UpdateExpenseAsync([FromRoute] Guid guid, [FromBody] ExpenseUpdateDTO expenseUpdateDto) {
-        if (await expenseRepository.UpdateExpenseAsync(guid, expenseUpdateDto)) {
-            return NotFound("Could not find an expense with the provided guid. No update occurred.");
-        }
-        
+    public async Task<ActionResult> UpdateAsync([FromRoute] Guid guid, [FromBody] ExpenseUpdateDTO updateDto) {
+        await expenseService.UpdateAsync(guid, updateDto);
         return Ok("Successfully changed expense.");
     }
 
     [HttpDelete("{guid:guid}")]
-    public async Task<ActionResult> DeleteExpenseAsync([FromRoute] Guid guid) {
-        if (await expenseRepository.DeleteExpenseAsync(guid)) {
-            return NoContent();
-        }
-
-        return NotFound("Could not find a expense with the provided guid. No deletion occurred.");
+    public async Task<ActionResult> DeleteAsync([FromRoute] Guid guid) {
+        await expenseService.DeleteAsync(guid);
+        return NoContent();
     }
     #endregion
     
     #region Categories
+    [HttpGet("categories/{guid:guid}")]
+    public async Task<ActionResult<ExpenseCategoryReadDTO>> GetCategoryByGuidAsync([FromRoute] Guid guid) {
+        ExpenseCategoryReadDTO categoryDto = await expenseService.GetCategoryByGuidAsync(guid);
+        return Ok(categoryDto);
+    }
+    
     [HttpPost("categories")]
-    public async Task<ActionResult> CreateExpenseCategoryAsync([FromBody] ExpenseCategoryCreateDTO expenseCategoryCreateDto) {
-        await expenseRepository.CreateExpenseCategoryAsync(expenseCategoryCreateDto);
-        return Ok(new {
-            message = $"Successfully added an expense category with title \"{expenseCategoryCreateDto.Title}\"",
-        });
+    public async Task<ActionResult> CreateCategoryAsync([FromBody] ExpenseCategoryCreateDTO categoryCreateDto) {
+        Guid createdGuid = await expenseService.CreateCategoryAsync(categoryCreateDto);
+        return CreatedAtRoute(nameof(GetCategoryByGuidAsync), new { guid = createdGuid });
     }
     
     [HttpPatch("categories/{guid:guid}")]
-    public async Task<ActionResult> UpdateExpenseCategoryAsync([FromRoute] Guid guid, [FromBody] ExpenseCategoryUpdateDTO expenseCategoryUpdateDto) {
-        if (await expenseRepository.UpdateExpenseCategoryAsync(guid, expenseCategoryUpdateDto)) {
-            return Ok(new {
-                message = $"Successfully updated an expense category with title \"{expenseCategoryUpdateDto.Title}\".",
-            });
-        }
-
-        return NotFound("Could not find an expense category with the provided guid. No updates occurred.");
+    public async Task<ActionResult> UpdateCategoryAsync([FromRoute] Guid guid, [FromBody] ExpenseCategoryUpdateDTO categoryUpdateDto) {
+        await expenseService.UpdateCategoryAsync(guid, categoryUpdateDto);
+        return Ok("Successfully changed category.");
     }
     
     [HttpDelete("categories/{guid:guid}")]
-    public async Task<ActionResult> DeleteExpenseCategoryAsync([FromRoute] Guid guid) {
-        if (await expenseRepository.DeleteExpenseCategoryAsync(guid)) {
-            return NoContent();
-        }
-
-        return NotFound("Could not find an expense category with the provided guid. No deletions occurred.");
+    public async Task<ActionResult> DeleteCategoryAsync([FromRoute] Guid guid) {
+        await expenseService.DeleteCategoryAsync(guid);
+        return NoContent();
     }
     #endregion
 
     #region Targets
+    [HttpGet("targets/{guid:guid}")]
+    public async Task<ActionResult<ExpenseTargetReadDTO>> GetTargetByGuidAsync([FromRoute] Guid guid) {
+        ExpenseTargetReadDTO targetDto = await expenseService.GetTargetByGuidAsync(guid);
+        return Ok(targetDto);
+    }
+    
     [HttpPost("targets")]
-    public async Task<ActionResult> CreateExpenseTargetAsync([FromBody] ExpenseTargetCreateDTO expenseTargetCreateDto) {
-        await expenseRepository.CreateExpenseTargetAsync(expenseTargetCreateDto);
-        return Ok(new {
-            message = $"Successfully added an expense target with title \"{expenseTargetCreateDto.Title}\"",
-        });
+    public async Task<ActionResult> CreateTargetAsync([FromBody] ExpenseTargetCreateDTO targetCreateDto) {
+        Guid createdGuid = await expenseService.CreateTargetAsync(targetCreateDto);
+        return CreatedAtRoute(nameof(GetTargetByGuidAsync), new { guid = createdGuid });
     }
     
     [HttpPatch("targets/{guid:guid}")]
-    public async Task<ActionResult> UpdateExpenseTargetAsync([FromRoute] Guid guid, [FromBody] ExpenseTargetUpdateDTO expenseTargetUpdateDto) {
-        if (await expenseRepository.UpdateExpenseTargetAsync(guid, expenseTargetUpdateDto)) {
-            return Ok(new {
-                message = $"Successfully updated expense target with title \"{expenseTargetUpdateDto.Title}\".",
-            });
-        }
-
-        return NotFound("Could not find an expense target with the provided guid. No updates occurred.");
+    public async Task<ActionResult> UpdateTargetAsync([FromRoute] Guid guid, [FromBody] ExpenseTargetUpdateDTO targetUpdateDto) {
+        await expenseService.UpdateTargetAsync(guid, targetUpdateDto);
+        return Ok("Successfully changed target.");
     }
     
     [HttpDelete("targets/{guid:guid}")]
-    public async Task<ActionResult> DeleteExpenseTargetAsync([FromRoute] Guid guid) {
-        if (await expenseRepository.DeleteExpenseTargetAsync(guid)) {
-            return NoContent();
-        }
-
-        return NotFound("Could not find an expense target with the provided guid. No deletions occurred.");
+    public async Task<ActionResult> DeleteTargetAsync([FromRoute] Guid guid) {
+        await expenseService.DeleteTargetAsync(guid);
+        return NoContent();
     }
     #endregion
 }

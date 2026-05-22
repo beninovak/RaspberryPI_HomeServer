@@ -40,10 +40,16 @@ public class TodoController(ITodoService todoService) : ControllerBase {
     #endregion
     
     #region Categories
+    [HttpGet("categories/{guid:guid}")]
+    public async Task<ActionResult<TodoCategoryReadDTO>> GetCategoryByGuidAsync([FromRoute] Guid guid) {
+        TodoCategoryReadDTO todoDto = await todoService.GetCategoryByGuidAsync(guid);
+        return Ok(todoDto);
+    }
+    
     [HttpPost("categories")]
     public async Task<ActionResult> CreateCategoryAsync([FromBody] TodoCategoryCreateDTO todoCategoryCreateDto) {
         Guid createdGuid = await todoService.CreateCategoryAsync(todoCategoryCreateDto);
-        return CreatedAtRoute(nameof(GetByGuidAsync), new { guid = createdGuid });
+        return CreatedAtRoute(nameof(GetCategoryByGuidAsync), new { guid = createdGuid });
     }
     
     [HttpPatch("categories/{guid:guid}")]

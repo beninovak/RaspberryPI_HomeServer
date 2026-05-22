@@ -29,9 +29,5 @@ CLIENT
     
     
 FIXES:
-
-nared service za stvari...vsa logika tja not
-
-metode preimenuj iz GetAllTodos v GetAll npr. ker se tip že vid iz classa
 return IReadOnly collection iz repositorijev
 basic validation with EF attributes (update/create dtos)
