@@ -1,3 +1,5 @@
+using System.ComponentModel.DataAnnotations;
+
 namespace HomeServer.DTOs.Expenses;
 
 public class ExpenseReadDTO {

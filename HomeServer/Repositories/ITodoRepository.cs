@@ -5,7 +5,7 @@ namespace HomeServer.Repositories;
 
 public interface ITodoRepository {
     
-    Task<List<TodoCategory>> GetAllAsync();
+    Task<IReadOnlyCollection<TodoCategory>> GetAllAsync();
     
     Task<Todo?> GetByGuidAsync(Guid guid);
     

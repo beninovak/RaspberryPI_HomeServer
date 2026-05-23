@@ -34,7 +34,7 @@ builder.Services.AddOpenApi();
 builder.Services.AddDbContext<MainDbContext>(options => {
     options.UseNpgsql(DBSource)
         .LogTo(Console.WriteLine)
-        .EnableSensitiveDataLogging() // TODO - Preber si o tem...kje se loggajo to scene?
+        .EnableSensitiveDataLogging() // TODO - Preber si o tem...kje se loggajo te scene?
         .EnableDetailedErrors();
 });
 
@@ -43,6 +43,7 @@ builder.Services.AddScoped<ITodoRepository, TodoRepository>();
 builder.Services.AddScoped<IExpenseRepository, ExpenseRepository>();
 
 builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<IExpenseService, ExpenseService>();
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();

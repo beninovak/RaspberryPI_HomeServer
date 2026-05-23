@@ -6,9 +6,11 @@ namespace HomeServer.Services;
 
 public class ExpenseService(IExpenseRepository expenseRepository) : IExpenseService {
     
+    private readonly string? storage = Environment.GetEnvironmentVariable("HOME_SERVER_STORAGE_PATH");
+    
     #region Expenses
-    public async Task<List<ExpenseCategoryReadDTO>> GetAllAsync() {
-        List<ExpenseCategory> expenseCategories = await expenseRepository.GetAllAsync();
+    public async Task<IReadOnlyCollection<ExpenseCategoryReadDTO>> GetAllAsync() {
+        IReadOnlyCollection<ExpenseCategory> expenseCategories = await expenseRepository.GetAllAsync();
         return expenseCategories.Select(category => new ExpenseCategoryReadDTO {
             Guid = category.Guid,
             Title = category.Title,
@@ -111,6 +113,7 @@ public class ExpenseService(IExpenseRepository expenseRepository) : IExpenseServ
             ImagePath = expense.ImagePath,
         };
     }
+    
     private List<ExpenseReadDTO> ModelToReadDTOMany(List<Expense> expenses) {
         List<ExpenseReadDTO> convertedList = [];
         foreach (Expense expense in expenses) {
@@ -118,6 +121,7 @@ public class ExpenseService(IExpenseRepository expenseRepository) : IExpenseServ
         }
         return convertedList;
     }
+    
     private Expense CreateDTOToModel(ExpenseCreateDTO createDto) {
         return new Expense {
             Guid = Guid.NewGuid(),
@@ -131,6 +135,7 @@ public class ExpenseService(IExpenseRepository expenseRepository) : IExpenseServ
             CreatedAt = DateTime.UtcNow,
         };
     }
+    
     private Expense UpdateDTOToModel(Guid guid, ExpenseUpdateDTO updateDto) {
         return new Expense {
             Guid = guid,
@@ -165,6 +170,7 @@ public class ExpenseService(IExpenseRepository expenseRepository) : IExpenseServ
             CreatedAt = DateTime.UtcNow,
         };
     }
+    
     private ExpenseCategory CategoryUpdateDTOToModel(Guid guid, ExpenseCategoryUpdateDTO categoryUpdateDto) {
         return new ExpenseCategory {
             Guid = guid,
@@ -183,21 +189,25 @@ public class ExpenseService(IExpenseRepository expenseRepository) : IExpenseServ
             Total = target.Total,
         };
     }
+    
     private ExpenseTarget TargetCreateDTOToModel(ExpenseTargetCreateDTO targetCreateDto) {
         return new ExpenseTarget {
             Guid = Guid.NewGuid(),
             ExpenseCategoryId = targetCreateDto.ExpenseCategoryId,
             Title = targetCreateDto.Title,
+            Description = targetCreateDto.Description,
             Total = targetCreateDto.Total,
             CreatedBy = targetCreateDto.CreatedBy,
             CreatedAt = DateTime.UtcNow,
         };
     }
+    
     private ExpenseTarget TargetUpdateDTOToModel(Guid guid, ExpenseTargetUpdateDTO targetUpdateDto) {
         return new ExpenseTarget {
             Guid = guid,
             ExpenseCategoryId = targetUpdateDto.ExpenseCategoryId,
             Title = targetUpdateDto.Title,
+            Description = targetUpdateDto.Description,
             Total = targetUpdateDto.Total,
             UpdatedBy = targetUpdateDto.UpdatedBy,
             UpdatedAt = DateTime.UtcNow,

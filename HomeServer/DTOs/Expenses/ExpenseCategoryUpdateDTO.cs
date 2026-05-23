@@ -1,8 +1,10 @@
+using System.ComponentModel.DataAnnotations;
+
 namespace HomeServer.DTOs.Expenses;
 
 public class ExpenseCategoryUpdateDTO {
     public required uint Order { get; init; }
-    public required string Title { get; init; }
-    public required string Color { get; init; }
-    public Guid? UpdatedBy { get; init; }
+    [MaxLength(50)] public required string Title { get; init; }
+    [MaxLength(10)] public required string Color { get; init; }
+    public required Guid UpdatedBy { get; init; }
 }

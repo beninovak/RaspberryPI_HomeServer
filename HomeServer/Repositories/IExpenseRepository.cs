@@ -4,7 +4,7 @@ using HomeServer.Models.Expenses;
 namespace HomeServer.Repositories;
 
 public interface IExpenseRepository {
-    Task<List<ExpenseCategory>> GetAllAsync();
+    Task<IReadOnlyCollection<ExpenseCategory>> GetAllAsync();
     
     Task<Expense?> GetByGuidAsync(Guid guid);
 

@@ -1,10 +1,12 @@
+using System.ComponentModel.DataAnnotations;
+
 namespace HomeServer.Models.Todos;
 
 public partial class Todo {
     public required Guid Guid { get; init; }
     public required Guid TodoCategoryId { get; init; }
     public required uint Order { get; init; }
-    public required string Content { get; init; }
+    [MaxLength(50)] public required string Content { get; init; }
     public required bool IsDone { get; init; }
     public Guid CreatedBy { get; init; }
     public DateTime CreatedAt { get; init; }

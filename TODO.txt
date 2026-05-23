@@ -9,6 +9,7 @@ GENERAL:
     - Tests
     - User Environment.StackTrace for non-error loggin maybe?
     - Convert from UTC time in DB to Ljubljana time
+    - Add option to edit target history description ( when the target wasn't met for example )
     
 SERVER:
     - Preber si o ASP controller testih
@@ -18,6 +19,9 @@ SERVER:
     - Add DateStart/DateEnd to ExpenseTarget? In case a target isn't recurring...
     - Test if cascade delete works: Deleting User -> deletes categories -> deletes todos
     - CreatedAt/UpdateAt/CreatedBy/UpdatedBy properties in ReadDTOs? Maybe..?
+    - Basic validation with EF attributes (update/create dtos)
+    - Expense verify color string...maybe sam ignore če je wrong? tbd
+    - Expense image upload: send image as base64??
 
 CLIENT
     - Handle case where server is down/connection't ( Service workers )
@@ -25,9 +29,3 @@ CLIENT
     - Add forgotten password screen
     - Fingerprint reader?
     - Favicon
-    
-    
-    
-FIXES:
-return IReadOnly collection iz repositorijev
-basic validation with EF attributes (update/create dtos)

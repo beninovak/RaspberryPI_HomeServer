@@ -10,7 +10,7 @@ public class TodoController(ITodoService todoService) : ControllerBase {
     
     #region Todos
     [HttpGet]
-    public async Task<ActionResult<List<TodoCategoryReadDTO>>> GetAllAsync() {
+    public async Task<ActionResult<IReadOnlyCollection<TodoCategoryReadDTO>>> GetAllAsync() {
         return Ok(await todoService.GetAllAsync());
     }
 

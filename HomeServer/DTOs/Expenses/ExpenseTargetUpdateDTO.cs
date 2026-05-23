@@ -1,8 +1,11 @@
+using System.ComponentModel.DataAnnotations;
+
 namespace HomeServer.DTOs.Expenses;
 
 public class ExpenseTargetUpdateDTO {
     public required Guid ExpenseCategoryId { get; init; }
-    public required string Title { get; init; }
+    [MaxLength(50)] public required string Title { get; init; }
+    [MaxLength(250)] public string? Description { get; init; }
     public required decimal Total { get; init; }
-    public Guid? UpdatedBy { get; init; }
+    public required Guid UpdatedBy { get; init; }
 }

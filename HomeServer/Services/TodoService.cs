@@ -8,8 +8,8 @@ namespace HomeServer.Services;
 public class TodoService(ITodoRepository todoRepository) : ITodoService {
 
     #region Todos
-    public async Task<List<TodoCategoryReadDTO>> GetAllAsync() {
-        List<TodoCategory> dbCategories = await todoRepository.GetAllAsync();
+    public async Task<IReadOnlyCollection<TodoCategoryReadDTO>> GetAllAsync() {
+        IReadOnlyCollection<TodoCategory> dbCategories = await todoRepository.GetAllAsync();
 
         return dbCategories.Select(category => new TodoCategoryReadDTO {
                 Guid = category.Guid,
@@ -125,7 +125,7 @@ public class TodoService(ITodoRepository todoRepository) : ITodoService {
     
     private TodoCategory CategoryCreateDTOToModel(TodoCategoryCreateDTO categoryCreateDto) {
         return new TodoCategory {
-            Guid = categoryCreateDto.Guid,
+            Guid = Guid.NewGuid(),
             Order = categoryCreateDto.Order,
             Title = categoryCreateDto.Title,
             CreatedBy = categoryCreateDto.CreatedBy,
@@ -139,6 +139,7 @@ public class TodoService(ITodoRepository todoRepository) : ITodoService {
             Guid = guid,
             Order = categoryUpdateDto.Order,
             Title = categoryUpdateDto.Title,
+            UpdatedBy = categoryUpdateDto.UpdatedBy,
             UpdatedAt = DateTime.UtcNow,
             Todos = [], // TODO - poglej če to rab bit required? Maybe bol daj sam nullable pa ga kle ne passam?
         };

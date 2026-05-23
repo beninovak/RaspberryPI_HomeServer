@@ -8,7 +8,7 @@ namespace HomeServer.Repositories;
 public class ExpenseRepository(MainDbContext db) : IExpenseRepository {
 
     #region Expenses
-    public async Task<List<ExpenseCategory>> GetAllAsync() {
+    public async Task<IReadOnlyCollection<ExpenseCategory>> GetAllAsync() {
         return await db.ExpenseCategories
             .Include(category => category.Expenses)
             .Include(category => category.Target)

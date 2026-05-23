@@ -11,7 +11,7 @@ public class ExpenseController(IExpenseService expenseService) : ControllerBase 
     
     #region Expenses
     [HttpGet]
-    public async Task<ActionResult<List<ExpenseCategoryReadDTO>>> GetAllAsync() {
+    public async Task<ActionResult<IReadOnlyCollection<ExpenseCategoryReadDTO>>> GetAllAsync() {
         return Ok(await expenseService.GetAllAsync());
     }
     

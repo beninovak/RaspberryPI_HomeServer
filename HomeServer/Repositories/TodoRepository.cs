@@ -7,7 +7,7 @@ namespace HomeServer.Repositories;
 public class TodoRepository(MainDbContext db) : ITodoRepository {
     
     #region Todos
-    public async Task<List<TodoCategory>> GetAllAsync() {
+    public async Task<IReadOnlyCollection<TodoCategory>> GetAllAsync() {
         return await db.TodoCategories
             .Include(category => category.Todos)
             .OrderBy(category => category.Order)

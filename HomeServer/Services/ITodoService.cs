@@ -5,7 +5,7 @@ namespace HomeServer.Services;
 
 public interface ITodoService {
     
-    public Task<List<TodoCategoryReadDTO>> GetAllAsync();
+    public Task<IReadOnlyCollection<TodoCategoryReadDTO>> GetAllAsync();
 
     public Task<TodoReadDTO> GetByGuidAsync(Guid guid);
 

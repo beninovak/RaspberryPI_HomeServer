@@ -5,7 +5,7 @@ namespace HomeServer.Services;
 
 public interface IExpenseService {
     
-    Task<List<ExpenseCategoryReadDTO>> GetAllAsync();
+    Task<IReadOnlyCollection<ExpenseCategoryReadDTO>> GetAllAsync();
        
     Task<ExpenseReadDTO> GetByGuidAsync(Guid guid);
 
