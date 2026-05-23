@@ -182,4 +182,9 @@
       <Compile Include="wwwroot\Rufr.cs" />
     </ItemGroup>
 
+    <ItemGroup>
+      <TypeScriptCompile Include="wwwroot\src\general.ts" />
+      <TypeScriptCompile Include="wwwroot\src\loaders.ts" />
+    </ItemGroup>
+
 </Project>

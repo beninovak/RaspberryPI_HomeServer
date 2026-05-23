@@ -32,7 +32,7 @@
     // Recommended Options
     "strict": true,
     //"jsx": "react-jsx",
-    "verbatimModuleSyntax": true,
+    "verbatimModuleSyntax": false, // TODO: BN - prever kva je to točn...baje more bit false da loh exportam funkcije??
     "isolatedModules": true,
     "noUncheckedSideEffectImports": true,
     "moduleDetection": "force",

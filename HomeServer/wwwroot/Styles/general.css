@@ -1,0 +1,83 @@
+/* ------- Resets ------- */
+:root, html {
+    box-sizing: border-box;
+    font-family: Inter, sans-serif;
+}
+
+body {
+    display: flex;
+}
+
+*, *::before, *::after {
+    color: inherit;
+    font-size: inherit;
+    font-weight: inherit;
+    box-sizing: inherit;
+    font-family: inherit;
+}
+
+*:not(dialog) {
+    margin: 0;
+}
+
+img, picture {
+    display: block;
+    max-width: 100%;
+}
+
+button {
+    cursor: pointer;
+    width: 100%;
+    border: none;
+    outline: none;
+    background: none;
+    appearance: none;
+    -webkit-appearance: none;
+}
+/* ------- Resets end ------- */
+
+/* ------- Nav ------- */
+nav {
+    background: salmon;
+    width: 20%;
+    height: 100svh;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    border-right: 2px solid #000;
+}
+
+nav .links {
+    border-top: 2px solid #000;
+}
+
+nav button {    
+    height: 100px;
+    font-size: 32px;
+    display: flex;
+    font-weight: 600;
+    align-items: center;
+    justify-content: center;
+    border-bottom: 2px solid #000;
+    transition: 0.3s background;
+}
+
+nav #profile-btn {
+    margin-top: auto;
+    border-bottom: none;
+    border-top: 2px solid #000;
+}
+
+nav button:hover {
+    background: lightsalmon;
+}
+/* ------- Nav end ------- */
+
+
+/* ------- Content ------- */
+main {
+    width: 80%;
+    height: 100svh;
+    background: slateblue;
+}
+/* ------- Content end ------- */
