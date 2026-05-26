@@ -1,15 +1,34 @@
-import "./types/api";
-import { Loaders } from "./loaders";
+import "./types/api.js";
+import { IView } from "./Views/IView.js";
+import Loaders from "./loaders.js";
+
+let currentView: IView = Loaders.Views.values().next().value!;
 
 window.onload = async () => {
-    var buttons: NodeListOf<HTMLButtonElement> = document.querySelectorAll("nav button");
+    const nav = document.querySelector("nav")!;
 
-    buttons.forEach(btn => {
+    Loaders.Views.forEach(view => {
+        let btn = document.createElement("button");
+        btn.textContent = view.name;
+        btn.setAttribute("data-view", view.name);
+
         btn.onclick = async () => {
-            await Loaders.LoadView(btn.getAttribute("data-view")!);
+            let btnViewName: string | null = btn.getAttribute("data-view");
+            if (btnViewName == null) {
+                throw new Error("Nav button has no data-view attribute");
+            }
+
+            let wantedView: IView = view;
+            if (wantedView.name === currentView.name) {
+                return;
+            }
+            
+            await Loaders.LoadView(wantedView);
+            currentView = wantedView;
         }
+
+        nav.append(btn);
     });
     
-    
-    //await LoadView("todo");
+    await Loaders.LoadView(currentView);
 };

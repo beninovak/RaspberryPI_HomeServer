@@ -1,14 +1,26 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-require("./types/api");
-const loaders_1 = require("./loaders");
+import "./types/api.js";
+import Loaders from "./loaders.js";
+let currentView = Loaders.Views.values().next().value;
 window.onload = async () => {
-    var buttons = document.querySelectorAll("nav button");
-    buttons.forEach(btn => {
+    const nav = document.querySelector("nav");
+    Loaders.Views.forEach(view => {
+        let btn = document.createElement("button");
+        btn.textContent = view.name;
+        btn.setAttribute("data-view", view.name);
         btn.onclick = async () => {
-            await loaders_1.Loaders.LoadView(btn.getAttribute("data-view"));
+            let btnViewName = btn.getAttribute("data-view");
+            if (btnViewName == null) {
+                throw new Error("Nav button has no data-view attribute");
+            }
+            let wantedView = view;
+            if (wantedView.name === currentView.name) {
+                return;
+            }
+            await Loaders.LoadView(wantedView);
+            currentView = wantedView;
         };
+        nav.append(btn);
     });
-    //await LoadView("todo");
+    await Loaders.LoadView(currentView);
 };
 //# sourceMappingURL=general.js.map

@@ -1,58 +1,29 @@
-"use strict";
-var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    var desc = Object.getOwnPropertyDescriptor(m, k);
-    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
-      desc = { enumerable: true, get: function() { return m[k]; } };
+import { TodoView } from "./Views/todo.js";
+import { ExpenseView } from "./Views/expense.js";
+var Loaders;
+(function (Loaders) {
+    Loaders.Views = [
+        new TodoView(),
+        new ExpenseView(),
+        //new ProfileView(),
+    ];
+    async function LoadView(view) {
+        const main = document.querySelector("main");
+        let viewToLoad = Loaders.Views.find(IView => IView.name == view.name);
+        if (viewToLoad === undefined) {
+            main.innerHTML = `View "${view.name}" not implemented yet!`;
+            return;
+        }
+        await viewToLoad?.Load();
     }
-    Object.defineProperty(o, k2, desc);
-}) : (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    o[k2] = m[k];
-}));
-var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
-    Object.defineProperty(o, "default", { enumerable: true, value: v });
-}) : function(o, v) {
-    o["default"] = v;
-});
-var __importStar = (this && this.__importStar) || (function () {
-    var ownKeys = function(o) {
-        ownKeys = Object.getOwnPropertyNames || function (o) {
-            var ar = [];
-            for (var k in o) if (Object.prototype.hasOwnProperty.call(o, k)) ar[ar.length] = k;
-            return ar;
-        };
-        return ownKeys(o);
-    };
-    return function (mod) {
-        if (mod && mod.__esModule) return mod;
-        var result = {};
-        if (mod != null) for (var k = ownKeys(mod), i = 0; i < k.length; i++) if (k[i] !== "default") __createBinding(result, mod, k[i]);
-        __setModuleDefault(result, mod);
-        return result;
-    };
-})();
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.Loaders = void 0;
-exports.LoadView = LoadView;
-async function LoadView(view) {
-    const main = document.querySelector("main");
-    if (main == null) {
-        throw new DOMException("No <main> tag found. Something is very wrong!");
-    }
-    const response = await fetch(`Views/${view}`);
-    const html = await response.text();
-    if (!html.length) {
-        main.innerHTML = `View {viewName} not implemented yet!`;
-        return;
-    }
-    console.log(await response.text());
-}
-// async function LoadComponent(componentPath: string, parentSelector: string): Promise<void> {
-//     const response = await fetch(componentPath);
-//     const html = await response.text();
-//
-//     document.querySelector(parentSelector)!.innerHTML = html;
-// }
-exports.Loaders = __importStar(require("./loaders"));
+    Loaders.LoadView = LoadView;
+    // async function LoadComponent(componentPath: string, parentSelector: string): Promise<void> {
+    //     const response = await fetch(componentPath);
+    //     const html = await response.text();
+    //
+    //     document.querySelector(parentSelector)!.innerHTML = html;
+    // }
+    //export * as Loaders from "./loaders";    
+})(Loaders || (Loaders = {}));
+export default Loaders;
 //# sourceMappingURL=loaders.js.map

@@ -185,6 +185,9 @@
     <ItemGroup>
       <TypeScriptCompile Include="wwwroot\src\general.ts" />
       <TypeScriptCompile Include="wwwroot\src\loaders.ts" />
+      <TypeScriptCompile Include="wwwroot\src\Views\expense.ts" />
+      <TypeScriptCompile Include="wwwroot\src\Views\IView.ts" />
+      <TypeScriptCompile Include="wwwroot\src\Views\todo.ts" />
     </ItemGroup>
 
 </Project>

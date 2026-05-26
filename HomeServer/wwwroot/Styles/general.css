@@ -78,6 +78,9 @@ nav button:hover {
 main {
     width: 80%;
     height: 100svh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     background: slateblue;
 }
 /* ------- Content end ------- */

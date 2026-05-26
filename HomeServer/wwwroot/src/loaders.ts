@@ -1,26 +1,34 @@
-export async function LoadView(view: string) : Promise<void> {
-    const main: HTMLElement | null = document.querySelector("main");
+import { IView } from "./Views/IView.js";
+import { TodoView } from "./Views/todo.js";
+import { ExpenseView } from "./Views/expense.js";
 
-    if (main == null) {
-        throw new DOMException("No <main> tag found. Something is very wrong!");
+namespace Loaders {
+    export const Views: Array<IView> = [
+        new TodoView(),
+        new ExpenseView(),
+        //new ProfileView(),
+    ];
+    
+    export async function LoadView(view: IView) : Promise<void> {
+        const main: HTMLElement = document.querySelector("main")!;
+
+        let viewToLoad : IView | undefined = Views.find(IView => IView.name == view.name);
+        if (viewToLoad === undefined) {
+            main.innerHTML = `View "${view.name}" not implemented yet!`;
+            return;
+        }
+        
+        await viewToLoad?.Load();
     }
 
-    const response = await fetch(`Views/${view}`);
-    const html = await response.text();
+    // async function LoadComponent(componentPath: string, parentSelector: string): Promise<void> {
+    //     const response = await fetch(componentPath);
+    //     const html = await response.text();
+    //
+    //     document.querySelector(parentSelector)!.innerHTML = html;
+    // }
 
-    if (!html.length) {
-        main.innerHTML = `View {viewName} not implemented yet!`;
-        return;
-    }
-
-    console.log(await response.text());
+    //export * as Loaders from "./loaders";    
 }
 
-// async function LoadComponent(componentPath: string, parentSelector: string): Promise<void> {
-//     const response = await fetch(componentPath);
-//     const html = await response.text();
-//
-//     document.querySelector(parentSelector)!.innerHTML = html;
-// }
-
-export * as Loaders from "./loaders";
+export default Loaders;

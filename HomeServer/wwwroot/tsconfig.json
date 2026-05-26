@@ -7,9 +7,9 @@
 
     // Environment Settings
     // See also https://aka.ms/tsconfig/module
-    "module": "nodenext",
+    "module": "ESNext",
     "target": "es2020",
-    "types": [],
+    //"types": [],
     
     // Other Outputs
     "sourceMap": true,
@@ -17,7 +17,7 @@
     "declarationMap": true,
 
     // Stricter Typechecking Options
-    "noUncheckedIndexedAccess": true,
+    //"noUncheckedIndexedAccess": true,
     "exactOptionalPropertyTypes": true,
 
     // Style Options
@@ -32,7 +32,7 @@
     // Recommended Options
     "strict": true,
     //"jsx": "react-jsx",
-    "verbatimModuleSyntax": false, // TODO: BN - prever kva je to točn...baje more bit false da loh exportam funkcije??
+    //"verbatimModuleSyntax": false, // TODO: BN - prever kva je to točn...baje more bit false da loh exportam funkcije??
     "isolatedModules": true,
     "noUncheckedSideEffectImports": true,
     "moduleDetection": "force",

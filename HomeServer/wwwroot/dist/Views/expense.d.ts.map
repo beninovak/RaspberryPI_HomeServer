@@ -1,0 +1,1 @@
+{"version":3,"file":"expense.d.ts","sourceRoot":"","sources":["../../src/Views/expense.ts"],"names":[],"mappings":"AAAA,OAAO,EAAE,KAAK,EAAE,MAAM,YAAY,CAAA;AAElC,qBAAa,WAAY,YAAW,KAAK;IACrC,QAAQ,CAAC,IAAI,EAAE,MAAM,CAAa;IAE5B,IAAI,IAAI,OAAO,CAAC,IAAI,CAAC;CAa9B"}
