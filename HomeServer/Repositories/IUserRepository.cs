@@ -4,9 +4,8 @@ using HomeServer.Models.User;
 namespace HomeServer.Repositories;
 
 public interface IUserRepository {
-    public Task<string?> GetUserByGuidAsync(Guid guid);
-    public Task CreateUserAsync(RegisterDTO user, string passwordSalt, string passwordHash);
+    public Task<User?> GetUserByGuidAsync(Guid guid);
+    public Task<User?> GetUserByEmailAsync(string email);
+    public Task CreateUserAsync(User user);
     public Task<bool> UserWithEmailExistsAsync(string email);
-
-    public Task<string> GetPasswordSaltFromUserEmailAsync(string email);
 }

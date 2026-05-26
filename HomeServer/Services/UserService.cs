@@ -2,6 +2,7 @@ using HomeServer.DTOs;
 using HomeServer.DTOs.User;
 using HomeServer.Models;
 using HomeServer.Exceptions;
+using HomeServer.Models.User;
 using HomeServer.Repositories;
 
 namespace HomeServer.Services;
@@ -17,7 +18,10 @@ public class UserService(IUserRepository userRepository) : IUserService {
         string passwordSalt = BCrypt.Net.BCrypt.GenerateSalt();
         string passwordHash = BCrypt.Net.BCrypt.HashPassword(registerDto.Password, passwordSalt, true);
 
-        await userRepository.CreateUserAsync(registerDto, passwordSalt, passwordHash);
+        User user = RegisterDTOToModel(registerDto);
+        user.Password = passwordHash;
+        user.PasswordSalt = passwordSalt;
+        await userRepository.CreateUserAsync(user);
     }
     
     public async Task LoginUserAsync(LoginDTO loginUser) {
@@ -27,9 +31,12 @@ public class UserService(IUserRepository userRepository) : IUserService {
             throw new NonExistentUserException("No user with such an email exists.");
         }
 
-        string dbSalt = await userRepository.GetPasswordSaltFromUserEmailAsync(loginUser.Email);
-        string passwordHash = BCrypt.Net.BCrypt.HashPassword(loginUser.Password, dbSalt, true);
+        User? user = await userRepository.GetUserByEmailAsync(loginUser.Email);
+        if (user is null) {
+            throw new NonExistentUserException("No such user exists.");
+        }
         
+        string passwordHash = BCrypt.Net.BCrypt.HashPassword(loginUser.Password, user.PasswordSalt, true);
         if (!BCrypt.Net.BCrypt.EnhancedVerify(loginUser.Password, passwordHash)) {
             throw new UserInvalidLoginException("Email and password do not match.");
         }
@@ -111,4 +118,15 @@ public class UserService(IUserRepository userRepository) : IUserService {
             throw new AggregateException(errors);
         }
     }
+    
+    #region Converters
+    private User RegisterDTOToModel(RegisterDTO registerDto) {
+        return new User {
+            FirstName = registerDto.FirstName,
+            LastName = registerDto.LastName,
+            Email = registerDto.Email,
+            CreatedAt = DateTime.SpecifyKind(DateTime.Now, DateTimeKind.Utc),
+        };
+    }
+    #endregion
 }
