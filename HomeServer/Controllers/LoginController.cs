@@ -7,9 +7,8 @@ using HomeServer.Exceptions;
 
 namespace HomeServer.Controllers;
 
-[Route("api/login")]
-[ApiController]
-public class LoginController(IUserService userService) : ControllerBase {
+[ApiController] [Route("api/login")] [SkipAuth]
+public sealed class LoginController(IUserService userService) : ControllerBase {
     // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
     [HttpPost]
     public async Task<ActionResult> LoginAsync([FromBody] LoginDTO user) {

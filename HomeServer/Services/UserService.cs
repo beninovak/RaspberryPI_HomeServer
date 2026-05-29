@@ -18,9 +18,18 @@ public class UserService(IUserRepository userRepository) : IUserService {
         string passwordSalt = BCrypt.Net.BCrypt.GenerateSalt();
         string passwordHash = BCrypt.Net.BCrypt.HashPassword(registerDto.Password, passwordSalt, true);
 
-        User user = RegisterDTOToModel(registerDto);
-        user.Password = passwordHash;
-        user.PasswordSalt = passwordSalt;
+        User user = new User {
+            Guid = Guid.NewGuid(),
+            SessionId = Guid.NewGuid(),
+            SessionIdGeneratedAt = DateTime.UtcNow,
+            FirstName = registerDto.FirstName,
+            LastName = registerDto.LastName,
+            Email = registerDto.Email,
+            Password = passwordHash,
+            PasswordSalt = passwordSalt,
+            CreatedAt = DateTime.UtcNow,
+        };
+        
         await userRepository.CreateUserAsync(user);
     }
     
@@ -42,6 +51,20 @@ public class UserService(IUserRepository userRepository) : IUserService {
         }
     }
 
+    public async Task<bool> IsSessionIdValidAsync(Guid sessionId) {
+        User? sessionUser = await userRepository.GetUserBySessionIdAsync(sessionId);
+        if (sessionUser is null || sessionUser.SessionIdGeneratedAt.AddDays(7) < DateTime.UtcNow) {
+            return false;
+        }
+        return true;
+    }
+
+    public async Task<Guid> GetUserGuidBySessionIdAsync(Guid sessionId) {
+        User? user = await userRepository.GetUserBySessionIdAsync(sessionId);
+        return user!.Guid;
+    }
+
+    #region Validation
     private static void ValidateRegister(RegisterDTO registerDto) {
         ValidateEmailAndPassword(registerDto.Email, registerDto.Password);
 
@@ -117,16 +140,6 @@ public class UserService(IUserRepository userRepository) : IUserService {
         if (errors.Any()) {
             throw new AggregateException(errors);
         }
-    }
-    
-    #region Converters
-    private User RegisterDTOToModel(RegisterDTO registerDto) {
-        return new User {
-            FirstName = registerDto.FirstName,
-            LastName = registerDto.LastName,
-            Email = registerDto.Email,
-            CreatedAt = DateTime.SpecifyKind(DateTime.Now, DateTimeKind.Utc),
-        };
     }
     #endregion
 }

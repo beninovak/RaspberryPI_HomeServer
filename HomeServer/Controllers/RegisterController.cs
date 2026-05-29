@@ -8,9 +8,8 @@ using Microsoft.EntityFrameworkCore;
 
 namespace HomeServer.Controllers;
 
-[Route("api/register")]
-[ApiController]
-public class RegisterController(IUserService userService) : ControllerBase {
+[ApiController] [Route("api/register")] [SkipAuth]
+public sealed class RegisterController(IUserService userService) : ControllerBase {
 
     // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
     [HttpPost]

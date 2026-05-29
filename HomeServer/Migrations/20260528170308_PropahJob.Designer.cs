@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace HomeServer.Migrations
 {
     [DbContext(typeof(MainDbContext))]
-    [Migration("20260511200331_ModelReworkNumber50")]
-    partial class ModelReworkNumber50
+    [Migration("20260528170308_PropahJob")]
+    partial class PropahJob
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -38,20 +38,23 @@ namespace HomeServer.Migrations
                         .HasColumnType("uuid");
 
                     b.Property<string>("Description")
-                        .HasColumnType("text");
+                        .HasMaxLength(250)
+                        .HasColumnType("character varying(250)");
 
                     b.Property<Guid>("ExpenseCategoryId")
                         .HasColumnType("uuid");
 
                     b.Property<string>("ImagePath")
-                        .HasColumnType("text");
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
 
                     b.Property<long>("Order")
                         .HasColumnType("bigint");
 
                     b.Property<string>("Title")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)");
 
                     b.Property<decimal>("Total")
                         .HasColumnType("numeric");
@@ -81,7 +84,8 @@ namespace HomeServer.Migrations
 
                     b.Property<string>("Color")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasMaxLength(10)
+                        .HasColumnType("character varying(10)");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
@@ -94,7 +98,8 @@ namespace HomeServer.Migrations
 
                     b.Property<string>("Title")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)");
 
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("timestamp with time zone");
@@ -123,12 +128,17 @@ namespace HomeServer.Migrations
                     b.Property<Guid>("CreatedBy")
                         .HasColumnType("uuid");
 
+                    b.Property<string>("Description")
+                        .HasMaxLength(250)
+                        .HasColumnType("character varying(250)");
+
                     b.Property<Guid>("ExpenseCategoryId")
                         .HasColumnType("uuid");
 
                     b.Property<string>("Title")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)");
 
                     b.Property<decimal>("Total")
                         .HasColumnType("numeric");
@@ -143,7 +153,8 @@ namespace HomeServer.Migrations
 
                     b.HasIndex("CreatedBy");
 
-                    b.HasIndex("ExpenseCategoryId");
+                    b.HasIndex("ExpenseCategoryId")
+                        .IsUnique();
 
                     b.HasIndex("UpdatedBy");
 
@@ -157,7 +168,8 @@ namespace HomeServer.Migrations
                         .HasColumnType("uuid");
 
                     b.Property<string>("Description")
-                        .HasColumnType("text");
+                        .HasMaxLength(250)
+                        .HasColumnType("character varying(250)");
 
                     b.Property<Guid>("ExpenseTargetId")
                         .HasColumnType("uuid");
@@ -186,7 +198,8 @@ namespace HomeServer.Migrations
 
                     b.Property<string>("Content")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
@@ -237,7 +250,8 @@ namespace HomeServer.Migrations
 
                     b.Property<string>("Title")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)");
 
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("timestamp with time zone");
@@ -265,23 +279,34 @@ namespace HomeServer.Migrations
 
                     b.Property<string>("Email")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasMaxLength(60)
+                        .HasColumnType("character varying(60)");
 
                     b.Property<string>("FirstName")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasMaxLength(40)
+                        .HasColumnType("character varying(40)");
 
                     b.Property<string>("LastName")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasMaxLength(40)
+                        .HasColumnType("character varying(40)");
 
                     b.Property<string>("Password")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasMaxLength(64)
+                        .HasColumnType("character varying(64)");
 
                     b.Property<string>("PasswordSalt")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasMaxLength(32)
+                        .HasColumnType("character varying(32)");
+
+                    b.Property<Guid>("SessionId")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("SessionIdGeneratedAt")
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("timestamp with time zone");
@@ -337,8 +362,8 @@ namespace HomeServer.Migrations
                         .IsRequired();
 
                     b.HasOne("HomeServer.Models.Expenses.ExpenseCategory", null)
-                        .WithMany()
-                        .HasForeignKey("ExpenseCategoryId")
+                        .WithOne("Target")
+                        .HasForeignKey("HomeServer.Models.Expenses.ExpenseTarget", "ExpenseCategoryId")
                         .IsRequired();
 
                     b.HasOne("HomeServer.Models.User.User", null)
@@ -392,6 +417,8 @@ namespace HomeServer.Migrations
             modelBuilder.Entity("HomeServer.Models.Expenses.ExpenseCategory", b =>
                 {
                     b.Navigation("Expenses");
+
+                    b.Navigation("Target");
                 });
 
             modelBuilder.Entity("HomeServer.Models.Todos.TodoCategory", b =>

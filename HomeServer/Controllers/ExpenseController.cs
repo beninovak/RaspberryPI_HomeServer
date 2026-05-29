@@ -5,9 +5,8 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace HomeServer.Controllers;
 
-[Route("api/expenses")]
-[ApiController]
-public class ExpenseController(IExpenseService expenseService) : ControllerBase {
+[ApiController] [Route("api/expenses")]
+public sealed class ExpenseController(IExpenseService expenseService) : ControllerBase {
     
     #region Expenses
     [HttpGet]

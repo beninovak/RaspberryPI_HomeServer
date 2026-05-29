@@ -23,6 +23,7 @@ SERVER:
     - Expense verify color string...maybe sam ignore če je wrong? tbd
     - Expense image upload: send image as base64??
     - Dob userja prek session idja k ga more client poslt
+    - Send first sessionId on register
 
 CLIENT
     - Handle case where server is down/connection't ( Service workers )

@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace HomeServer.Migrations
 {
     /// <inheritdoc />
-    public partial class ModelReworkNumber50 : Migration
+    public partial class PropahJob : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -16,11 +16,13 @@ namespace HomeServer.Migrations
                 columns: table => new
                 {
                     Guid = table.Column<Guid>(type: "uuid", nullable: false),
-                    FirstName = table.Column<string>(type: "text", nullable: false),
-                    LastName = table.Column<string>(type: "text", nullable: false),
-                    Email = table.Column<string>(type: "text", nullable: false),
-                    Password = table.Column<string>(type: "text", nullable: false),
-                    PasswordSalt = table.Column<string>(type: "text", nullable: false),
+                    SessionId = table.Column<Guid>(type: "uuid", nullable: false),
+                    SessionIdGeneratedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    FirstName = table.Column<string>(type: "character varying(40)", maxLength: 40, nullable: false),
+                    LastName = table.Column<string>(type: "character varying(40)", maxLength: 40, nullable: false),
+                    Email = table.Column<string>(type: "character varying(60)", maxLength: 60, nullable: false),
+                    Password = table.Column<string>(type: "character varying(64)", maxLength: 64, nullable: false),
+                    PasswordSalt = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true)
                 },
@@ -35,8 +37,8 @@ namespace HomeServer.Migrations
                 {
                     Guid = table.Column<Guid>(type: "uuid", nullable: false),
                     Order = table.Column<long>(type: "bigint", nullable: false),
-                    Title = table.Column<string>(type: "text", nullable: false),
-                    Color = table.Column<string>(type: "text", nullable: false),
+                    Title = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
+                    Color = table.Column<string>(type: "character varying(10)", maxLength: 10, nullable: false),
                     CreatedBy = table.Column<Guid>(type: "uuid", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     UpdatedBy = table.Column<Guid>(type: "uuid", nullable: true),
@@ -66,7 +68,7 @@ namespace HomeServer.Migrations
                 {
                     Guid = table.Column<Guid>(type: "uuid", nullable: false),
                     Order = table.Column<long>(type: "bigint", nullable: false),
-                    Title = table.Column<string>(type: "text", nullable: false),
+                    Title = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
                     CreatedBy = table.Column<Guid>(type: "uuid", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     UpdatedBy = table.Column<Guid>(type: "uuid", nullable: true),
@@ -97,9 +99,9 @@ namespace HomeServer.Migrations
                     Guid = table.Column<Guid>(type: "uuid", nullable: false),
                     ExpenseCategoryId = table.Column<Guid>(type: "uuid", nullable: false),
                     Order = table.Column<long>(type: "bigint", nullable: false),
-                    Title = table.Column<string>(type: "text", nullable: false),
-                    Description = table.Column<string>(type: "text", nullable: true),
-                    ImagePath = table.Column<string>(type: "text", nullable: true),
+                    Title = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
+                    Description = table.Column<string>(type: "character varying(250)", maxLength: 250, nullable: true),
+                    ImagePath = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: true),
                     Total = table.Column<decimal>(type: "numeric", nullable: false),
                     CreatedBy = table.Column<Guid>(type: "uuid", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
@@ -136,7 +138,8 @@ namespace HomeServer.Migrations
                 {
                     Guid = table.Column<Guid>(type: "uuid", nullable: false),
                     ExpenseCategoryId = table.Column<Guid>(type: "uuid", nullable: false),
-                    Title = table.Column<string>(type: "text", nullable: false),
+                    Title = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
+                    Description = table.Column<string>(type: "character varying(250)", maxLength: 250, nullable: true),
                     Total = table.Column<decimal>(type: "numeric", nullable: false),
                     CreatedBy = table.Column<Guid>(type: "uuid", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
@@ -172,7 +175,7 @@ namespace HomeServer.Migrations
                     Guid = table.Column<Guid>(type: "uuid", nullable: false),
                     TodoCategoryId = table.Column<Guid>(type: "uuid", nullable: false),
                     Order = table.Column<long>(type: "bigint", nullable: false),
-                    Content = table.Column<string>(type: "text", nullable: false),
+                    Content = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
                     IsDone = table.Column<bool>(type: "boolean", nullable: false),
                     CreatedBy = table.Column<Guid>(type: "uuid", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
@@ -212,7 +215,7 @@ namespace HomeServer.Migrations
                     Month = table.Column<long>(type: "bigint", nullable: false),
                     Year = table.Column<long>(type: "bigint", nullable: false),
                     TargetHit = table.Column<bool>(type: "boolean", nullable: false),
-                    Description = table.Column<string>(type: "text", nullable: true)
+                    Description = table.Column<string>(type: "character varying(250)", maxLength: 250, nullable: true)
                 },
                 constraints: table =>
                 {
@@ -248,7 +251,8 @@ namespace HomeServer.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_ExpenseTargets_ExpenseCategoryId",
                 table: "ExpenseTargets",
-                column: "ExpenseCategoryId");
+                column: "ExpenseCategoryId",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_ExpenseTargets_UpdatedBy",

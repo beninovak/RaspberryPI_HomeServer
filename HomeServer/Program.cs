@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using HomeServer.Data;
+using HomeServer.Middleware;
 using HomeServer.Repositories;
 using HomeServer.Services;
 using Microsoft.EntityFrameworkCore.Storage;
@@ -43,6 +44,7 @@ builder.Services.AddScoped<ITodoRepository, TodoRepository>();
 builder.Services.AddScoped<IExpenseRepository, ExpenseRepository>();
 
 builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<ITodoService, TodoService>();
 builder.Services.AddScoped<IExpenseService, ExpenseService>();
 
 builder.Services.AddEndpointsApiExplorer();
@@ -57,6 +59,7 @@ if (app.Environment.IsDevelopment()) {
     app.MapOpenApi();
 }
 
+app.UseMiddleware<SessionAuthenticationMiddleware>();
 app.UseExceptionHandler("/exceptions");
 app.UseHttpsRedirection();
 app.UseAuthorization();

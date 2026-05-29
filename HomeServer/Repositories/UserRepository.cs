@@ -23,4 +23,9 @@ public class UserRepository(MainDbContext db) : IUserRepository {
     public async Task<bool> UserWithEmailExistsAsync(string email) {
         return await db.Users.AnyAsync(dbUser => dbUser.Email.Equals(email));
     }
+
+    public async Task<User?> GetUserBySessionIdAsync(Guid sessionId) {
+        User? user = await db.Users.FirstOrDefaultAsync(user => user.SessionId.Equals(sessionId));
+        return user;
+    }
 }

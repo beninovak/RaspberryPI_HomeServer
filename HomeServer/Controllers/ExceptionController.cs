@@ -4,8 +4,8 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace HomeServer.Controllers;
 
-[ApiController]
-public class ExceptionController : ControllerBase {
+[ApiController] [SkipAuth] // TODO - prever a rabm [SkipAuth] kle ???
+public sealed class ExceptionController : ControllerBase {
     
     [Route("/exceptions")] [ApiExplorerSettings(IgnoreApi = true)]
     public async Task<ActionResult> HandleExceptionsAsync() {

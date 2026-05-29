@@ -6,4 +6,8 @@ namespace HomeServer.Services;
 public interface IUserService {
     public Task RegisterUserAsync(RegisterDTO user);
     public Task LoginUserAsync(LoginDTO loginUser);
+
+    public Task<bool> IsSessionIdValidAsync(Guid sessionId);
+    
+    public Task<Guid> GetUserGuidBySessionIdAsync(Guid sessionId);
 }

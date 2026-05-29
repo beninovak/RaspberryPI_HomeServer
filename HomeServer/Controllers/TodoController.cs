@@ -4,9 +4,10 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace HomeServer.Controllers;
 
-[Route("api/todos")]
-[ApiController]
-public class TodoController(ITodoService todoService) : ControllerBase {
+[ApiController] [Route("api/todos")]
+public sealed class TodoController(ITodoService todoService) : ControllerBase {
+
+    // private readonly Guid userGuid; TODO - pogruntej ko to dobim iz HttpItems brez da to iščem v usakmu endpointu
     
     #region Todos
     [HttpGet]
