@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace HomeServer.Migrations
 {
     [DbContext(typeof(MainDbContext))]
-    [Migration("20260528170308_PropahJob")]
-    partial class PropahJob
+    [Migration("20260530093608_v1")]
+    partial class v1
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -301,12 +301,6 @@ namespace HomeServer.Migrations
                         .IsRequired()
                         .HasMaxLength(32)
                         .HasColumnType("character varying(32)");
-
-                    b.Property<Guid>("SessionId")
-                        .HasColumnType("uuid");
-
-                    b.Property<DateTime>("SessionIdGeneratedAt")
-                        .HasColumnType("timestamp with time zone");
 
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("timestamp with time zone");

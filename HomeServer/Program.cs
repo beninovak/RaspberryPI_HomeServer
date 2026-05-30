@@ -3,7 +3,7 @@ using HomeServer.Data;
 using HomeServer.Middleware;
 using HomeServer.Repositories;
 using HomeServer.Services;
-using Microsoft.EntityFrameworkCore.Storage;
+using Microsoft.Extensions.Caching.Memory;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -39,9 +39,13 @@ builder.Services.AddDbContext<MainDbContext>(options => {
         .EnableDetailedErrors();
 });
 
+builder.Services.AddScoped<IMemoryCache, MemoryCache>();
+
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<ITodoRepository, TodoRepository>();
 builder.Services.AddScoped<IExpenseRepository, ExpenseRepository>();
+
+builder.Services.AddScoped<ISessionService, SessionService>();
 
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<ITodoService, TodoService>();

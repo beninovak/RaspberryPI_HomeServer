@@ -20,8 +20,6 @@ public class UserService(IUserRepository userRepository) : IUserService {
 
         User user = new User {
             Guid = Guid.NewGuid(),
-            SessionId = Guid.NewGuid(),
-            SessionIdGeneratedAt = DateTime.UtcNow,
             FirstName = registerDto.FirstName,
             LastName = registerDto.LastName,
             Email = registerDto.Email,
@@ -33,7 +31,7 @@ public class UserService(IUserRepository userRepository) : IUserService {
         await userRepository.CreateUserAsync(user);
     }
     
-    public async Task LoginUserAsync(LoginDTO loginUser) {
+    public async Task<Guid> LoginUserAsync(LoginDTO loginUser) {
         ValidateLogin(loginUser.Email, loginUser.Password);
 
         if (await userRepository.UserWithEmailExistsAsync(loginUser.Email)) {
@@ -49,21 +47,9 @@ public class UserService(IUserRepository userRepository) : IUserService {
         if (!BCrypt.Net.BCrypt.EnhancedVerify(loginUser.Password, passwordHash)) {
             throw new UserInvalidLoginException("Email and password do not match.");
         }
-    }
 
-    public async Task<bool> IsSessionIdValidAsync(Guid sessionId) {
-        User? sessionUser = await userRepository.GetUserBySessionIdAsync(sessionId);
-        if (sessionUser is null || sessionUser.SessionIdGeneratedAt.AddDays(7) < DateTime.UtcNow) {
-            return false;
-        }
-        return true;
+        return user.Guid;
     }
-
-    public async Task<Guid> GetUserGuidBySessionIdAsync(Guid sessionId) {
-        User? user = await userRepository.GetUserBySessionIdAsync(sessionId);
-        return user!.Guid;
-    }
-
     #region Validation
     private static void ValidateRegister(RegisterDTO registerDto) {
         ValidateEmailAndPassword(registerDto.Email, registerDto.Password);

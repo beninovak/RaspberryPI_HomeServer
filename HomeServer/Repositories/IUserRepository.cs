@@ -8,5 +8,4 @@ public interface IUserRepository {
     public Task<User?> GetUserByEmailAsync(string email);
     public Task CreateUserAsync(User user);
     public Task<bool> UserWithEmailExistsAsync(string email);
-    public Task<User?> GetUserBySessionIdAsync(Guid sessionId);
 }

@@ -299,12 +299,6 @@ namespace HomeServer.Migrations
                         .HasMaxLength(32)
                         .HasColumnType("character varying(32)");
 
-                    b.Property<Guid>("SessionId")
-                        .HasColumnType("uuid");
-
-                    b.Property<DateTime>("SessionIdGeneratedAt")
-                        .HasColumnType("timestamp with time zone");
-
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("timestamp with time zone");
 

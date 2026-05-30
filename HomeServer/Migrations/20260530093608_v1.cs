@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace HomeServer.Migrations
 {
     /// <inheritdoc />
-    public partial class PropahJob : Migration
+    public partial class v1 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -16,8 +16,6 @@ namespace HomeServer.Migrations
                 columns: table => new
                 {
                     Guid = table.Column<Guid>(type: "uuid", nullable: false),
-                    SessionId = table.Column<Guid>(type: "uuid", nullable: false),
-                    SessionIdGeneratedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     FirstName = table.Column<string>(type: "character varying(40)", maxLength: 40, nullable: false),
                     LastName = table.Column<string>(type: "character varying(40)", maxLength: 40, nullable: false),
                     Email = table.Column<string>(type: "character varying(60)", maxLength: 60, nullable: false),
