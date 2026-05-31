@@ -56,6 +56,9 @@ builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
+app.UseMiddleware<ExceptionMiddleware>();
+app.UseMiddleware<SessionAuthenticationMiddleware>();
+
 app.UseSwagger();
 
 // Configure the HTTP request pipeline.
@@ -63,8 +66,6 @@ if (app.Environment.IsDevelopment()) {
     app.MapOpenApi();
 }
 
-app.UseMiddleware<SessionAuthenticationMiddleware>();
-app.UseExceptionHandler("/exceptions");
 app.UseHttpsRedirection();
 app.UseAuthorization();
 app.UseDefaultFiles();

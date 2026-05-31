@@ -15,7 +15,7 @@ public class SessionAuthenticationMiddleware(RequestDelegate next) {
             return;
         }
 
-        var skipAuthAttribute = endpoint.Metadata.GetMetadata<SkipAuthAttribute>();
+        SkipAuthAttribute? skipAuthAttribute = endpoint.Metadata.GetMetadata<SkipAuthAttribute>();
         if (skipAuthAttribute is not null) {
             await next(context);
             return;

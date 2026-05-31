@@ -1,65 +1,33 @@
-using HomeServer.DTOs;
 using HomeServer.DTOs.User;
-using HomeServer.Models;
-using HomeServer.Exceptions;
 using HomeServer.Models.User;
 using HomeServer.Repositories;
+using Newtonsoft.Json;
 
 namespace HomeServer.Services;
 
+public class LoginDataException(string message) : Exception(message);
+public class RegisterDataException(string message) : Exception(message);
+public class UserAlreadyExistsException(string message) : Exception(message);
+
 public class UserService(IUserRepository userRepository) : IUserService {
     public async Task RegisterUserAsync(RegisterDTO registerDto) {
-        ValidateRegister(registerDto);
-        
-        if (await userRepository.UserWithEmailExistsAsync(registerDto.Email)) {
-            throw new NonExistentUserException("A user with this email already exists.");
-        }
-        
-        string passwordSalt = BCrypt.Net.BCrypt.GenerateSalt();
-        string passwordHash = BCrypt.Net.BCrypt.HashPassword(registerDto.Password, passwordSalt, true);
-
-        User user = new User {
-            Guid = Guid.NewGuid(),
-            FirstName = registerDto.FirstName,
-            LastName = registerDto.LastName,
-            Email = registerDto.Email,
-            Password = passwordHash,
-            PasswordSalt = passwordSalt,
-            CreatedAt = DateTime.UtcNow,
+        Dictionary<string, List<string>> errors = new Dictionary<string, List<string>> {
+            { "Names", [] },
+            { "Email", [] },
+            { "Password", [] },
         };
         
-        await userRepository.CreateUserAsync(user);
-    }
-    
-    public async Task<Guid> LoginUserAsync(LoginDTO loginUser) {
-        ValidateLogin(loginUser.Email, loginUser.Password);
-
-        if (!await userRepository.UserWithEmailExistsAsync(loginUser.Email)) {
-            throw new NonExistentUserException("No user with such an email exists.");
+        if (string.IsNullOrEmpty(registerDto.Email)) {
+            errors["Email"].Add("Email cannot be empty.");
         }
-
-        User? user = await userRepository.GetUserByEmailAsync(loginUser.Email);
-        if (user is null) {
-            throw new NonExistentUserException("No such user exists.");
+        if (string.IsNullOrEmpty(registerDto.Password)) {
+            errors["Password"].Add("Password cannot be empty.");
         }
-        
-        string passwordHash = BCrypt.Net.BCrypt.HashPassword(loginUser.Password, user.PasswordSalt, true);
-        if (!BCrypt.Net.BCrypt.EnhancedVerify(loginUser.Password, passwordHash)) {
-            throw new UserInvalidLoginException("Email and password do not match.");
-        }
-
-        return user.Guid;
-    }
-    #region Validation
-    private static void ValidateRegister(RegisterDTO registerDto) {
-        ValidateEmailAndPassword(registerDto.Email, registerDto.Password);
-
-        List<Exception> errors = [];
         if (string.IsNullOrEmpty(registerDto.FirstName)) {
-            errors.Add(new FirstNameValidationException("First name cannot be empty."));
+            errors["Names"].Add("First name cannot be empty.");
         }
         if (string.IsNullOrEmpty(registerDto.LastName)) {
-            errors.Add(new LastNameValidationException("Last name cannot be empty."));
+            errors["Names"].Add("Last name cannot be empty.");
         }
         
         char[] allowedSpecialChars = [',', '.', '!', '?', '_', '-', '(', ')', '[', ']', '@'];
@@ -84,48 +52,78 @@ public class UserService(IUserRepository userRepository) : IUserService {
         }
         
         if (!hasLowercase) {
-            errors.Add(new PasswordValidationException("Password must contain lowercase letters."));
+            errors["Password"].Add("Password must contain lowercase letters.");
         }
         if (!hasUppercase) {
-            errors.Add(new PasswordValidationException("Password must contain uppercase letters."));
+            errors["Password"].Add("Password must contain uppercase letters.");
         }
         if (!hasNumbers) {
-            errors.Add(new PasswordValidationException("Password must contain numbers."));
+            errors["Password"].Add("Password must contain numbers.");
         }
         if (!hasSpecialChars) {
-            errors.Add(new PasswordValidationException
-                ($"Password must contain at least one allowed special character\n.{string.Join(", ", allowedSpecialChars)}")
-            );
+            errors["Password"].Add($"Password must contain at least one allowed special character\n.{string.Join(", ", allowedSpecialChars)}");
         }
         if (registerDto.Password.Length is < 12 or > 24) {
-            errors.Add(new PasswordValidationException("Password must be between 12 and 24 characters long."));
+            errors["Password"].Add("Password must be between 12 and 24 characters long.");
         }
         
-        if (errors.Any()) {
-            throw new AggregateException(errors);
+        if (errors.Values.SelectMany(list => list).ToList().Any()) {
+            throw new RegisterDataException(JsonConvert.SerializeObject(errors));
         }
+        
+        if (await userRepository.UserWithEmailExistsAsync(registerDto.Email)) {
+            throw new UserAlreadyExistsException("A user with this email already exists.");
+        }
+        
+        string passwordSalt = BCrypt.Net.BCrypt.GenerateSalt();
+        string passwordHash = BCrypt.Net.BCrypt.HashPassword(registerDto.Password, passwordSalt, true);
+
+        User user = new User {
+            Guid = Guid.NewGuid(),
+            FirstName = registerDto.FirstName,
+            LastName = registerDto.LastName,
+            Email = registerDto.Email,
+            Password = passwordHash,
+            PasswordSalt = passwordSalt,
+            CreatedAt = DateTime.UtcNow,
+        };
+        
+        await userRepository.CreateUserAsync(user);
     }
     
-    private static void ValidateLogin(string email, string password) {
-        ValidateEmailAndPassword(email, password);
-    }
-
-    private static void ValidateEmailAndPassword(string email, string password) {
-        List<Exception> errors = [];
+    public async Task<Guid> LoginUserAsync(LoginDTO loginUser) {
+        Dictionary<string, List<string>> errors = new Dictionary<string, List<string>> {
+            { "Email", [] },
+            { "Password", [] },
+            { "General", [] },
+        };
         
-        if (string.IsNullOrEmpty(email)) {
-            errors.Add(new EmailValidationException("Email cannot be empty."));
-        }
-        // TODO - Dodej nek email regex
-        // emailErrors.Add("Invalid email format");
-
-        if (string.IsNullOrEmpty(password)) {
-            errors.Add(new PasswordValidationException("Password cannot be empty."));
+        if (string.IsNullOrEmpty(loginUser.Email)) {
+            errors["Email"].Add("Email cannot be empty.");
         }
 
-        if (errors.Any()) {
-            throw new AggregateException(errors);
+        if (string.IsNullOrEmpty(loginUser.Password)) {
+            errors["Password"].Add("Password cannot be empty.");
         }
+
+        if (!await userRepository.UserWithEmailExistsAsync(loginUser.Email)) {
+            errors["Email"].Add("No user with such an email exists.");
+        }
+
+        User? user = await userRepository.GetUserByEmailAsync(loginUser.Email);
+        if (user is null) {
+            errors["General"].Add("No such user exists.");
+        }
+        
+        string passwordHash = BCrypt.Net.BCrypt.HashPassword(loginUser.Password, user?.PasswordSalt, true);
+        if (!BCrypt.Net.BCrypt.EnhancedVerify(loginUser.Password, passwordHash)) {
+            errors["General"].Add("Email and password do not match.");
+        }
+        
+        if (errors.Values.SelectMany(list => list).ToList().Any()) {
+            throw new LoginDataException(JsonConvert.SerializeObject(errors));
+        }
+        
+        return user!.Guid;
     }
-    #endregion
 }

@@ -1,7 +1,5 @@
-using HomeServer.DTOs.User;
 using HomeServer.Models.User;
 using HomeServer.Data;
-using HomeServer.Exceptions;
 using Microsoft.EntityFrameworkCore;
 
 namespace HomeServer.Repositories;
