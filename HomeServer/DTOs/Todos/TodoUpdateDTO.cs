@@ -8,5 +8,4 @@ public class TodoUpdateDTO {
     public required uint Order { get; init; }
     [MaxLength(50)] public required string Content { get; init; }
     public required bool IsDone { get; init; }
-    public required Guid UpdatedBy { get; init; }
 }

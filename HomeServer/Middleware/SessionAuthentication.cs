@@ -6,7 +6,7 @@ using Microsoft.Extensions.Caching.Memory;
 namespace HomeServer.Middleware;
 
 public class SessionAuthenticationMiddleware(RequestDelegate next) {
-    public async Task InvokeAsync(HttpContext context, IMemoryCache memoryCache, ISessionService sessionService) {
+    public async Task InvokeAsync(HttpContext context, IMemoryCache memoryCache, ISessionDataService sessionDataService) {
         Endpoint? endpoint = context.GetEndpoint();
         
         // Če je request za front end je endpoint null. Nevem zakva...mađik? Ig ker dojame da se path ne ujema s katerokol metodo v controllerjih??
@@ -32,15 +32,21 @@ public class SessionAuthenticationMiddleware(RequestDelegate next) {
             return;
         }
 
-        Guid sessionUserGuid;
-        if (!memoryCache.TryGetValue(sessionId, out sessionUserGuid)) {
+        object? sessionDataObject;
+        if (!memoryCache.TryGetValue(sessionId, out sessionDataObject) || sessionDataObject is null) {
             // TODO - na frontendu redirectej na login page če response dobi 401
             context.Response.StatusCode = 401; // Unauthorized
             return;
         }
 
-        sessionService.userGuid = sessionUserGuid;
-        // TODO - uzem IP iz context.Connection
+        SessionDataService? sessionData = sessionDataObject as SessionDataService;
+        if (sessionData is null || sessionData.IP is null || !sessionData.IP.Equals(context.Connection.RemoteIpAddress)) {
+            context.Response.StatusCode = 401; // Unauthorized
+            return;
+        }
+
+        sessionDataService.userGuid = sessionData.userGuid;
+        //sessionDataService.IP = sessionData.IP;
         await next(context);
     }
 }

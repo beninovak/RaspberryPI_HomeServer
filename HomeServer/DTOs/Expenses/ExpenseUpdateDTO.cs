@@ -9,5 +9,4 @@ public class ExpenseUpdateDTO {
     [MaxLength(250)] public string? Description { get; init; }
     public string? ImagePath { get; init; }
     public required decimal Total { get; init; }
-    public required Guid UpdatedBy { get; init; }
 }

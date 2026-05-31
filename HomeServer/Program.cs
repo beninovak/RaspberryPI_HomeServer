@@ -39,13 +39,13 @@ builder.Services.AddDbContext<MainDbContext>(options => {
         .EnableDetailedErrors();
 });
 
-builder.Services.AddScoped<IMemoryCache, MemoryCache>();
+builder.Services.AddSingleton<IMemoryCache, MemoryCache>();
 
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<ITodoRepository, TodoRepository>();
 builder.Services.AddScoped<IExpenseRepository, ExpenseRepository>();
 
-builder.Services.AddScoped<ISessionService, SessionService>();
+builder.Services.AddScoped<ISessionDataService, SessionDataService>();
 
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<ITodoService, TodoService>();

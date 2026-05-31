@@ -6,10 +6,10 @@ namespace HomeServer.Controllers;
 [ApiController] [Route("api/forgotten-password")] [SkipAuth]
 public sealed class ForgottenPasswordController(IUserRepository userRepository) : ControllerBase {
     
-    [HttpGet("{guid:guid}")]
-    public async Task<ActionResult> SendForgottenPasswordEmailAsync([FromRoute] Guid guid) {
+    [HttpPost]
+    public async Task<ActionResult> SendForgottenPasswordEmailAsync([FromBody] Guid guid) {
         // TODO - send email
         //return Accepted($"Sending password reset email to {email}.");
-        return RedirectPermanent("Se ga enkat drugič");
+        return RedirectPermanent("Se ga enkat drugič"); // TODO - kle vrn forgotten password url na FE
     }
 }

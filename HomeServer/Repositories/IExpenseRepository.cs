@@ -4,9 +4,9 @@ using HomeServer.Models.Expenses;
 namespace HomeServer.Repositories;
 
 public interface IExpenseRepository {
-    Task<IReadOnlyCollection<ExpenseCategory>> GetAllAsync();
+    Task<IReadOnlyCollection<ExpenseCategory>> GetAllAsync(Guid userGuid);
     
-    Task<Expense?> GetByGuidAsync(Guid guid);
+    Task<Expense?> GetByGuidAsync(Guid guid, Guid userGuid);
 
     Task CreateAsync(Expense expense);
 
@@ -14,7 +14,7 @@ public interface IExpenseRepository {
     
     Task DeleteAsync(Expense expense);
 
-    Task<ExpenseCategory?> GetCategoryByGuidAsync(Guid guid);
+    Task<ExpenseCategory?> GetCategoryByGuidAsync(Guid guid, Guid userGuid);
     
     Task CreateCategoryAsync(ExpenseCategory expenseCategory);
 
@@ -22,7 +22,7 @@ public interface IExpenseRepository {
 
     Task DeleteCategoryAsync(ExpenseCategory expenseCategory);
     
-    Task<ExpenseTarget?> GetTargetByGuidAsync(Guid guid);
+    Task<ExpenseTarget?> GetTargetByGuidAsync(Guid guid, Guid userGuid);
     
     Task CreateTargetAsync(ExpenseTarget expenseTarget);
 

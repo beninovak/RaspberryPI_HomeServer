@@ -1,6 +1,7 @@
 using HomeServer.Data;
 using HomeServer.DTOs.Expenses;
 using HomeServer.Models.Expenses;
+using HomeServer.Services;
 using Microsoft.EntityFrameworkCore;
 
 namespace HomeServer.Repositories;
@@ -8,18 +9,20 @@ namespace HomeServer.Repositories;
 public class ExpenseRepository(MainDbContext db) : IExpenseRepository {
 
     #region Expenses
-    public async Task<IReadOnlyCollection<ExpenseCategory>> GetAllAsync() {
+    public async Task<IReadOnlyCollection<ExpenseCategory>> GetAllAsync(Guid userGuid) {
         return await db.ExpenseCategories
             .Include(category => category.Expenses)
+            .Where(category => category.CreatedBy.Equals(userGuid))
             .Include(category => category.Target)
+            .Where(category => category.Target == null || category.Target.CreatedBy.Equals(userGuid)) // TODO - prever ta Where
             .OrderBy(category => category.Order)
             .ThenBy(category => category.Title)
             .ThenBy(category => category.Expenses.Any() ? category.Expenses.First().Order : 0)
             .ToListAsync();
     }
     
-    public async Task<Expense?> GetByGuidAsync(Guid guid) {
-        return await db.Expenses.FindAsync(guid);
+    public async Task<Expense?> GetByGuidAsync(Guid guid, Guid userGuid) {
+        return await db.Expenses.FirstAsync(expense => expense.Guid.Equals(guid) && expense.CreatedBy.Equals(userGuid));
     }
     
     public async Task CreateAsync(Expense expense) {
@@ -39,8 +42,8 @@ public class ExpenseRepository(MainDbContext db) : IExpenseRepository {
     #endregion
 
     #region Categories
-    public async Task<ExpenseCategory?> GetCategoryByGuidAsync(Guid guid) {
-        return await db.ExpenseCategories.FindAsync(guid);
+    public async Task<ExpenseCategory?> GetCategoryByGuidAsync(Guid guid, Guid userGuid) {
+        return await db.ExpenseCategories.FirstAsync(category => category.Guid.Equals(guid) && category.CreatedBy.Equals(userGuid));
     }
     
     public async Task CreateCategoryAsync(ExpenseCategory expenseCategory) {
@@ -60,8 +63,8 @@ public class ExpenseRepository(MainDbContext db) : IExpenseRepository {
     #endregion
     
     #region Targets
-    public async Task<ExpenseTarget?> GetTargetByGuidAsync(Guid guid) {
-        return await db.ExpenseTargets.FindAsync(guid);
+    public async Task<ExpenseTarget?> GetTargetByGuidAsync(Guid guid, Guid userGuid) {
+        return await db.ExpenseTargets.FirstAsync(target => target.Guid.Equals(guid) && target.CreatedBy.Equals(userGuid));
     }
     
     public async Task CreateTargetAsync(ExpenseTarget expenseTarget) {

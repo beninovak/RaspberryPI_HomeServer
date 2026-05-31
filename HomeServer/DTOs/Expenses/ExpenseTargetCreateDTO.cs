@@ -7,5 +7,4 @@ public class ExpenseTargetCreateDTO {
     [MaxLength(50)] public required string Title { get; init; }
     [MaxLength(250)] public string? Description { get; init; }
     public required decimal Total { get; init; }
-    public required Guid CreatedBy { get; init; }
 }

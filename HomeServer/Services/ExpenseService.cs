@@ -4,13 +4,13 @@ using HomeServer.Repositories;
 
 namespace HomeServer.Services;
 
-public class ExpenseService(IExpenseRepository expenseRepository) : IExpenseService {
+public class ExpenseService(IExpenseRepository expenseRepository, ISessionDataService sessionDataService) : IExpenseService {
     
     private readonly string? storage = Environment.GetEnvironmentVariable("HOME_SERVER_STORAGE_PATH");
     
     #region Expenses
     public async Task<IReadOnlyCollection<ExpenseCategoryReadDTO>> GetAllAsync() {
-        IReadOnlyCollection<ExpenseCategory> expenseCategories = await expenseRepository.GetAllAsync();
+        IReadOnlyCollection<ExpenseCategory> expenseCategories = await expenseRepository.GetAllAsync(sessionDataService.userGuid);
         return expenseCategories.Select(category => new ExpenseCategoryReadDTO {
             Guid = category.Guid,
             Title = category.Title,
@@ -21,7 +21,7 @@ public class ExpenseService(IExpenseRepository expenseRepository) : IExpenseServ
     }
     
     public async Task<ExpenseReadDTO> GetByGuidAsync(Guid guid) {
-        Expense? expense = await expenseRepository.GetByGuidAsync(guid);
+        Expense? expense = await expenseRepository.GetByGuidAsync(guid, sessionDataService.userGuid);
         if (expense is null) {
             throw new Exception("No expense");
         }
@@ -30,16 +30,21 @@ public class ExpenseService(IExpenseRepository expenseRepository) : IExpenseServ
     
     public async Task<Guid> CreateAsync(ExpenseCreateDTO createDto) {
         Expense newExpense = CreateDTOToModel(createDto);
+        newExpense.CreatedBy = sessionDataService.userGuid;
+        newExpense.CreatedAt = DateTime.UtcNow;
         await expenseRepository.CreateAsync(newExpense);
         return newExpense.Guid;
     }
     
     public async Task UpdateAsync(Guid guid, ExpenseUpdateDTO updateDto) {
-        await expenseRepository.UpdateAsync(UpdateDTOToModel(guid, updateDto));
+        Expense updateExpense = UpdateDTOToModel(guid, updateDto);
+        updateExpense.UpdatedBy = sessionDataService.userGuid;
+        updateExpense.UpdatedAt = DateTime.UtcNow;
+        await expenseRepository.UpdateAsync(updateExpense);
     }
     
     public async Task DeleteAsync(Guid guid) {
-        Expense? deleteExpense = await expenseRepository.GetByGuidAsync(guid);
+        Expense? deleteExpense = await expenseRepository.GetByGuidAsync(guid, sessionDataService.userGuid);
         if (deleteExpense is null) {
             throw new Exception("No expense");
         }
@@ -49,7 +54,7 @@ public class ExpenseService(IExpenseRepository expenseRepository) : IExpenseServ
 
     #region Categories
     public async Task<ExpenseCategoryReadDTO> GetCategoryByGuidAsync(Guid guid) {
-        ExpenseCategory? category = await expenseRepository.GetCategoryByGuidAsync(guid);
+        ExpenseCategory? category = await expenseRepository.GetCategoryByGuidAsync(guid, sessionDataService.userGuid);
         if (category is null) {
             throw new Exception("No expense");
         }
@@ -58,16 +63,21 @@ public class ExpenseService(IExpenseRepository expenseRepository) : IExpenseServ
     
     public async Task<Guid> CreateCategoryAsync(ExpenseCategoryCreateDTO categoryCreateDto) {
         ExpenseCategory newCategory = CategoryCreateDTOToModel(categoryCreateDto);
+        newCategory.CreatedBy = sessionDataService.userGuid;
+        newCategory.CreatedAt = DateTime.UtcNow;
         await expenseRepository.CreateCategoryAsync(newCategory);
         return newCategory.Guid;
     }
     
     public async Task UpdateCategoryAsync(Guid guid, ExpenseCategoryUpdateDTO categoryUpdateDto) {
-        await expenseRepository.UpdateCategoryAsync(CategoryUpdateDTOToModel(guid, categoryUpdateDto));
+        ExpenseCategory updateCategory = CategoryUpdateDTOToModel(guid, categoryUpdateDto);
+        updateCategory.UpdatedBy = sessionDataService.userGuid;
+        updateCategory.UpdatedAt = DateTime.UtcNow;
+        await expenseRepository.UpdateCategoryAsync(updateCategory);
     }
     
     public async Task DeleteCategoryAsync(Guid guid) {
-        ExpenseCategory? deleteCategory = await expenseRepository.GetCategoryByGuidAsync(guid);
+        ExpenseCategory? deleteCategory = await expenseRepository.GetCategoryByGuidAsync(guid, sessionDataService.userGuid);
         if (deleteCategory is null) {
             throw new Exception("No category");
         }
@@ -77,7 +87,7 @@ public class ExpenseService(IExpenseRepository expenseRepository) : IExpenseServ
 
     #region Targets
     public async Task<ExpenseTargetReadDTO> GetTargetByGuidAsync(Guid guid) {
-        ExpenseTarget? target = await expenseRepository.GetTargetByGuidAsync(guid);
+        ExpenseTarget? target = await expenseRepository.GetTargetByGuidAsync(guid, sessionDataService.userGuid);
         if (target is null) {
             throw new Exception("No target");
         }
@@ -85,17 +95,22 @@ public class ExpenseService(IExpenseRepository expenseRepository) : IExpenseServ
     }
     
     public async Task<Guid> CreateTargetAsync(ExpenseTargetCreateDTO targetCreateDto) {
-        ExpenseTarget newExpense = TargetCreateDTOToModel(targetCreateDto);
-        await expenseRepository.CreateTargetAsync(newExpense);
-        return newExpense.Guid;
+        ExpenseTarget newTarget = TargetCreateDTOToModel(targetCreateDto);
+        newTarget.CreatedBy = sessionDataService.userGuid;
+        newTarget.CreatedAt = DateTime.UtcNow;
+        await expenseRepository.CreateTargetAsync(newTarget);
+        return newTarget.Guid;
     }
     
     public async Task UpdateTargetAsync(Guid guid, ExpenseTargetUpdateDTO targetUpdateDto) {
-        await expenseRepository.UpdateTargetAsync(TargetUpdateDTOToModel(guid, targetUpdateDto));
+        ExpenseTarget updateTarget = TargetUpdateDTOToModel(guid, targetUpdateDto);
+        updateTarget.UpdatedBy = sessionDataService.userGuid;
+        updateTarget.UpdatedAt = DateTime.UtcNow;
+        await expenseRepository.UpdateTargetAsync(updateTarget);
     }
     
     public async Task DeleteTargetAsync(Guid guid) {
-        ExpenseTarget? deleteTarget = await expenseRepository.GetTargetByGuidAsync(guid);
+        ExpenseTarget? deleteTarget = await expenseRepository.GetTargetByGuidAsync(guid, sessionDataService.userGuid);
         if (deleteTarget is null) {
             throw new Exception("No target");
         }
@@ -131,8 +146,6 @@ public class ExpenseService(IExpenseRepository expenseRepository) : IExpenseServ
             Total = createDto.Total,
             Description = createDto.Description,
             ImagePath = createDto.ImagePath,
-            CreatedBy = createDto.CreatedBy,
-            CreatedAt = DateTime.UtcNow,
         };
     }
     
@@ -145,8 +158,6 @@ public class ExpenseService(IExpenseRepository expenseRepository) : IExpenseServ
             Total = updateDto.Total,
             Description = updateDto.Description,
             ImagePath = updateDto.ImagePath,
-            UpdatedBy = updateDto.UpdatedBy,
-            UpdatedAt = DateTime.UtcNow,
         };
     }
 
@@ -166,8 +177,6 @@ public class ExpenseService(IExpenseRepository expenseRepository) : IExpenseServ
             Order = categoryCreateDto.Order,
             Title = categoryCreateDto.Title,
             Color = categoryCreateDto.Color,
-            CreatedBy = categoryCreateDto.CreatedBy,
-            CreatedAt = DateTime.UtcNow,
         };
     }
     
@@ -177,8 +186,6 @@ public class ExpenseService(IExpenseRepository expenseRepository) : IExpenseServ
             Order = categoryUpdateDto.Order,
             Title = categoryUpdateDto.Title,
             Color = categoryUpdateDto.Color,
-            UpdatedBy = categoryUpdateDto.UpdatedBy,
-            UpdatedAt = DateTime.UtcNow,
         };
     }
     
@@ -197,8 +204,6 @@ public class ExpenseService(IExpenseRepository expenseRepository) : IExpenseServ
             Title = targetCreateDto.Title,
             Description = targetCreateDto.Description,
             Total = targetCreateDto.Total,
-            CreatedBy = targetCreateDto.CreatedBy,
-            CreatedAt = DateTime.UtcNow,
         };
     }
     
@@ -209,8 +214,6 @@ public class ExpenseService(IExpenseRepository expenseRepository) : IExpenseServ
             Title = targetUpdateDto.Title,
             Description = targetUpdateDto.Description,
             Total = targetUpdateDto.Total,
-            UpdatedBy = targetUpdateDto.UpdatedBy,
-            UpdatedAt = DateTime.UtcNow,
         };
     }
     #endregion

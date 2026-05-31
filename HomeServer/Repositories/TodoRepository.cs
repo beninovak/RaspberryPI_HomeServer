@@ -1,5 +1,6 @@
 using HomeServer.Models.Todos;
 using HomeServer.Data;
+using HomeServer.Services;
 using Microsoft.EntityFrameworkCore;
 
 namespace HomeServer.Repositories;
@@ -7,17 +8,18 @@ namespace HomeServer.Repositories;
 public class TodoRepository(MainDbContext db) : ITodoRepository {
     
     #region Todos
-    public async Task<IReadOnlyCollection<TodoCategory>> GetAllAsync() {
+    public async Task<IReadOnlyCollection<TodoCategory>> GetAllAsync(Guid userGuid) {
         return await db.TodoCategories
             .Include(category => category.Todos)
+            .Where(category => category.CreatedBy.Equals(userGuid))
             .OrderBy(category => category.Order)
             .ThenBy(category => category.Title)
             .ThenBy(category => category.Todos.Any() ? category.Todos.First().Order : 0) // TODO - uporab FirstOrDefault? Kva če jih nima nč?
             .ToListAsync();
     }
 
-    public async Task<Todo?> GetByGuidAsync(Guid guid) {
-        return await db.Todos.FindAsync(guid);
+    public async Task<Todo?> GetByGuidAsync(Guid guid, Guid userGuid) {
+        return await db.Todos.FirstAsync(todo => todo.Guid.Equals(guid) && todo.CreatedBy.Equals(userGuid));
     }
 
     public async Task CreateAsync(Todo todo) {
@@ -37,8 +39,8 @@ public class TodoRepository(MainDbContext db) : ITodoRepository {
     #endregion
 
     #region Categories
-    public async Task<TodoCategory?> GetCategoryByGuidAsync(Guid guid) {
-        return await db.TodoCategories.FindAsync(guid);
+    public async Task<TodoCategory?> GetCategoryByGuidAsync(Guid guid, Guid userGuid) {
+        return await db.TodoCategories.FirstAsync(category => category.Guid.Equals(guid) && category.CreatedBy.Equals(userGuid));
     }
     
     public async Task CreateCategoryAsync(TodoCategory todoCategory) {

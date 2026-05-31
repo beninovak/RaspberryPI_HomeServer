@@ -5,9 +5,9 @@ namespace HomeServer.Repositories;
 
 public interface ITodoRepository {
     
-    Task<IReadOnlyCollection<TodoCategory>> GetAllAsync();
+    Task<IReadOnlyCollection<TodoCategory>> GetAllAsync(Guid userGuid);
     
-    Task<Todo?> GetByGuidAsync(Guid guid);
+    Task<Todo?> GetByGuidAsync(Guid guid, Guid userGuid);
     
     Task CreateAsync(Todo todo);
 
@@ -15,7 +15,7 @@ public interface ITodoRepository {
     
     Task DeleteAsync(Todo todo);
 
-    Task<TodoCategory?> GetCategoryByGuidAsync(Guid guid);
+    Task<TodoCategory?> GetCategoryByGuidAsync(Guid guid, Guid userGuid);
     
     Task CreateCategoryAsync(TodoCategory todoCategory);
 

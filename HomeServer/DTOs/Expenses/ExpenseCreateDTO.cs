@@ -9,5 +9,4 @@ public class ExpenseCreateDTO {
     [MaxLength(250)] public string? Description { get; init; }
     public string? ImagePath { get; init; }
     public required decimal Total { get; init; }
-    public required Guid CreatedBy { get; init; }
 }

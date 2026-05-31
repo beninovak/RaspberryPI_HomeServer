@@ -1,15 +1,14 @@
 using HomeServer.DTOs.Todos;
-using HomeServer.Exceptions;
 using HomeServer.Models.Todos;
 using HomeServer.Repositories;
 
 namespace HomeServer.Services;
 
-public class TodoService(ITodoRepository todoRepository) : ITodoService {
+public class TodoService(ITodoRepository todoRepository, ISessionDataService sessionDataService) : ITodoService {
 
     #region Todos
     public async Task<IReadOnlyCollection<TodoCategoryReadDTO>> GetAllAsync() {
-        IReadOnlyCollection<TodoCategory> dbCategories = await todoRepository.GetAllAsync();
+        IReadOnlyCollection<TodoCategory> dbCategories = await todoRepository.GetAllAsync(sessionDataService.userGuid);
 
         return dbCategories.Select(category => new TodoCategoryReadDTO {
                 Guid = category.Guid,
@@ -20,7 +19,7 @@ public class TodoService(ITodoRepository todoRepository) : ITodoService {
     }
 
     public async Task<TodoReadDTO> GetByGuidAsync(Guid guid) {
-        Todo? todo = await todoRepository.GetByGuidAsync(guid);
+        Todo? todo = await todoRepository.GetByGuidAsync(guid, sessionDataService.userGuid);
         if (todo is null) {
             throw new Exception("No todo");
         }
@@ -29,16 +28,21 @@ public class TodoService(ITodoRepository todoRepository) : ITodoService {
     
     public async Task<Guid> CreateAsync(TodoCreateDTO createDto) {
         Todo newTodo = CreateDTOToModel(createDto);
+        newTodo.CreatedBy = sessionDataService.userGuid;
+        newTodo.CreatedAt = DateTime.UtcNow;
         await todoRepository.CreateAsync(newTodo);
         return newTodo.Guid;
     }
     
     public async Task UpdateAsync(Guid guid, TodoUpdateDTO updateDto) {
-        await todoRepository.UpdateAsync(UpdateDTOToModel(guid, updateDto));
+        Todo updateTodo = UpdateDTOToModel(guid, updateDto);
+        updateTodo.UpdatedBy = sessionDataService.userGuid;
+        updateTodo.UpdatedAt = DateTime.UtcNow;
+        await todoRepository.UpdateAsync(updateTodo);
     }
     
     public async Task DeleteAsync(Guid guid) {
-        Todo? deleteTodo = await todoRepository.GetByGuidAsync(guid);
+        Todo? deleteTodo = await todoRepository.GetByGuidAsync(guid, sessionDataService.userGuid);
         if (deleteTodo is null) {
             throw new Exception("No todo");
         }
@@ -48,7 +52,7 @@ public class TodoService(ITodoRepository todoRepository) : ITodoService {
     
     #region Categories
     public async Task<TodoCategoryReadDTO> GetCategoryByGuidAsync(Guid guid) {
-        TodoCategory? category = await todoRepository.GetCategoryByGuidAsync(guid);
+        TodoCategory? category = await todoRepository.GetCategoryByGuidAsync(guid, sessionDataService.userGuid);
         if (category is null) {
             throw new Exception("No todo category");
         }
@@ -57,16 +61,21 @@ public class TodoService(ITodoRepository todoRepository) : ITodoService {
 
     public async Task<Guid> CreateCategoryAsync(TodoCategoryCreateDTO categoryCreateDto) {
         TodoCategory newCategory = CategoryCreateDTOToModel(categoryCreateDto);
+        newCategory.CreatedBy = sessionDataService.userGuid;
+        newCategory.CreatedAt = DateTime.UtcNow;
         await todoRepository.CreateCategoryAsync(newCategory);
         return newCategory.Guid;
     }
     
     public async Task UpdateCategoryAsync(Guid guid, TodoCategoryUpdateDTO categoryUpdateDto) {
-        await todoRepository.UpdateCategoryAsync(CategoryUpdateDTOToModel(guid, categoryUpdateDto));
+        TodoCategory updateCategory = CategoryUpdateDTOToModel(guid, categoryUpdateDto);
+        updateCategory.UpdatedBy = sessionDataService.userGuid;
+        updateCategory.UpdatedAt = DateTime.UtcNow;
+        await todoRepository.UpdateCategoryAsync(updateCategory);
     }
     
     public async Task DeleteCategoryAsync(Guid guid) {
-        TodoCategory? deleteCategory = await todoRepository.GetCategoryByGuidAsync(guid);
+        TodoCategory? deleteCategory = await todoRepository.GetCategoryByGuidAsync(guid, sessionDataService.userGuid);
         if (deleteCategory is null) {
             throw new Exception("No todo");
         }
@@ -98,8 +107,6 @@ public class TodoService(ITodoRepository todoRepository) : ITodoService {
             Order = createDto.Order,
             Content = createDto.Content,
             IsDone = false,
-            CreatedBy = createDto.CreatedBy,
-            CreatedAt = DateTime.UtcNow,
         };
     }
 
@@ -110,8 +117,6 @@ public class TodoService(ITodoRepository todoRepository) : ITodoService {
             Order = updateDto.Order,
             Content = updateDto.Content,
             IsDone = updateDto.IsDone,
-            UpdatedBy = updateDto.UpdatedBy,
-            UpdatedAt = DateTime.UtcNow,
         };
     }
 
@@ -128,8 +133,6 @@ public class TodoService(ITodoRepository todoRepository) : ITodoService {
             Guid = Guid.NewGuid(),
             Order = categoryCreateDto.Order,
             Title = categoryCreateDto.Title,
-            CreatedBy = categoryCreateDto.CreatedBy,
-            CreatedAt = DateTime.UtcNow,
             Todos = [],
         };
     }
@@ -139,9 +142,7 @@ public class TodoService(ITodoRepository todoRepository) : ITodoService {
             Guid = guid,
             Order = categoryUpdateDto.Order,
             Title = categoryUpdateDto.Title,
-            UpdatedBy = categoryUpdateDto.UpdatedBy,
-            UpdatedAt = DateTime.UtcNow,
-            Todos = [], // TODO - poglej če to rab bit required? Maybe bol daj sam nullable pa ga kle ne passam?
+            Todos = [],
         };
     }
     #endregion

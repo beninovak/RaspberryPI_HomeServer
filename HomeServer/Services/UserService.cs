@@ -34,7 +34,7 @@ public class UserService(IUserRepository userRepository) : IUserService {
     public async Task<Guid> LoginUserAsync(LoginDTO loginUser) {
         ValidateLogin(loginUser.Email, loginUser.Password);
 
-        if (await userRepository.UserWithEmailExistsAsync(loginUser.Email)) {
+        if (!await userRepository.UserWithEmailExistsAsync(loginUser.Email)) {
             throw new NonExistentUserException("No user with such an email exists.");
         }
 
