@@ -176,15 +176,13 @@
     <ItemGroup>
       <Folder Include="wwwroot\node_modules\@babel\" />
       <Folder Include="wwwroot\node_modules\@redocly\" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <Compile Include="wwwroot\Rufr.cs" />
+      <Folder Include="wwwroot\src\types\" />
     </ItemGroup>
 
     <ItemGroup>
       <TypeScriptCompile Include="wwwroot\src\general.ts" />
       <TypeScriptCompile Include="wwwroot\src\loaders.ts" />
+      <TypeScriptCompile Include="wwwroot\src\Rufr.ts" />
       <TypeScriptCompile Include="wwwroot\src\Views\expense.ts" />
       <TypeScriptCompile Include="wwwroot\src\Views\IView.ts" />
       <TypeScriptCompile Include="wwwroot\src\Views\todo.ts" />
