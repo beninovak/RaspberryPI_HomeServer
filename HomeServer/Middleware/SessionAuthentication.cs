@@ -27,9 +27,14 @@ public class SessionAuthenticationMiddleware(RequestDelegate next, IMemoryCache 
                 context.Response.Redirect("/login");
                 return;
             }
-            
-            if (validNoAuthPages.Contains(path)) {
+
+            if (!Path.HasExtension(path) && validNoAuthPages.Contains(path)) {
                 context.Request.Path = path + ".html";
+                await next(context);
+                return;
+            }
+            
+            if (Path.HasExtension(path) && !Path.GetExtension(path).Equals(".html")) {
                 await next(context);
                 return;
             }
