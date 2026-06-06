@@ -12,8 +12,9 @@ public sealed class RegisterController(IUserService userService) : ControllerBas
     [HttpPost]
     public async Task<ActionResult> RegisterAsync([FromBody] RegisterDTO registerDto) {
         await userService.RegisterUserAsync(registerDto);
-        return Ok(new {
-            message = $"Successfully added a user with email {registerDto.Email}"
-        });
+        return Redirect("/login");
+        // return Ok(new {
+        //     message = $"Successfully added a user with email {registerDto.Email}"
+        // });
     }
 }

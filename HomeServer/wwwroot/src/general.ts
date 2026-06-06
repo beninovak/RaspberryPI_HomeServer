@@ -1,6 +1,7 @@
 import "./types/api.js";
 import { IView } from "./Views/IView.js";
 import Loaders from "./loaders.js";
+import Forms from "./forms.js";
 
 let currentView: IView = Loaders.Views.values().next().value!;
 
@@ -29,6 +30,7 @@ window.onload = async () => {
 
         nav.append(btn);
     });
-    
+
     await Loaders.LoadView(currentView);
-};
+    await Forms.Init();  
+}

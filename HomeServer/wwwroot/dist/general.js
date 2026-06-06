@@ -1,5 +1,6 @@
 import "./types/api.js";
 import Loaders from "./loaders.js";
+import Forms from "./forms.js";
 let currentView = Loaders.Views.values().next().value;
 window.onload = async () => {
     const nav = document.querySelector("nav");
@@ -22,5 +23,6 @@ window.onload = async () => {
         nav.append(btn);
     });
     await Loaders.LoadView(currentView);
+    await Forms.Init();
 };
 //# sourceMappingURL=general.js.map

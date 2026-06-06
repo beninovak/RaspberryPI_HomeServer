@@ -72,7 +72,9 @@ public class UserService(IUserRepository userRepository) : IUserService {
         }
         
         if (await userRepository.UserWithEmailExistsAsync(registerDto.Email)) {
-            throw new UserAlreadyExistsException("A user with this email already exists.");
+            throw new UserAlreadyExistsException(JsonConvert.SerializeObject(new {
+                General = "A user with this email already exists."
+            }));
         }
         
         string passwordSalt = BCrypt.Net.BCrypt.GenerateSalt();

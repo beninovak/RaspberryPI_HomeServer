@@ -3,7 +3,67 @@
  * Do not make direct changes to the file.
  */
 export interface paths {
-    "/api/forgotten-password/{guid}": {
+    "/api/expenses": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description OK */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "text/plain": components["schemas"]["ExpenseCategoryReadDTO"][];
+                        "application/json": components["schemas"]["ExpenseCategoryReadDTO"][];
+                        "text/json": components["schemas"]["ExpenseCategoryReadDTO"][];
+                    };
+                };
+            };
+        };
+        put?: never;
+        post: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: {
+                content: {
+                    "application/json": components["schemas"]["ExpenseCreateDTO"];
+                    "text/json": components["schemas"]["ExpenseCreateDTO"];
+                    "application/*+json": components["schemas"]["ExpenseCreateDTO"];
+                };
+            };
+            responses: {
+                /** @description OK */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/expenses/{guid}": {
         parameters: {
             query?: never;
             header?: never;
@@ -26,12 +86,343 @@ export interface paths {
                     headers: {
                         [name: string]: unknown;
                     };
-                    content?: never;
+                    content: {
+                        "text/plain": components["schemas"]["ExpenseReadDTO"];
+                        "application/json": components["schemas"]["ExpenseReadDTO"];
+                        "text/json": components["schemas"]["ExpenseReadDTO"];
+                    };
                 };
             };
         };
         put?: never;
         post?: never;
+        delete: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    guid: string;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description OK */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        options?: never;
+        head?: never;
+        patch: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    guid: string;
+                };
+                cookie?: never;
+            };
+            requestBody?: {
+                content: {
+                    "application/json": components["schemas"]["ExpenseUpdateDTO"];
+                    "text/json": components["schemas"]["ExpenseUpdateDTO"];
+                    "application/*+json": components["schemas"]["ExpenseUpdateDTO"];
+                };
+            };
+            responses: {
+                /** @description OK */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        trace?: never;
+    };
+    "/api/expenses/categories/{guid}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    guid: string;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description OK */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "text/plain": components["schemas"]["ExpenseCategoryReadDTO"];
+                        "application/json": components["schemas"]["ExpenseCategoryReadDTO"];
+                        "text/json": components["schemas"]["ExpenseCategoryReadDTO"];
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    guid: string;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description OK */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        options?: never;
+        head?: never;
+        patch: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    guid: string;
+                };
+                cookie?: never;
+            };
+            requestBody?: {
+                content: {
+                    "application/json": components["schemas"]["ExpenseCategoryUpdateDTO"];
+                    "text/json": components["schemas"]["ExpenseCategoryUpdateDTO"];
+                    "application/*+json": components["schemas"]["ExpenseCategoryUpdateDTO"];
+                };
+            };
+            responses: {
+                /** @description OK */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        trace?: never;
+    };
+    "/api/expenses/categories": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: {
+                content: {
+                    "application/json": components["schemas"]["ExpenseCategoryCreateDTO"];
+                    "text/json": components["schemas"]["ExpenseCategoryCreateDTO"];
+                    "application/*+json": components["schemas"]["ExpenseCategoryCreateDTO"];
+                };
+            };
+            responses: {
+                /** @description OK */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/expenses/targets/{guid}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    guid: string;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description OK */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "text/plain": components["schemas"]["ExpenseTargetReadDTO"];
+                        "application/json": components["schemas"]["ExpenseTargetReadDTO"];
+                        "text/json": components["schemas"]["ExpenseTargetReadDTO"];
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    guid: string;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description OK */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        options?: never;
+        head?: never;
+        patch: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    guid: string;
+                };
+                cookie?: never;
+            };
+            requestBody?: {
+                content: {
+                    "application/json": components["schemas"]["ExpenseTargetUpdateDTO"];
+                    "text/json": components["schemas"]["ExpenseTargetUpdateDTO"];
+                    "application/*+json": components["schemas"]["ExpenseTargetUpdateDTO"];
+                };
+            };
+            responses: {
+                /** @description OK */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        trace?: never;
+    };
+    "/api/expenses/targets": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: {
+                content: {
+                    "application/json": components["schemas"]["ExpenseTargetCreateDTO"];
+                    "text/json": components["schemas"]["ExpenseTargetCreateDTO"];
+                    "application/*+json": components["schemas"]["ExpenseTargetCreateDTO"];
+                };
+            };
+            responses: {
+                /** @description OK */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/forgotten-password": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: {
+                content: {
+                    "application/json": string;
+                    "text/json": string;
+                    "application/*+json": string;
+                };
+            };
+            responses: {
+                /** @description OK */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
         delete?: never;
         options?: never;
         head?: never;
@@ -292,45 +683,6 @@ export interface paths {
         };
         trace?: never;
     };
-    "/api/todos/categories": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        post: {
-            parameters: {
-                query?: never;
-                header?: never;
-                path?: never;
-                cookie?: never;
-            };
-            requestBody?: {
-                content: {
-                    "application/json": components["schemas"]["TodoCategoryCreateDTO"];
-                    "text/json": components["schemas"]["TodoCategoryCreateDTO"];
-                    "application/*+json": components["schemas"]["TodoCategoryCreateDTO"];
-                };
-            };
-            responses: {
-                /** @description OK */
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content?: never;
-                };
-            };
-        };
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
     "/api/todos/categories/{guid}": {
         parameters: {
             query?: never;
@@ -338,7 +690,30 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        get?: never;
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    guid: string;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description OK */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "text/plain": components["schemas"]["TodoCategoryReadDTO"];
+                        "application/json": components["schemas"]["TodoCategoryReadDTO"];
+                        "text/json": components["schemas"]["TodoCategoryReadDTO"];
+                    };
+                };
+            };
+        };
         put?: never;
         post?: never;
         delete: {
@@ -391,10 +766,124 @@ export interface paths {
         };
         trace?: never;
     };
+    "/api/todos/categories": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: {
+                content: {
+                    "application/json": components["schemas"]["TodoCategoryCreateDTO"];
+                    "text/json": components["schemas"]["TodoCategoryCreateDTO"];
+                    "application/*+json": components["schemas"]["TodoCategoryCreateDTO"];
+                };
+            };
+            responses: {
+                /** @description OK */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
 }
 export type webhooks = Record<string, never>;
 export interface components {
     schemas: {
+        ExpenseCategoryCreateDTO: {
+            /** Format: int32 */
+            Order: number;
+            Title: string | null;
+            Color: string | null;
+        };
+        ExpenseCategoryReadDTO: {
+            /** Format: uuid */
+            Guid: string;
+            Title: string | null;
+            Color: string | null;
+            Expenses: components["schemas"]["ExpenseReadDTO"][] | null;
+            Target?: components["schemas"]["ExpenseTargetReadDTO"];
+        };
+        ExpenseCategoryUpdateDTO: {
+            /** Format: int32 */
+            Order: number;
+            Title: string | null;
+            Color: string | null;
+        };
+        ExpenseCreateDTO: {
+            /** Format: uuid */
+            ExpenseCategoryId: string;
+            /** Format: int32 */
+            Order: number;
+            Title: string | null;
+            Description?: string | null;
+            ImagePath?: string | null;
+            /** Format: double */
+            Total: number;
+        };
+        ExpenseReadDTO: {
+            /** Format: uuid */
+            Guid: string;
+            Title: string | null;
+            Description?: string | null;
+            ImagePath?: string | null;
+            /** Format: double */
+            Total: number;
+        };
+        ExpenseTargetCreateDTO: {
+            /** Format: uuid */
+            ExpenseCategoryId: string;
+            Title: string | null;
+            Description?: string | null;
+            /** Format: double */
+            Total: number;
+        };
+        ExpenseTargetReadDTO: {
+            /** Format: uuid */
+            Guid: string;
+            Title: string | null;
+            Description?: string | null;
+            /** Format: double */
+            Total: number;
+        };
+        ExpenseTargetUpdateDTO: {
+            /** Format: uuid */
+            ExpenseCategoryId: string;
+            Title: string | null;
+            Description?: string | null;
+            /** Format: double */
+            Total: number;
+        };
+        ExpenseUpdateDTO: {
+            /** Format: uuid */
+            ExpenseCategoryId: string;
+            /** Format: int32 */
+            Order: number;
+            Title: string | null;
+            Description?: string | null;
+            ImagePath?: string | null;
+            /** Format: double */
+            Total: number;
+        };
         LoginDTO: {
             /** Format: email */
             Email: string | null;
@@ -412,8 +901,6 @@ export interface components {
             /** Format: int32 */
             Order: number;
             Title: string | null;
-            /** Format: uuid */
-            CreatedBy: string;
         };
         TodoCategoryReadDTO: {
             /** Format: uuid */
@@ -425,17 +912,15 @@ export interface components {
             /** Format: int32 */
             Order: number;
             Title: string | null;
-            /** Format: uuid */
-            UpdatedBy: string;
         };
         TodoCreateDTO: {
+            /** Format: uuid */
+            Guid: string;
             /** Format: uuid */
             TodoCategoryId: string;
             /** Format: int32 */
             Order: number;
             Content: string | null;
-            /** Format: uuid */
-            CreatedBy: string;
         };
         TodoReadDTO: {
             /** Format: uuid */
@@ -445,13 +930,13 @@ export interface components {
         };
         TodoUpdateDTO: {
             /** Format: uuid */
+            guid: string;
+            /** Format: uuid */
             TodoCategoryId: string;
             /** Format: int32 */
             Order: number;
             Content: string | null;
             IsDone: boolean;
-            /** Format: uuid */
-            UpdatedBy: string;
         };
     };
     responses: never;

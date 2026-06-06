@@ -180,6 +180,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <TypeScriptCompile Include="wwwroot\src\forms.ts" />
       <TypeScriptCompile Include="wwwroot\src\general.ts" />
       <TypeScriptCompile Include="wwwroot\src\loaders.ts" />
       <TypeScriptCompile Include="wwwroot\src\Rufr.ts" />
