@@ -1,0 +1,24 @@
+﻿@inject NavigationManager NavManager
+
+<nav>
+    <a class="navbar-brand" href="">HomeClient</a>
+    @foreach (string route in AllRoutes) {
+        <a href="@route">@route</a>
+    }
+</nav>
+
+@code {
+    List<string> AllRoutes = new();
+    
+    protected override void OnInitialized() {
+        AllRoutes = typeof(App).Assembly
+            .ExportedTypes
+            .Where(t => t.IsSubclassOf(typeof(ComponentBase)))
+            .SelectMany(t => t.GetCustomAttributes(typeof(RouteAttribute), false))
+            .Cast<RouteAttribute>()
+            .Select(r => r.Template)
+            .ToList();
+        
+        Console.WriteLine(typeof(App).Assembly.ExportedTypes);
+    }
+}

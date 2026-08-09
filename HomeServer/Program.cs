@@ -56,8 +56,11 @@ builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
+app.UseBlazorFrameworkFiles();
+app.UseStaticFiles();
+
 app.UseMiddleware<ExceptionMiddleware>();
-app.UseMiddleware<SessionAuthenticationMiddleware>();
+//app.UseMiddleware<SessionAuthenticationMiddleware>();
 
 app.UseSwagger();
 
@@ -68,7 +71,6 @@ if (app.Environment.IsDevelopment()) {
 
 app.UseHttpsRedirection();
 app.UseAuthorization();
-app.UseDefaultFiles();
-app.UseStaticFiles(); 
 app.MapControllers();
+app.MapFallbackToFile("index.html");
 app.Run();

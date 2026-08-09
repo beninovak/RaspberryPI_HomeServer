@@ -5,7 +5,7 @@ using Microsoft.Extensions.Caching.Memory;
 
 namespace HomeServer.Controllers;
 
-[ApiController] [Route("api/login")] [SkipAuth]
+[ApiController] [Route("api/Login")] [SkipAuth]
 public sealed class LoginController(IUserService userService, IMemoryCache memoryCache) : ControllerBase {
     // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
     [HttpPost]

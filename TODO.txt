@@ -1,4 +1,5 @@
 GENERAL:
+    - Workout app
     - Static IP: prever opcije
     - Find another git platform?
     - Port forwarding on router

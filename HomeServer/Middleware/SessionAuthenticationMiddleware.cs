@@ -8,23 +8,30 @@ public class SessionAuthenticationMiddleware(RequestDelegate next, IMemoryCache 
     
     private Guid sessionId;
     private object? sessionDataObject;
-    
-    private readonly string[] validNoAuthPages = ["/login", "/register", "/forgotten-password"];
+
+    private const string defaultPage = "/todo";
+    private readonly string[] invalidAuthPages = ["/Login", "/register"];
+    private readonly string[] validNoAuthPages = ["/Login", "/register", "/forgotten-password"];
     
     public async Task InvokeAsync(HttpContext context, ISessionDataService sessionDataService) {
         bool hasValidCookie = HasValidCookie(context);
         
-        Endpoint? endpoint = context.GetEndpoint();
-        // Endpoint je null, ko je request iz FE. Mađik?
-        if (endpoint is null) {
+        string path = context.Request.Path.Value ?? "";
+        
+        // Ok condition za FE?
+        if (!path.StartsWith("/api")) {
             if (hasValidCookie) {
+                if (invalidAuthPages.Contains(path)) {
+                    context.Response.Redirect(defaultPage);
+                    return;
+                }
+                
                 await next(context);
                 return;
             }
             
-            string path = context.Request.Path.Value ?? "";
             if (path == "/") {
-                context.Response.Redirect("/login");
+                context.Response.Redirect("/Login");
                 return;
             }
 
@@ -43,6 +50,7 @@ public class SessionAuthenticationMiddleware(RequestDelegate next, IMemoryCache 
             return;
         }
 
+        // Server from here on
         if (hasValidCookie) {
             SessionDataService? sessionData = sessionDataObject as SessionDataService;
             if (sessionData is null || sessionData.IP is null || !sessionData.IP.Equals(context.Connection.RemoteIpAddress)) {
@@ -55,8 +63,9 @@ public class SessionAuthenticationMiddleware(RequestDelegate next, IMemoryCache 
             await next(context);
             return;
         }
-        
-        SkipAuthAttribute? skipAuthAttribute = endpoint.Metadata.GetMetadata<SkipAuthAttribute>();
+
+        Endpoint? endpoint = context.GetEndpoint();
+        SkipAuthAttribute? skipAuthAttribute = endpoint?.Metadata.GetMetadata<SkipAuthAttribute>();
         if (skipAuthAttribute is not null) {
             await next(context);
             return;
