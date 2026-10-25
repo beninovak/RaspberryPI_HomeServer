@@ -57,6 +57,7 @@ h1 {
 }
 
 body div#app {
+    width: 100%;
     display: flex;
 }
 
@@ -86,7 +87,7 @@ nav .links {
     border-top: 2px solid #000;
 }
 
-nav button {
+nav > a {
     height: 100px;
     font-size: 32px;
     display: flex;

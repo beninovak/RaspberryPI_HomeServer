@@ -16,4 +16,14 @@
       <_ContentIncludedByDefault Remove="wwwroot\sample-data\weather.json" />
     </ItemGroup>
 
+    <ItemGroup>
+      <AdditionalFiles Include="Pages\Todo.razor" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Reference Include="Microsoft.AspNetCore.Mvc.Core">
+        <HintPath>..\..\..\..\..\usr\lib\dotnet\shared\Microsoft.AspNetCore.App\10.0.4\Microsoft.AspNetCore.Mvc.Core.dll</HintPath>
+      </Reference>
+    </ItemGroup>
+
 </Project>

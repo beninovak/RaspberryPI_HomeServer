@@ -10,8 +10,8 @@ var builder = WebApplication.CreateBuilder(args);
 var config = builder.Configuration;
 
 string? dbHostname = config["HOME_SERVER_DB_HOST"];
-string? dbPort =     config["HOME_SERVER_DB_PORT"];
-string? dbName =     config["HOME_SERVER_DB_NAME"];
+string? dbPort     = config["HOME_SERVER_DB_PORT"];
+string? dbName     = config["HOME_SERVER_DB_NAME"];
 string? dbUsername = config["HOME_SERVER_DB_USER"];
 string? dbPassword = config["HOME_SERVER_DB_PASS"];
 
@@ -56,18 +56,19 @@ builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
+// Configure the HTTP request pipeline.
+if (app.Environment.IsDevelopment()) {
+    app.MapOpenApi();
+    app.UseWebAssemblyDebugging();
+}
+
 app.UseBlazorFrameworkFiles();
 app.UseStaticFiles();
 
 app.UseMiddleware<ExceptionMiddleware>();
-//app.UseMiddleware<SessionAuthenticationMiddleware>();
+app.UseMiddleware<SessionAuthenticationMiddleware>();
 
 app.UseSwagger();
-
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment()) {
-    app.MapOpenApi();
-}
 
 app.UseHttpsRedirection();
 app.UseAuthorization();

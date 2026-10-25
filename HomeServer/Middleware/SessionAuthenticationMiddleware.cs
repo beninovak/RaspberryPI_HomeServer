@@ -10,8 +10,10 @@ public class SessionAuthenticationMiddleware(RequestDelegate next, IMemoryCache 
     private object? sessionDataObject;
 
     private const string defaultPage = "/todo";
-    private readonly string[] invalidAuthPages = ["/Login", "/register"];
-    private readonly string[] validNoAuthPages = ["/Login", "/register", "/forgotten-password"];
+    private const string defaultNoAuthPage = "/login";
+    private readonly string[] validNoAuthPages = ["/login", "/register", "/forgotten-password"];
+
+    private bool redirectedFromLogin = false;
     
     public async Task InvokeAsync(HttpContext context, ISessionDataService sessionDataService) {
         bool hasValidCookie = HasValidCookie(context);
@@ -21,7 +23,7 @@ public class SessionAuthenticationMiddleware(RequestDelegate next, IMemoryCache 
         // Ok condition za FE?
         if (!path.StartsWith("/api")) {
             if (hasValidCookie) {
-                if (invalidAuthPages.Contains(path)) {
+                if (validNoAuthPages.Contains(path)) {
                     context.Response.Redirect(defaultPage);
                     return;
                 }
@@ -30,21 +32,30 @@ public class SessionAuthenticationMiddleware(RequestDelegate next, IMemoryCache 
                 return;
             }
             
-            if (path == "/") {
-                context.Response.Redirect("/Login");
-                return;
-            }
-
-            if (!Path.HasExtension(path) && validNoAuthPages.Contains(path)) {
-                context.Request.Path = path + ".html";
+            // To prevent /login -> /login -> /login loop
+            if (redirectedFromLogin) {
+                redirectedFromLogin = false;
                 await next(context);
                 return;
             }
             
-            if (Path.HasExtension(path) && !Path.GetExtension(path).Equals(".html")) {
-                await next(context);
+            //if (path == "/") {
+            if (path == "/" || validNoAuthPages.Contains(path)) {
+                redirectedFromLogin = true;
+                context.Response.Redirect(defaultNoAuthPage);
                 return;
             }
+
+            // if (!Path.HasExtension(path) && validNoAuthPages.Contains(path)) {
+            //     context.Request.Path = path + ".html";
+            //     await next(context);
+            //     return;
+            // }
+            
+            // if (Path.HasExtension(path) && !Path.GetExtension(path).Equals(".html")) {
+            //     await next(context);
+            //     return;
+            // }
             
             context.Response.StatusCode = 404;
             return;

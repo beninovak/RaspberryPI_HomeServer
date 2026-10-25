@@ -1,5 +1,4 @@
 GENERAL:
-    - Workout app
     - Static IP: prever opcije
     - Find another git platform?
     - Port forwarding on router
@@ -28,3 +27,4 @@ CLIENT
     - Add forgotten password screen
     - Fingerprint reader?
     - Favicon
+    - Remove nav links for /login, /register, /forgotten-password when logged in, and others when not logged in
