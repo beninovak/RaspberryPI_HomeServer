@@ -1,12 +1,10 @@
-using Microsoft.EntityFrameworkCore;
-using HomeServer.Models;
 using HomeServer.Models.Expenses;
 using HomeServer.Models.Todos;
 using HomeServer.Models.User;
-using Microsoft.EntityFrameworkCore.Design;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Conventions;
 
-namespace HomeServer.Data;
+namespace HomeServer.Database;
 
 public class MainDbContext(DbContextOptions<MainDbContext> options) : DbContext(options) {
     protected override void ConfigureConventions(ModelConfigurationBuilder configurationBuilder) {
@@ -27,21 +25,4 @@ public class MainDbContext(DbContextOptions<MainDbContext> options) : DbContext(
     public DbSet<ExpenseCategory> ExpenseCategories => Set<ExpenseCategory>();
     public DbSet<ExpenseTarget> ExpenseTargets => Set<ExpenseTarget>();
     public DbSet<ExpenseTargetHistory> ExpenseTargetsHistory => Set<ExpenseTargetHistory>();
-}
-
-public class MainDbContextFactory : IDesignTimeDbContextFactory<MainDbContext>
-{
-    public MainDbContext CreateDbContext(string[] args)
-    {
-        var config = new ConfigurationBuilder()
-            .SetBasePath(Directory.GetCurrentDirectory())
-            .AddJsonFile("appsettings.Development.json")
-            .Build();
-
-        var options = new DbContextOptionsBuilder<MainDbContext>()
-            .UseNpgsql(config.GetConnectionString("Default"))
-            .Options;
-
-        return new MainDbContext(options);
-    }
 }

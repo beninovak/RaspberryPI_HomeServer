@@ -1,7 +1,5 @@
-using HomeServer.Data;
-using HomeServer.DTOs.Expenses;
+using HomeServer.Database;
 using HomeServer.Models.Expenses;
-using HomeServer.Services;
 using Microsoft.EntityFrameworkCore;
 
 namespace HomeServer.Repositories;

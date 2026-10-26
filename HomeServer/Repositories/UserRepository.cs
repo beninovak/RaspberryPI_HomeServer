@@ -1,5 +1,5 @@
 using HomeServer.Models.User;
-using HomeServer.Data;
+using HomeServer.Database;
 using Microsoft.EntityFrameworkCore;
 
 namespace HomeServer.Repositories;
