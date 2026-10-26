@@ -28,3 +28,5 @@ CLIENT
     - Fingerprint reader?
     - Favicon
     - Remove nav links for /login, /register, /forgotten-password when logged in, and others when not logged in
+    - Display all errors, including the ones from automatic field validation
+    - V primeru errorja dodej error class na .group

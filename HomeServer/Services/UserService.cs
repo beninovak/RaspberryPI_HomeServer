@@ -10,13 +10,25 @@ public class LoginDataException(string message) : Exception(message);
 public class RegisterDataException(string message) : Exception(message);
 public class UserAlreadyExistsException(string message) : Exception(message);
 
+public class LoginResult {
+    public bool Success { get; set; }
+    public Guid? Guid { get; set; }
+    public Dictionary<string, List<string>> Errors { get; set; } = [];
+}
+
+public class RegisterResult {
+    public bool Success { get; set; }
+    public Dictionary<string, List<string>> Errors { get; set; } = [];
+}
+
+
 public class UserService(IUserRepository userRepository) : IUserService {
     private const string names = "Names";
     private const string email = "Email";
     private const string password = "Password";
     private const string general = "General";
     
-    public async Task RegisterUserAsync(RegisterDTO registerDto) {
+    public async Task<RegisterResult> RegisterUserAsync(RegisterDTO registerDto) {
         Dictionary<string, List<string>> errors = new Dictionary<string, List<string>> {
             { names, [] },
             { email, [] },
@@ -26,6 +38,10 @@ public class UserService(IUserRepository userRepository) : IUserService {
         if (string.IsNullOrEmpty(registerDto.Email)) {
             errors[email].Add("Email cannot be empty.");
         }
+        if (await userRepository.UserWithEmailExistsAsync(registerDto.Email)) {
+            errors[email].Add("A user with this email already exists.");
+        }
+        
         if (string.IsNullOrEmpty(registerDto.Password)) {
             errors[password].Add("Password cannot be empty.");
         }
@@ -72,15 +88,9 @@ public class UserService(IUserRepository userRepository) : IUserService {
         if (registerDto.Password.Length is < 12 or > 24) {
             errors[password].Add("Password must be between 12 and 24 characters long.");
         }
-        
-        if (errors.Values.SelectMany(list => list).ToList().Any()) {
-            throw new RegisterDataException(JsonConvert.SerializeObject(errors));
-        }
-        
-        if (await userRepository.UserWithEmailExistsAsync(registerDto.Email)) {
-            throw new UserAlreadyExistsException(JsonConvert.SerializeObject(new {
-                General = "A user with this email already exists."
-            }));
+
+        if (!registerDto.Password.Equals(registerDto.PasswordConfirm)) {
+            errors[password].Add("Passwords do not match.");
         }
         
         string passwordSalt = BCrypt.Net.BCrypt.GenerateSalt();
@@ -97,9 +107,13 @@ public class UserService(IUserRepository userRepository) : IUserService {
         };
         
         await userRepository.CreateUserAsync(user);
+        return new RegisterResult {
+            Success = errors.Count == 0,
+            Errors = errors,
+        };
     }
     
-    public async Task<Guid> LoginUserAsync(LoginDTO loginUser) {
+    public async Task<LoginResult> LoginUserAsync(LoginDTO loginUser) {
         Dictionary<string, List<string>> errors = new Dictionary<string, List<string>> {
             { email, [] },
             { password, [] },
@@ -118,20 +132,18 @@ public class UserService(IUserRepository userRepository) : IUserService {
             errors[email].Add("No user with such an email exists.");
         }
 
+        LoginResult loginResult = new LoginResult();
         User? user = await userRepository.GetUserByEmailAsync(loginUser.Email);
         if (user is null) {
             errors[general].Add("No such user exists.");
-        }
-        
-        //string passwordHash = BCrypt.Net.BCrypt.HashPassword(loginUser.Password, user?.PasswordSalt, true);
-        if (!BCrypt.Net.BCrypt.Verify(loginUser.Password, user?.Password)) {
+        } else if (!BCrypt.Net.BCrypt.Verify(loginUser.Password, user.Password)) {
+            loginResult.Guid = user.Guid;
             errors[general].Add("Email and password do not match.");
         }
 
-        if (errors.Any()) { // TODO - continue here...zakva ta serialize doda key "errors"?
-            throw new LoginDataException(JsonConvert.SerializeObject(errors));
-        }
-        
-        return user!.Guid;
+        loginResult.Success = errors.Count == 0;
+        loginResult.Errors = errors;
+
+        return loginResult;
     }
 }

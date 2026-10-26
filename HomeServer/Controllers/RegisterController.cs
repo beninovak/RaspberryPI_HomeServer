@@ -1,7 +1,6 @@
 using HomeServer.DTOs.User;
 using Microsoft.AspNetCore.Mvc;
 using HomeServer.Services;
-using Microsoft.EntityFrameworkCore;
 
 namespace HomeServer.Controllers;
 
@@ -10,11 +9,13 @@ public sealed class RegisterController(IUserService userService) : ControllerBas
 
     // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
     [HttpPost]
-    public async Task<ActionResult> RegisterAsync([FromBody] RegisterDTO registerDto) {
-        await userService.RegisterUserAsync(registerDto);
+    public async Task<ActionResult> RegisterAsync([FromForm] RegisterDTO registerDto) {
+        RegisterResult registerResult = await userService.RegisterUserAsync(registerDto);
+
+        if (!registerResult.Success) {
+            return BadRequest(registerResult.Errors);
+        }
+        
         return Redirect("/login");
-        // return Ok(new {
-        //     message = $"Successfully added a user with email {registerDto.Email}"
-        // });
     }
 }

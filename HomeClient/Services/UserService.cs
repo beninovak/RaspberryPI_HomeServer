@@ -21,4 +21,23 @@ public class UserService(HttpClient httpClient, NavigationManager navigationMana
         
         return responseMessage;
     }
+    
+    public async Task<BadRegisterResponse?> Register(string firstName, string lastName, string email, string password, string passwordConfirm) {
+        FormUrlEncodedContent content = new FormUrlEncodedContent(new Dictionary<string, string> {
+            { "firstName", firstName },
+            { "lastName", lastName },
+            { "email", email },
+            { "password", password },
+            { "passwordConfirm", passwordConfirm },
+        });
+        HttpResponseMessage response = await httpClient.PostAsync("api/register", content);
+
+        if (response.IsSuccessStatusCode) {
+            navigationManager.NavigateTo("/login");
+        }
+
+        BadRegisterResponse? responseMessage = await response.Content.ReadFromJsonAsync<BadRegisterResponse>();
+        
+        return responseMessage;
+    }
 }

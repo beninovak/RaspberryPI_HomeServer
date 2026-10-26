@@ -1,0 +1,74 @@
+﻿@page "/register"
+@using HomeClient.ResponseDTOs
+@using HomeClient.Services
+@inject UserService UserService;
+
+<PageTitle>Register</PageTitle>
+
+<form method="post" action="/api/Register">
+    <h1>Register</h1>
+    
+    <div class="group wrapper">
+        <div class="fields">
+            <div class="group half">
+                <label for="first_name">First name</label>
+                <input type="text" id="first_name" name="first_name" placeholder="First name" @bind="firstName">
+            </div>
+            <div class="group half">
+                <label for="last_name">Last name</label>
+                <input type="text" id="last_name" name="last_name" placeholder="Last name" @bind="lastName">
+            </div>
+        </div>
+        <p class="error">@namesError</p>
+    </div>
+
+    <div class="group">
+        <label for="email">Email</label>
+        <input type="email" id="email" name="email" placeholder="Email" @bind="email">
+        <p class="error">@emailError</p>
+    </div>
+
+    <div class="group wrapper">
+        <div class="fields">
+            <div class="group">
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" placeholder="Password" @bind="password">
+            </div>
+    
+            <div class="group">
+                <label for="password_confirm">Confirm password</label>
+                <input type="password" id="password_confirm" name="password_confirm" placeholder="Confirm password" @bind="passwordConfirm">
+            </div>
+        </div>
+        <p class="error">@passwordError</p>
+    </div>
+        
+    <div class="group button">
+        <button type="button" @onclick="DoRegister">Register</button>
+            
+        <div class="links">
+            <a href="/login">Login</a>
+        </div>
+    </div>
+</form>
+
+@code {
+    private string firstName = string.Empty;
+    private string lastName = string.Empty;
+    private string email = string.Empty;
+    private string password = string.Empty;
+    private string passwordConfirm = string.Empty;
+
+    private string? namesError, emailError, passwordError;
+    
+    private async void DoRegister() {
+        BadRegisterResponse? response = await UserService.Register(firstName, lastName, email, password, passwordConfirm);
+
+        if (response is not null) {
+            namesError = String.Join('\n', response.Names ?? []);
+            emailError = String.Join('\n', response.Email ?? []);
+            passwordError = String.Join('\n', response.Password ?? []);
+            StateHasChanged();
+        }
+    }
+}

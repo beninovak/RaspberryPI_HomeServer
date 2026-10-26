@@ -127,11 +127,39 @@ form .group.half {
     width: calc(50% - 12px);
 }
 
+form .group.error :is(input, textarea) {
+    border: 1px solid #db2121;
+}
+
+form .group.wrapper {
+    display: flex;
+    flex-direction: column;
+}
+
+form .group.wrapper .fields {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 24px;
+}
+
 form label {
     width: 100%;
     display: block;
     font-size: 22px;
     margin-bottom: 2px;
+}
+
+form p.error {
+    width: 100%;
+    font-style: italic;
+    color: #db2121;
+    font-weight: 500;
+    margin-top: 6px;
+}
+
+form.group p.error:empty {
+    display: none;
+    margin-top: 0;
 }
 
 form :is(input, textarea) {
