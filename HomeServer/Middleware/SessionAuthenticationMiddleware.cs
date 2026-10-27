@@ -9,7 +9,7 @@ public class SessionAuthenticationMiddleware(RequestDelegate next, IMemoryCache 
     private Guid sessionId;
     private object? sessionDataObject;
 
-    private const string defaultPage = "/todo";
+    private const string defaultPage = "/todos";
     private const string defaultNoAuthPage = "/login";
     private readonly string[] validNoAuthPages = ["/login", "/register", "/forgotten-password"];
 
@@ -23,7 +23,7 @@ public class SessionAuthenticationMiddleware(RequestDelegate next, IMemoryCache 
         // Ok condition za FE?
         if (!path.StartsWith("/api")) {
             if (hasValidCookie) {
-                if (validNoAuthPages.Contains(path)) {
+                if (path.Equals("/") || validNoAuthPages.Contains(path)) {
                     context.Response.Redirect(defaultPage);
                     return;
                 }

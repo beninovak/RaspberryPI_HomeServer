@@ -13,10 +13,9 @@ public class UserService(HttpClient httpClient, NavigationManager navigationMana
         HttpResponseMessage response = await httpClient.PostAsync("api/login", content);
 
         if (response.IsSuccessStatusCode) {
-            navigationManager.NavigateTo("/");
+            navigationManager.NavigateTo("/todos");
         }
 
-        var test = await response.Content.ReadAsStringAsync();
         BadLoginResponse? responseMessage = await response.Content.ReadFromJsonAsync<BadLoginResponse>();
         
         return responseMessage;

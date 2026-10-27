@@ -137,11 +137,12 @@ public class UserService(IUserRepository userRepository) : IUserService {
         if (user is null) {
             errors[general].Add("No such user exists.");
         } else if (!BCrypt.Net.BCrypt.Verify(loginUser.Password, user.Password)) {
-            loginResult.Guid = user.Guid;
             errors[general].Add("Email and password do not match.");
+        } else {
+            loginResult.Guid = user.Guid;
         }
-
-        loginResult.Success = errors.Count == 0;
+        
+        loginResult.Success = errors.Values.Sum(list => list.Count) == 0;
         loginResult.Errors = errors;
 
         return loginResult;
