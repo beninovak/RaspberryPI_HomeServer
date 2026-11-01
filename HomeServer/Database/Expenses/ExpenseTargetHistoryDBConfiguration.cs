@@ -2,7 +2,7 @@ using HomeServer.Models.Expenses;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace HomeServer.Data.Expenses;
+namespace HomeServer.Database.Expenses;
 
 public class ExpenseTargetHistoryDBConfiguration : IEntityTypeConfiguration<ExpenseTargetHistory> {
     public void Configure(EntityTypeBuilder<ExpenseTargetHistory> builder) {

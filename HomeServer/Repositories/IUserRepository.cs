@@ -1,4 +1,4 @@
-using HomeServer.DTOs.User;
+using Shared.DTOs.User;
 using HomeServer.Models.User;
 
 namespace HomeServer.Repositories;

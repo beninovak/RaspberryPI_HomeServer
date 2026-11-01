@@ -1,4 +1,4 @@
-using HomeServer.DTOs.User;
+using Shared.DTOs.User;
 using HomeServer.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Memory;

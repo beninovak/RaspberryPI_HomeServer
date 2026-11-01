@@ -20,6 +20,7 @@ SERVER:
     - Expense verify color string...maybe sam ignore če je wrong? tbd
     - Expense image upload: send image as base64??
     - Send first sessionId on register
+    - Fix sessionauthmiddleware...primer /todos, ko je ass cookie -> trenutno vrne 404, mogl bi te fuknt na /login
 
 CLIENT
     - Handle case where server is down/connection't ( Service workers )
@@ -30,3 +31,4 @@ CLIENT
     - Remove nav links for /login, /register, /forgotten-password when logged in, and others when not logged in
     - Display all errors, including the ones from automatic field validation
     - V primeru errorja dodej error class na .group
+    - Najd edit/delete/save ikone -> pen, bin, checkmark

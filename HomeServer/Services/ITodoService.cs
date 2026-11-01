@@ -1,4 +1,4 @@
-using HomeServer.DTOs.Todos;
+using Shared.DTOs.Todos;
 using HomeServer.Models.Todos;
 
 namespace HomeServer.Services;

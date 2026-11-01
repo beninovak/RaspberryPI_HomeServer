@@ -1,4 +1,4 @@
-using HomeServer.DTOs.Expenses;
+using Shared.DTOs.Expenses;
 using HomeServer.Repositories;
 using HomeServer.Services;
 using Microsoft.AspNetCore.Mvc;

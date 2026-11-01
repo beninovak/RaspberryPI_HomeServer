@@ -1,4 +1,4 @@
-using HomeServer.DTOs.User;
+using Shared.DTOs.User;
 
 namespace HomeServer.Services;
 

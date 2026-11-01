@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace HomeServer.DTOs.Todos;
+namespace Shared.DTOs.Todos;
 
 public class TodoReadDTO {
     public required Guid Guid { get; init; }

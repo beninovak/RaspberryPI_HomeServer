@@ -3,7 +3,7 @@ using HomeServer.Models.User;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace HomeServer.Data.Expenses;
+namespace HomeServer.Database.Expenses;
 
 public class ExpenseDBConfiguration : IEntityTypeConfiguration<Expense> {
     public void Configure(EntityTypeBuilder<Expense> builder) {

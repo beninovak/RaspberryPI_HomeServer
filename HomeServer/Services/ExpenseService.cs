@@ -1,4 +1,4 @@
-using HomeServer.DTOs.Expenses;
+using Shared.DTOs.Expenses;
 using HomeServer.Models.Expenses;
 using HomeServer.Repositories;
 

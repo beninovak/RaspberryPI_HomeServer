@@ -1,4 +1,4 @@
-namespace HomeServer.DTOs.Expenses;
+namespace Shared.DTOs.Expenses;
 
 public class ExpenseTargetHistoryReadDTO {
     // public required Guid ExpenseTargetId { get; init; } // TODO - Sam string z title? TBD - odvisn ko bo zgledal na FE...

@@ -1,4 +1,4 @@
-namespace HomeServer.DTOs.Expenses;
+namespace Shared.DTOs.Expenses;
 
 public class ExpenseCategoryReadDTO {
     public required Guid Guid { get; init; }

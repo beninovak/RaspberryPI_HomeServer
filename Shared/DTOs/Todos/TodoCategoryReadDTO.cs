@@ -1,4 +1,4 @@
-namespace HomeServer.DTOs.Todos;
+namespace Shared.DTOs.Todos;
 
 public class TodoCategoryReadDTO {
     public required Guid Guid { get; init; }

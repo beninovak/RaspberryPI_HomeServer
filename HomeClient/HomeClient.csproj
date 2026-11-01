@@ -14,6 +14,15 @@
 
     <ItemGroup>
       <_ContentIncludedByDefault Remove="wwwroot\sample-data\weather.json" />
+      <_ContentIncludedByDefault Remove="wwwroot\_old\expense.html" />
+      <_ContentIncludedByDefault Remove="wwwroot\_old\forgotten-password.html" />
+      <_ContentIncludedByDefault Remove="wwwroot\_old\register.html" />
+      <_ContentIncludedByDefault Remove="wwwroot\_old\todo.html" />
+      <_ContentIncludedByDefault Remove="wwwroot\_old\___login.html" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="../Shared/Shared.csproj" />
     </ItemGroup>
 
     <ItemGroup>

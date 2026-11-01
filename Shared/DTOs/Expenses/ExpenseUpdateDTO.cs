@@ -1,8 +1,8 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace HomeServer.DTOs.Expenses;
+namespace Shared.DTOs.Expenses;
 
-public class ExpenseCreateDTO {
+public class ExpenseUpdateDTO {
     public required Guid ExpenseCategoryId { get; init; }
     public required uint Order { get; init; }
     [MaxLength(50)] public required string Title { get; init; }

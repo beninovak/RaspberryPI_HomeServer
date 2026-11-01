@@ -3,7 +3,7 @@ using HomeServer.Models.User;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace HomeServer.Data.Todos;
+namespace HomeServer.Database.Todos;
 
 public class TodoDBConfiguration : IEntityTypeConfiguration<Todo> {
     public void Configure(EntityTypeBuilder<Todo> builder) {

@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace HomeServer.DTOs.Todos;
+namespace Shared.DTOs.Todos;
 
 public class TodoCategoryCreateDTO {
     public required uint Order { get; init; }

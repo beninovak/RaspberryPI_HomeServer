@@ -1,4 +1,4 @@
-using HomeServer.DTOs.Todos;
+using Shared.DTOs.Todos;
 using HomeServer.Services;
 using Microsoft.AspNetCore.Mvc;
 

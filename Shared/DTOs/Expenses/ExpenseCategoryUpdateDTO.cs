@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace HomeServer.DTOs.Expenses;
+namespace Shared.DTOs.Expenses;
 
 public class ExpenseCategoryUpdateDTO {
     public required uint Order { get; init; }

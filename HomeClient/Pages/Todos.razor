@@ -1,5 +1,55 @@
-﻿@page "/todos"
+﻿@page "/todos";
+@using Shared.DTOs.Todos;
+@inject Services.TodoService todoService;
 
 <PageTitle>Todos</PageTitle>
 
-<h1>TODOS PAGE HALO HALO</h1>
+<HeadContent>
+    <link rel="stylesheet" href="css/data_forms.css"/>
+</HeadContent>
+
+@if (requestError is not null) {
+    <h1>An error occurred. Bl bula brt!</h1>
+} else if (todos is null) {
+    <p>Loading...</p>
+} else if (todos.Count == 0) {
+    <p>You currently have no todos. Add some!</p>
+} else {
+    <form class="data-form">
+        @foreach (TodoCategoryReadDTO category in todos) {
+            <fieldset>
+                <legend>@category.Title</legend>
+                <div class="fields">
+                    @foreach (TodoReadDTO todo in category.Todos) {
+                        // TODO - maybe send values as array? Al usak posebi? tbd
+                        <div class="group disabled @(todo.IsDone ? "done" : "")">
+                            <input disabled type="text" name="content_@todo.Guid" value="@todo.Content"/>
+                            
+                            <div class="actions">
+                                <input type="checkbox" name="checked_@todo.Guid" checked="@todo.IsDone"/>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </fieldset>
+        }
+    </form>
+}
+
+@code {
+    private IReadOnlyCollection<TodoCategoryReadDTO>? todos;
+    private string? requestError;
+    
+    protected override async Task OnInitializedAsync() {
+        try {
+            todos = await todoService.GetAllTodos();
+        } catch (HttpRequestException e) {
+            requestError = e.Message;
+        }
+    }
+
+    // TODO - continue IsDone toggle POST
+    private async Task UpdateTodoStatus(TodoUpdateDTO todo) {
+        await todoService.UpdateTodoStatus(todo);
+    }
+}

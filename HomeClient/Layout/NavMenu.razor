@@ -3,6 +3,9 @@
 <nav>
     <a class="navbar-brand" href="">HomeClient</a>
     @foreach (string route in AllRoutes) {
+        if (route.Equals("/")) {
+            continue;
+        }
         <a href="@route">@route</a>
     }
 </nav>

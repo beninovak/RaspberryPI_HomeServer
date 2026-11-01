@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace HomeServer.Models.Todos;
 
-public partial class Todo {
+public class Todo {
     public required Guid Guid { get; init; }
     public required Guid TodoCategoryId { get; init; }
     public required uint Order { get; init; }

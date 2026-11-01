@@ -1,5 +1,5 @@
 using Microsoft.EntityFrameworkCore;
-using HomeServer.Data;
+using HomeServer.Database;
 using HomeServer.Middleware;
 using HomeServer.Repositories;
 using HomeServer.Services;

@@ -14,6 +14,7 @@ builder.Services.AddScoped(sp => new HttpClient { // Singleton? Zakva ni meu sko
 });
 
 builder.Services.AddScoped<UserService>();
+builder.Services.AddScoped<TodoService>();
 //builder.Services.AddScoped<NavigationManager>();
 
 await builder

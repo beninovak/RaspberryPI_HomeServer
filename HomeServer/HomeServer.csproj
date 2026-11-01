@@ -30,6 +30,7 @@
     
     <ItemGroup>
         <ProjectReference Include="../HomeClient/HomeClient.csproj" />
+        <ProjectReference Include="../Shared/Shared.csproj" />
     </ItemGroup>
 
     <ItemGroup>

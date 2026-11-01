@@ -1,4 +1,4 @@
-using HomeServer.DTOs.User;
+using Shared.DTOs.User;
 using HomeServer.Models.User;
 using HomeServer.Repositories;
 using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Pages.Manage;
